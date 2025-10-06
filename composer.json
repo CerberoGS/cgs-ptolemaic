@@ -90,7 +90,7 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan lang:update"
         ]
-	}
+	},
 	
 
     "minimum-stability": "stable",

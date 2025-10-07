@@ -6,13 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Brain, TrendingUp, Users, Check, Star, Crown, Building2, User, Target, Link2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LanguageSelector from '@/components/layout/LanguageSelector';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
 
     return (
         <>
-            <Head title="CGSATAI - Plataforma de Inversión con IA">
+            <Head title="Ptolemaic - Plataforma de Inversión con IA en el Mercado de Valores">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700"
@@ -29,10 +30,11 @@ export default function Welcome() {
                             <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
                                 <Brain className="h-5 w-5 text-white" />
                             </div>
-                            <span className="text-xl font-bold text-gray-900 dark:text-white">CGSATAI</span>
+                            <span className="text-xl font-bold text-gray-900 dark:text-white">Ptolemaic</span>
                         </div>
 
                         <nav className="flex items-center space-x-4">
+                            <LanguageSelector />
                             {auth.user ? (
                                 <Link
                                     href={home()}
@@ -447,7 +449,7 @@ export default function Welcome() {
                             <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
                                 <Brain className="h-5 w-5 text-white" />
                             </div>
-                            <span className="text-xl font-bold text-white">CGSATAI</span>
+                            <span className="text-xl font-bold text-white">Ptolemaic</span>
                         </div>
 
                         <div className="flex space-x-6 text-sm text-gray-400">
@@ -458,7 +460,7 @@ export default function Welcome() {
                     </div>
 
                     <div className="mt-8 border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-                        © 2024 CGSATAI. Todos los derechos reservados.
+                        © 2024 Ptolemaic. Todos los derechos reservados.
                     </div>
                 </div>
             </footer>

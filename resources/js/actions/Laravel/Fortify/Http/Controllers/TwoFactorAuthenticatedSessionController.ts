@@ -1,73 +1,103 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
+export const create = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(args, options),
     method: 'get',
 })
 
 create.definition = {
     methods: ["get","head"],
-    url: '/two-factor-challenge',
+    url: '/{locale?}/two-factor-challenge',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-create.url = (options?: RouteQueryOptions) => {
-    return create.definition.url + queryParams(options)
+create.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return create.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
+create.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(args, options),
     method: 'get',
 })
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: create.url(options),
+create.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: create.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-    const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: create.url(options),
+    const createForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: create.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-        createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url(options),
+        createForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: create.url(args, options),
             method: 'get',
         })
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::create
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-        createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url({
+        createForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: create.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -80,54 +110,82 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:57
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/two-factor-challenge',
+    url: '/{locale?}/two-factor-challenge',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:57
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-store.url = (options?: RouteQueryOptions) => {
-    return store.definition.url + queryParams(options)
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return store.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:57
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:57
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:57
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(args, options),
             method: 'post',
         })
     

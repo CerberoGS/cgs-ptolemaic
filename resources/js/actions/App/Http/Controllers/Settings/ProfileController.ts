@@ -1,73 +1,103 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+export const edit = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/settings/profile',
+    url: '/{locale?}/settings/profile',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-edit.url = (options?: RouteQueryOptions) => {
-    return edit.definition.url + queryParams(options)
+edit.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return edit.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+edit.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: edit.url(options),
+edit.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-    const editForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: edit.url(options),
+    const editForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: edit.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-        editForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url(options),
+        editForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: edit.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-        editForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url({
+        editForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -80,44 +110,71 @@ edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: update.url(options),
+export const update = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: update.url(args, options),
     method: 'patch',
 })
 
 update.definition = {
     methods: ["patch"],
-    url: '/settings/profile',
+    url: '/{locale?}/settings/profile',
 } satisfies RouteDefinition<["patch"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-update.url = (options?: RouteQueryOptions) => {
-    return update.definition.url + queryParams(options)
+update.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return update.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: update.url(options),
+update.patch = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: update.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-    const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: update.url({
+    const updateForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PATCH',
                         ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -129,10 +186,11 @@ update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-        updateForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url({
+        updateForm.patch = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -145,44 +203,71 @@ update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-export const destroy = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
-    url: destroy.url(options),
+export const destroy = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
     method: 'delete',
 })
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/settings/profile',
+    url: '/{locale?}/settings/profile',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-destroy.url = (options?: RouteQueryOptions) => {
-    return destroy.definition.url + queryParams(options)
+destroy.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return destroy.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
-    url: destroy.url(options),
+destroy.delete = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-    const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroy.url({
+    const destroyForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
                         ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -194,10 +279,11 @@ destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '/settings/profile'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/profile'
  */
-        destroyForm.delete = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroy.url({
+        destroyForm.delete = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',
                             ...(options?.query ?? options?.mergeQuery ?? {}),

@@ -1,199 +1,96 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../wayfinder'
 /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: login.url(options),
-    method: 'get',
-})
-
-login.definition = {
-    methods: ["get","head"],
-    url: '/login',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-login.url = (options?: RouteQueryOptions) => {
-    return login.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: login.url(options),
-    method: 'get',
-})
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: login.url(options),
-    method: 'head',
-})
-
-    /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-    const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: login.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-        loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '/login'
- */
-        loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    login.form = loginForm
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '/logout'
- */
-export const logout = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: logout.url(options),
-    method: 'post',
-})
-
-logout.definition = {
-    methods: ["post"],
-    url: '/logout',
-} satisfies RouteDefinition<["post"]>
-
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '/logout'
- */
-logout.url = (options?: RouteQueryOptions) => {
-    return logout.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '/logout'
- */
-logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: logout.url(options),
-    method: 'post',
-})
-
-    /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '/logout'
- */
-    const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: logout.url(options),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '/logout'
- */
-        logoutForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: logout.url(options),
-            method: 'post',
-        })
-    
-    logout.form = logoutForm
-/**
- * @see routes/web.php:8
- * @route '/'
- */
-export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: home.url(options),
+export const home = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: home.url(args, options),
     method: 'get',
 })
 
 home.definition = {
     methods: ["get","head"],
-    url: '/',
+    url: '/{locale?}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-home.url = (options?: RouteQueryOptions) => {
-    return home.definition.url + queryParams(options)
+home.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return home.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: home.url(options),
+home.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: home.url(args, options),
     method: 'get',
 })
 /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: home.url(options),
+home.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: home.url(args, options),
     method: 'head',
 })
 
     /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-    const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: home.url(options),
+    const homeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: home.url(args, options),
         method: 'get',
     })
 
             /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-        homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: home.url(options),
+        homeForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: home.url(args, options),
             method: 'get',
         })
             /**
- * @see routes/web.php:8
- * @route '/'
+ * @see routes/web.php:34
+ * @param locale - Default: 'es'
+ * @route '/{locale?}'
  */
-        homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: home.url({
+        homeForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: home.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -204,67 +101,97 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     home.form = homeForm
 /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: dashboard.url(options),
+export const dashboard = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dashboard.url(args, options),
     method: 'get',
 })
 
 dashboard.definition = {
     methods: ["get","head"],
-    url: '/dashboard',
+    url: '/{locale?}/dashboard',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-dashboard.url = (options?: RouteQueryOptions) => {
-    return dashboard.definition.url + queryParams(options)
+dashboard.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return dashboard.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: dashboard.url(options),
+dashboard.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dashboard.url(args, options),
     method: 'get',
 })
 /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: dashboard.url(options),
+dashboard.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: dashboard.url(args, options),
     method: 'head',
 })
 
     /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-    const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: dashboard.url(options),
+    const dashboardForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: dashboard.url(args, options),
         method: 'get',
     })
 
             /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-        dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: dashboard.url(options),
+        dashboardForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url(args, options),
             method: 'get',
         })
             /**
- * @see routes/web.php:13
- * @route '/dashboard'
+ * @see routes/web.php:39
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/dashboard'
  */
-        dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: dashboard.url({
+        dashboardForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -277,72 +204,102 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: register.url(options),
+export const register = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: register.url(args, options),
     method: 'get',
 })
 
 register.definition = {
     methods: ["get","head"],
-    url: '/register',
+    url: '/{locale?}/register',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-register.url = (options?: RouteQueryOptions) => {
-    return register.definition.url + queryParams(options)
+register.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return register.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: register.url(options),
+register.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: register.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: register.url(options),
+register.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: register.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-    const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: register.url(options),
+    const registerForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: register.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-        registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: register.url(options),
+        registerForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: register.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/register'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/register'
  */
-        registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: register.url({
+        registerForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: register.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -352,3 +309,194 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     register.form = registerForm
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+export const login = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(args, options),
+    method: 'get',
+})
+
+login.definition = {
+    methods: ["get","head"],
+    url: '/{locale?}/login',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+login.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return login.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+login.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+login.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: login.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+    const loginForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: login.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+        loginForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/login'
+ */
+        loginForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    login.form = loginForm
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/logout'
+ */
+export const logout = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: logout.url(args, options),
+    method: 'post',
+})
+
+logout.definition = {
+    methods: ["post"],
+    url: '/{locale?}/logout',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/logout'
+ */
+logout.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return logout.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/logout'
+ */
+logout.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: logout.url(args, options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/logout'
+ */
+    const logoutForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: logout.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/logout'
+ */
+        logoutForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: logout.url(args, options),
+            method: 'post',
+        })
+    
+    logout.form = logoutForm

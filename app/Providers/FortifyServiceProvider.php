@@ -16,7 +16,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Evitar que Fortify registre sus rutas por defecto; se definen manualmente.
+        Fortify::ignoreRoutes();
     }
 
     /**

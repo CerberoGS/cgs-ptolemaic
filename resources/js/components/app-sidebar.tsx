@@ -15,14 +15,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+import { useLocale, useTrans } from '@/hooks/useTrans';
 
 const footerNavItems: NavItem[] = [
     {
@@ -38,13 +31,29 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const locale = useLocale();
+    const t = useTrans();
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('Dashboard'),
+            href: dashboard({ locale }),
+            icon: LayoutGrid,
+        },
+    ];
+
+    const localizedFooter = footerNavItems.map((item) => ({
+        ...item,
+        title: t(item.title),
+    }));
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={dashboard({ locale })} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -57,7 +66,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <NavFooter items={localizedFooter} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

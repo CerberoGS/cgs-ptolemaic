@@ -1,230 +1,104 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 import confirmD7e05f from './confirm'
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-export const confirm = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: confirm.url(options),
-    method: 'get',
-})
-
-confirm.definition = {
-    methods: ["get","head"],
-    url: '/user/confirm-password',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-confirm.url = (options?: RouteQueryOptions) => {
-    return confirm.definition.url + queryParams(options)
-}
-
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-confirm.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: confirm.url(options),
-    method: 'get',
-})
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-confirm.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: confirm.url(options),
-    method: 'head',
-})
-
-    /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-    const confirmForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: confirm.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-        confirmForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: confirm.url(options),
-            method: 'get',
-        })
-            /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
- * @route '/user/confirm-password'
- */
-        confirmForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: confirm.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    confirm.form = confirmForm
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-export const confirmation = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: confirmation.url(options),
-    method: 'get',
-})
-
-confirmation.definition = {
-    methods: ["get","head"],
-    url: '/user/confirmed-password-status',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-confirmation.url = (options?: RouteQueryOptions) => {
-    return confirmation.definition.url + queryParams(options)
-}
-
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-confirmation.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: confirmation.url(options),
-    method: 'get',
-})
-/**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-confirmation.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: confirmation.url(options),
-    method: 'head',
-})
-
-    /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-    const confirmationForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: confirmation.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-        confirmationForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: confirmation.url(options),
-            method: 'get',
-        })
-            /**
-* @see \Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController::confirmation
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmedPasswordStatusController.php:17
- * @route '/user/confirmed-password-status'
- */
-        confirmationForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: confirmation.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    confirmation.form = confirmationForm
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+export const edit = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/settings/password',
+    url: '/{locale?}/settings/password',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-edit.url = (options?: RouteQueryOptions) => {
-    return edit.definition.url + queryParams(options)
+edit.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return edit.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: edit.url(options),
+edit.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: edit.url(options),
+edit.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-    const editForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: edit.url(options),
+    const editForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: edit.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-        editForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url(options),
+        editForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: edit.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Settings\PasswordController::edit
  * @see app/Http/Controllers/Settings/PasswordController.php:18
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-        editForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url({
+        editForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -237,44 +111,71 @@ edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::update
  * @see app/Http/Controllers/Settings/PasswordController.php:26
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-export const update = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
-    url: update.url(options),
+export const update = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
     method: 'put',
 })
 
 update.definition = {
     methods: ["put"],
-    url: '/settings/password',
+    url: '/{locale?}/settings/password',
 } satisfies RouteDefinition<["put"]>
 
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::update
  * @see app/Http/Controllers/Settings/PasswordController.php:26
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-update.url = (options?: RouteQueryOptions) => {
-    return update.definition.url + queryParams(options)
+update.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return update.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\PasswordController::update
  * @see app/Http/Controllers/Settings/PasswordController.php:26
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
-    url: update.url(options),
+update.put = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
     method: 'put',
 })
 
     /**
 * @see \App\Http\Controllers\Settings\PasswordController::update
  * @see app/Http/Controllers/Settings/PasswordController.php:26
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-    const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: update.url({
+    const updateForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
                         ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -286,10 +187,11 @@ update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
             /**
 * @see \App\Http\Controllers\Settings\PasswordController::update
  * @see app/Http/Controllers/Settings/PasswordController.php:26
- * @route '/settings/password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/password'
  */
-        updateForm.put = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url({
+        updateForm.put = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -302,72 +204,102 @@ update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-export const request = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: request.url(options),
+export const request = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: request.url(args, options),
     method: 'get',
 })
 
 request.definition = {
     methods: ["get","head"],
-    url: '/forgot-password',
+    url: '/{locale?}/forgot-password',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-request.url = (options?: RouteQueryOptions) => {
-    return request.definition.url + queryParams(options)
+request.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return request.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-request.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: request.url(options),
+request.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: request.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-request.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: request.url(options),
+request.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: request.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-    const requestForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: request.url(options),
+    const requestForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: request.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        requestForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: request.url(options),
+        requestForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: request.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::request
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        requestForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: request.url({
+        requestForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: request.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -380,54 +312,82 @@ request.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::email
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-export const email = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: email.url(options),
+export const email = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: email.url(args, options),
     method: 'post',
 })
 
 email.definition = {
     methods: ["post"],
-    url: '/forgot-password',
+    url: '/{locale?}/forgot-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::email
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-email.url = (options?: RouteQueryOptions) => {
-    return email.definition.url + queryParams(options)
+email.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return email.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::email
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-email.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: email.url(options),
+email.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: email.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::email
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-    const emailForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: email.url(options),
+    const emailForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: email.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::email
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        emailForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: email.url(options),
+        emailForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: email.url(args, options),
             method: 'post',
         })
     
@@ -435,42 +395,46 @@ email.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-export const reset = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const reset = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: reset.url(args, options),
     method: 'get',
 })
 
 reset.definition = {
     methods: ["get","head"],
-    url: '/reset-password/{token}',
+    url: '/{locale?}/reset-password/{token}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-reset.url = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions) => {
-    if (typeof args === 'string' || typeof args === 'number') {
-        args = { token: args }
-    }
-
-    
+reset.url = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
-                    token: args[0],
+                    locale: args[0],
+                    token: args[1],
                 }
     }
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        token: args.token,
+                        locale: args.locale ?? 'es',
+                                token: args.token,
                 }
 
     return reset.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace('{token}', parsedArgs.token.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -478,18 +442,20 @@ reset.url = (args: { token: string | number } | [token: string | number ] | stri
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-reset.get = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+reset.get = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: reset.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-reset.head = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+reset.head = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: reset.url(args, options),
     method: 'head',
 })
@@ -497,9 +463,10 @@ reset.head = (args: { token: string | number } | [token: string | number ] | str
     /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-    const resetForm = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const resetForm = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: reset.url(args, options),
         method: 'get',
     })
@@ -507,18 +474,20 @@ reset.head = (args: { token: string | number } | [token: string | number ] | str
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-        resetForm.get = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        resetForm.get = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: reset.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::reset
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @route '/reset-password/{token}'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password/{token}'
  */
-        resetForm.head = (args: { token: string | number } | [token: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        resetForm.head = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: reset.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -532,67 +501,202 @@ reset.head = (args: { token: string | number } | [token: string | number ] | str
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @route '/reset-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password'
  */
-export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/reset-password',
+    url: '/{locale?}/reset-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @route '/reset-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password'
  */
-store.url = (options?: RouteQueryOptions) => {
-    return store.definition.url + queryParams(options)
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return store.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @route '/reset-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password'
  */
-store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @route '/reset-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password'
  */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @route '/reset-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/reset-password'
  */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(args, options),
             method: 'post',
         })
     
     store.form = storeForm
+/**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+export const confirm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confirm.url(args, options),
+    method: 'get',
+})
+
+confirm.definition = {
+    methods: ["get","head"],
+    url: '/{locale?}/confirm-password',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+confirm.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return confirm.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+confirm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confirm.url(args, options),
+    method: 'get',
+})
+/**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+confirm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: confirm.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+    const confirmForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: confirm.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+        confirmForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: confirm.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::confirm
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/confirm-password'
+ */
+        confirmForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: confirm.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    confirm.form = confirmForm
 const password = {
-    confirm: Object.assign(confirm, confirmD7e05f),
-confirmation: Object.assign(confirmation, confirmation),
-edit: Object.assign(edit, edit),
+    edit: Object.assign(edit, edit),
 update: Object.assign(update, update),
 request: Object.assign(request, request),
 email: Object.assign(email, email),
 reset: Object.assign(reset, reset),
 store: Object.assign(store, store),
+confirm: Object.assign(confirm, confirmD7e05f),
 }
 
 export default password

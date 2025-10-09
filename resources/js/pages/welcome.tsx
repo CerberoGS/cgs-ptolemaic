@@ -1,4 +1,4 @@
-import { home, login, register } from '@/routes';
+﻿import { home, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
@@ -7,22 +7,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Brain, TrendingUp, Users, Check, Star, Crown, Building2, User, Target, Link2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LanguageSelector from '@/components/layout/LanguageSelector';
+import { PtolemaicPath } from '@/components/cgs/ptolemaic-path';
+import { useTrans, useLocale } from '@/hooks/useTrans';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
+    const t = useTrans();
+    const currentLocale = useLocale();
 
     return (
         <>
-            <Head title="Ptolemaic - Plataforma de Inversión con IA en el Mercado de Valores">
+            <Head title={t('welcome.meta.title')}>
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700"
                     rel="stylesheet"
                 />
-                <meta name="description" content="Invierte con inteligencia artificial. Nuestra plataforma analiza miles de datos en tiempo real para maximizar tus retornos con estrategias personalizadas." />
+                <meta
+                    name="description"
+                    content={t('welcome.meta.description')}
+                />
             </Head>
 
-            {/* Navegación moderna */}
+            {/* Navegacion moderna */}
             <header className="relative z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/80">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
@@ -37,24 +44,24 @@ export default function Welcome() {
                             <LanguageSelector />
                             {auth.user ? (
                                 <Link
-                                    href={home()}
+                                    href={home({ locale: currentLocale })}
                                     className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                                 >
-                                    Dashboard
+                                    {t('Dashboard')}
                                 </Link>
                             ) : (
                                 <>
                                     <Link
-                                        href={login()}
+                                        href={login({ locale: currentLocale })}
                                         className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                                     >
-                                        Iniciar Sesión
+                                        {t('Sign In')}
                                     </Link>
                                     <Link
-                                        href={register()}
+                                        href={register({ locale: currentLocale })}
                                         className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                                     >
-                                        Crear Cuenta
+                                        {t('Create Account')}
                                     </Link>
                                 </>
                             )}
@@ -75,39 +82,40 @@ export default function Welcome() {
                       className="mx-auto max-w-2xl text-center"
                     >
                       <Badge className="mb-8 bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
-                        🚀 Tecnología IA Avanzada
+                        {t('welcome.hero.badge')}
                       </Badge>
                       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                        Invierte con 
+                        {t('Invest with')}{' '}
                         <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                          Inteligencia Artificial
+                          {t('Artificial Intelligence')}
                         </span>
                       </h1>
                       <p className="mt-6 text-lg leading-8 text-gray-300">
-                        Descubre oportunidades de inversión que otros pasan por alto. 
-                        Nuestra IA analiza miles de datos en tiempo real para maximizar tus retornos.
+                        {t('Discover investment opportunities that others miss. Our AI analyzes thousands of data points in real-time to maximize your returns.')}
                       </p>
                       <div className="mt-10 flex items-center justify-center gap-x-6">
                         <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                          Comenzar Ahora
+                          {t('Get Started Now')}
                         </Button>
                         <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                          Ver Demo
+                          {t('Watch Demo')}
                         </Button>
                       </div>
                     </motion.div>
                   </div>
                 </section>
 
+                <PtolemaicPath />
+
                 {/* 2. Beneficios Principales */}
                 <section className="py-24 bg-white dark:bg-gray-900">
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        ¿Por qué elegir nuestra plataforma?
+                        {t('Why choose our platform?')}
                       </h2>
                       <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        Tecnología de vanguardia combinada con estrategias probadas
+                        {t('Cutting-edge technology combined with proven strategies')}
                       </p>
                     </div>
                     
@@ -120,11 +128,10 @@ export default function Welcome() {
                               <Brain className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              IA Avanzada
+                              {t('Advanced AI')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              Algoritmos de machine learning analizan patrones complejos del mercado 
-                              que los humanos no pueden detectar
+                              {t('Machine learning algorithms analyze complex market patterns that humans cannot detect')}
                             </p>
                           </CardContent>
                         </Card>
@@ -136,11 +143,10 @@ export default function Welcome() {
                               <TrendingUp className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              Retornos Optimizados
+                              {t('Optimized Returns')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              Estrategias personalizadas que maximizan ganancias 
-                              y minimizan riesgos automáticamente
+                              {t('Personalized strategies that maximize profits and minimize risks automatically')}
                             </p>
                           </CardContent>
                         </Card>
@@ -152,11 +158,10 @@ export default function Welcome() {
                               <Users className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              Comunidad Elite
+                              {t('Elite Community')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              Únete a una comunidad exclusiva de inversores 
-                              que comparten estrategias y conocimientos
+                              {t('Join an exclusive community of investors who share strategies and knowledge')}
                             </p>
                           </CardContent>
                         </Card>
@@ -165,15 +170,15 @@ export default function Welcome() {
                   </div>
                 </section>
 
-                {/* 3. Cómo Funciona - Proceso Visual */}
+                {/* 3. CÃ³mo Funciona - Proceso Visual */}
                 <section className="py-24 bg-gray-50 dark:bg-gray-800">
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        Tu camino hacia el éxito financiero
+                        {t('Your path to financial success')}
                       </h2>
                       <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        Un proceso simple pero poderoso
+                        {t('A simple yet powerful process')}
                       </p>
                     </div>
                     
@@ -182,29 +187,29 @@ export default function Welcome() {
                         {[
                           {
                             step: "01",
-                            title: "Conecta tus cuentas",
-                            description: "Vincula tus brokers y exchanges de forma segura",
+                            title: t("Connect your accounts"),
+                            description: t("Securely link your brokers and exchanges"),
                             icon: Link2,
                             color: "from-blue-500 to-blue-600"
                           },
                           {
-                            step: "02", 
-                            title: "IA analiza tu perfil",
-                            description: "Evaluamos tu tolerancia al riesgo y objetivos",
+                            step: "02",
+                            title: t("AI analyzes your profile"),
+                            description: t("We evaluate your risk tolerance and goals"),
                             icon: Brain,
                             color: "from-purple-500 to-purple-600"
                           },
                           {
                             step: "03",
-                            title: "Recibe recomendaciones",
-                            description: "Obtén análisis y oportunidades personalizadas",
+                            title: t("Receive recommendations"),
+                            description: t("Get personalized analysis and opportunities"),
                             icon: Target,
                             color: "from-emerald-500 to-emerald-600"
                           },
                           {
                             step: "04",
-                            title: "Crece tu patrimonio",
-                            description: "Ve cómo tu inversión se optimiza automáticamente",
+                            title: t("Grow your wealth"),
+                            description: t("Watch your investment optimize automatically"),
                             icon: TrendingUp,
                             color: "from-orange-500 to-orange-600"
                           }
@@ -240,53 +245,53 @@ export default function Welcome() {
                   </div>
                 </section>
 
-                {/* 4. Tipos de Inversor - Segmentación Inteligente */}
+                {/* 4. Tipos de Inversor - SegmentaciÃ³n Inteligente */}
                 <section className="py-24 bg-white dark:bg-gray-900">
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        Planes diseñados para cada perfil
+                        {t('Plans designed for every profile')}
                       </h2>
                       <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        Desde principiante hasta experto, tenemos la solución perfecta
+                        {t('From beginner to expert, we have the perfect solution')}
                       </p>
                     </div>
                     
                     <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-3">
                       {[
                         {
-                          name: "Principiante",
-                          price: "Gratis",
+                          name: t("Beginner"),
+                          price: t("Free"),
                           features: [
-                            "Análisis básico de mercado",
-                            "Recomendaciones iniciales",
-                            "Soporte educativo",
-                            "Hasta $1,000 de inversión"
+                            t("Basic market analysis"),
+                            t("Initial recommendations"),
+                            t("Educational support"),
+                            t("Up to $1,000 investment")
                           ],
                           gradient: "from-blue-500 to-cyan-500",
                           icon: User
                         },
                         {
-                          name: "Profesional", 
-                          price: "$29/mes",
+                          name: t("Professional"),
+                          price: "$29" + t("per month"),
                           features: [
-                            "Análisis avanzado con IA",
-                            "Estrategias personalizadas",
-                            "Soporte prioritario",
-                            "Sin límites de inversión"
+                            t("Advanced AI analysis"),
+                            t("Personalized strategies"),
+                            t("Priority support"),
+                            t("Unlimited investment")
                           ],
                           gradient: "from-purple-500 to-pink-500",
                           icon: Crown,
                           popular: true
                         },
                         {
-                          name: "Institucional",
-                          price: "Personalizado",
+                          name: t("Institutional"),
+                          price: t("Custom"),
                           features: [
-                            "IA cuántica avanzada",
-                            "Gestión de portafolios",
-                            "API dedicada",
-                            "Soporte 24/7"
+                            t("Advanced quantum AI"),
+                            t("Portfolio management"),
+                            t("Dedicated API"),
+                            t("24/7 support")
                           ],
                           gradient: "from-emerald-500 to-teal-500",
                           icon: Building2
@@ -303,8 +308,8 @@ export default function Welcome() {
                           {plan.popular && (
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                               <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                                Más Popular
-                              </Badge>
+                        {t('welcome.hero.badge')}
+                      </Badge>
                             </div>
                           )}
                           
@@ -331,11 +336,11 @@ export default function Welcome() {
                               ))}
                             </ul>
                             
-                            <Button 
+                            <Button
                               className={`w-full bg-gradient-to-r ${plan.gradient} hover:opacity-90`}
                               size="lg"
                             >
-                              Comenzar Ahora
+                              {t('Start Now')}
                             </Button>
                           </CardContent>
                         </Card>
@@ -349,31 +354,31 @@ export default function Welcome() {
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        Inversores que ya confían en nosotros
+                        {t('Investors who already trust us')}
                       </h2>
                     </div>
                     
                     <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 lg:grid-cols-3">
                       {[
                         {
-                          name: "María González",
-                          role: "Inversora Privada",
-                          content: "En 6 meses, mi portafolio creció un 47%. La IA realmente identifica oportunidades que yo no veía.",
+                          name: "MarÃ­a GonzÃ¡lez",
+                          role: t("Private Investor"),
+                          content: t("In 6 months, my portfolio grew 47%. The AI really identifies opportunities I didn't see."),
                           avatar: "MG",
                           rating: 5
                         },
                         {
-                          name: "Carlos Mendoza", 
-                          role: "Trader Profesional",
-                          content: "El análisis predictivo me ahorra horas de investigación. Ahora tomo mejores decisiones más rápido.",
+                          name: "Carlos Mendoza",
+                          role: t("Professional Trader"),
+                          content: t("The predictive analysis saves me hours of research. Now I make better decisions faster."),
                           avatar: "CM",
                           rating: 5
                         },
                         {
                           name: "Ana Silva",
-                          role: "Emprendedora",
-                          content: "Como nueva en inversiones, el aprendizaje guiado me dio la confianza para comenzar. ¡Increíble!",
-                          avatar: "AS", 
+                          role: t("Entrepreneur"),
+                          content: t("As someone new to investing, the guided learning gave me the confidence to start. Amazing!"),
+                          avatar: "AS",
                           rating: 5
                         }
                       ].map((testimonial, index) => (
@@ -407,7 +412,7 @@ export default function Welcome() {
                   </div>
                 </section>
 
-                {/* 6. Llamado a la Acción Final - Conversión */}
+                {/* 6. Llamado a la Accion Final - Conversion */}
                 <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-24">
                   <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-10" />
                   <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
@@ -417,24 +422,23 @@ export default function Welcome() {
                       transition={{ duration: 0.8 }}
                     >
                       <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                        ¿Listo para revolucionar tus inversiones?
+                        {t('Ready to revolutionize your investments?')}
                       </h2>
                       <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-300">
-                        Únete a miles de inversores que ya están obteniendo mejores retornos 
-                        con el poder de la inteligencia artificial
+                        {t('Join thousands of investors who are already getting better returns with the power of artificial intelligence')}
                       </p>
-                      
+
                       <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                          Crear Cuenta Gratis
+                          {t('Create Free Account')}
                         </Button>
                         <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                          Agendar Demo
+                          {t('Schedule Demo')}
                         </Button>
                       </div>
-                      
+
                       <p className="mt-6 text-sm text-gray-400">
-                        ✓ Sin tarjetas de crédito • ✓ Cancelar en cualquier momento • ✓ Soporte 24/7
+                        ✅ {t('No credit cards • Cancel anytime • 24/7 Support')}
                       </p>
                     </motion.div>
                   </div>
@@ -453,17 +457,29 @@ export default function Welcome() {
                         </div>
 
                         <div className="flex space-x-6 text-sm text-gray-400">
-                            <a href="#" className="hover:text-white">Términos</a>
-                            <a href="#" className="hover:text-white">Privacidad</a>
-                            <a href="#" className="hover:text-white">Soporte</a>
+                            <a href="#" className="hover:text-white">{t('Terms')}</a>
+                            <a href="#" className="hover:text-white">{t('Privacy')}</a>
+                            <a href="#" className="hover:text-white">{t('Support')}</a>
                         </div>
                     </div>
 
                     <div className="mt-8 border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-                        © 2024 Ptolemaic. Todos los derechos reservados.
+                        {t('welcome.footer.copyright')}
                     </div>
                 </div>
             </footer>
         </>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+

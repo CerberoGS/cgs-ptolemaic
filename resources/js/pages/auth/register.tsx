@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
+import { useLocale, useTrans } from '@/hooks/useTrans';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -37,26 +38,36 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function Register() {
+    const currentLocale = useLocale();
+    const t = useTrans();
+
     return (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-4">
-            <Head title="Create an account" />
+            <Head title={t('Create an account')} />
 
-            <Card className="w-full max-w-md bg-slate-800/50 text-white border-slate-700">
+            <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
                     <div className="mb-4 flex justify-center">
                         <AppLogo className="h-12 w-12" />
                     </div>
-                    <CardTitle className="text-2xl">Create an account</CardTitle>
+                    <CardTitle className="text-2xl">
+                        {t('Create an account')}
+                    </CardTitle>
                     <CardDescription className="text-slate-400">
-                        Enter your details below to get started.
+                        {t('Enter your details below to get started.')}
                     </CardDescription>
                 </CardHeader>
+
                 <CardContent>
                     <div className="flex flex-col gap-4">
-                        <Button variant="outline" className="w-full bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-900" asChild>
+                        <Button
+                            variant="outline"
+                            className="w-full bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+                            asChild
+                        >
                             <a href="/login-google">
                                 <GoogleIcon className="mr-2 h-5 w-5" />
-                                Continue with Google
+                                {t('Continue with Google')}
                             </a>
                         </Button>
 
@@ -66,7 +77,7 @@ export default function Register() {
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-slate-800/50 px-2 text-slate-400">
-                                    Or continue with email
+                                    {t('Or continue with email')}
                                 </span>
                             </div>
                         </div>
@@ -80,7 +91,7 @@ export default function Register() {
                             {({ processing, errors }) => (
                                 <>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label htmlFor="name">{t('Name')}</Label>
                                         <Input
                                             id="name"
                                             type="text"
@@ -89,14 +100,14 @@ export default function Register() {
                                             tabIndex={1}
                                             autoComplete="name"
                                             name="name"
-                                            placeholder="Your full name"
-                                            className="bg-slate-900/50 border-slate-700 focus:ring-blue-500"
+                                            placeholder={t('Your full name')}
+                                            className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="email">{t('Email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
@@ -105,13 +116,15 @@ export default function Register() {
                                             autoComplete="email"
                                             name="email"
                                             placeholder="email@example.com"
-                                            className="bg-slate-900/50 border-slate-700 focus:ring-blue-500"
+                                            className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.email} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password">Password</Label>
+                                        <Label htmlFor="password">
+                                            {t('Password')}
+                                        </Label>
                                         <Input
                                             id="password"
                                             type="password"
@@ -119,15 +132,15 @@ export default function Register() {
                                             tabIndex={3}
                                             autoComplete="new-password"
                                             name="password"
-                                            placeholder="••••••••"
-                                            className="bg-slate-900/50 border-slate-700 focus:ring-blue-500"
+                                            placeholder="********"
+                                            className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.password} />
                                     </div>
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password_confirmation">
-                                            Confirm Password
+                                            {t('Confirm Password')}
                                         </Label>
                                         <Input
                                             id="password_confirmation"
@@ -136,15 +149,15 @@ export default function Register() {
                                             tabIndex={4}
                                             autoComplete="new-password"
                                             name="password_confirmation"
-                                            placeholder="••••••••"
-                                            className="bg-slate-900/50 border-slate-700 focus:ring-blue-500"
+                                            placeholder="********"
+                                            className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.password_confirmation} />
                                     </div>
 
                                     <Button
                                         type="submit"
-                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2"
+                                        className="mt-2 w-full bg-blue-600 text-white hover:bg-blue-700"
                                         tabIndex={5}
                                         disabled={processing}
                                         data-test="register-user-button"
@@ -152,15 +165,20 @@ export default function Register() {
                                         {processing && (
                                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                         )}
-                                        Create Account
+                                        {t('Create Account')}
                                     </Button>
                                 </>
                             )}
                         </Form>
+
                         <div className="mt-4 text-center text-sm text-slate-400">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6} className="text-blue-400 hover:text-blue-300">
-                                Log in
+                            {t('Already have an account?')}{' '}
+                            <TextLink
+                                href={login({ locale: currentLocale })}
+                                tabIndex={6}
+                                className="text-blue-400 hover:text-blue-300"
+                            >
+                                {t('Log in')}
                             </TextLink>
                         </div>
                     </div>

@@ -1,73 +1,103 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
+export const create = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(args, options),
     method: 'get',
 })
 
 create.definition = {
     methods: ["get","head"],
-    url: '/forgot-password',
+    url: '/{locale?}/forgot-password',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-create.url = (options?: RouteQueryOptions) => {
-    return create.definition.url + queryParams(options)
+create.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return create.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
+create.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: create.url(options),
+create.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: create.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-    const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: create.url(options),
+    const createForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: create.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url(options),
+        createForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: create.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url({
+        createForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: create.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -80,54 +110,82 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/forgot-password',
+    url: '/{locale?}/forgot-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-store.url = (options?: RouteQueryOptions) => {
-    return store.definition.url + queryParams(options)
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return store.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '/forgot-password'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/forgot-password'
  */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(args, options),
             method: 'post',
         })
     

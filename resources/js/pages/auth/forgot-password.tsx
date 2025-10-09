@@ -15,23 +15,31 @@ import { Label } from '@/components/ui/label';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
+import { useLocale, useTrans } from '@/hooks/useTrans';
 
 export default function ForgotPassword({ status }: { status?: string }) {
+    const currentLocale = useLocale();
+    const t = useTrans();
+
     return (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-4">
-            <Head title="Forgot Password" />
+            <Head title={t('Forgot Password')} />
 
-            <Card className="w-full max-w-md bg-slate-800/50 text-white border-slate-700">
+            <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
                     <div className="mb-4 flex justify-center">
                         <AppLogo className="h-12 w-12" />
                     </div>
-                    <CardTitle className="text-2xl">Forgot your password?</CardTitle>
+                    <CardTitle className="text-2xl">
+                        {t('Forgot your password?')}
+                    </CardTitle>
                     <CardDescription className="text-slate-400">
-                        No problem. Just enter your email address and we will send you a
-                        password reset link.
+                        {t(
+                            'No problem. Just enter your email address and we will send you a password reset link.',
+                        )}
                     </CardDescription>
                 </CardHeader>
+
                 <CardContent>
                     {status && (
                         <div className="mb-4 text-center text-sm font-medium text-green-400">
@@ -46,7 +54,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                         {({ processing, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email</Label>
+                                    <Label htmlFor="email">{t('Email')}</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -55,29 +63,34 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                         autoFocus
                                         autoComplete="email"
                                         placeholder="email@example.com"
-                                        className="bg-slate-900/50 border-slate-700 focus:ring-blue-500"
+                                        className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
                                 <Button
                                     type="submit"
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2"
+                                    className="mt-2 w-full bg-blue-600 text-white hover:bg-blue-700"
                                     disabled={processing}
                                     data-test="email-password-reset-link-button"
                                 >
                                     {processing && (
                                         <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                     )}
-                                    Email Password Reset Link
+                                    {t('Email Password Reset Link')}
                                 </Button>
                             </>
                         )}
                     </Form>
+
                     <div className="mt-4 text-center text-sm text-slate-400">
-                        Remembered your password?{' '}
-                        <TextLink href={login()} tabIndex={6} className="text-blue-400 hover:text-blue-300">
-                            Back to log in
+                        {t('Remembered your password?')}{' '}
+                        <TextLink
+                            href={login({ locale: currentLocale })}
+                            tabIndex={6}
+                            className="text-blue-400 hover:text-blue-300"
+                        >
+                            {t('Back to log in')}
                         </TextLink>
                     </div>
                 </CardContent>

@@ -1,32 +1,45 @@
 import { Globe } from 'lucide-react';
 import { useState } from 'react';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
+import { useLocale } from '@/hooks/useTrans';
 
-interface Language {
+interface AvailableLocale {
     code: string;
     name: string;
     native: string;
 }
 
-const languages: Language[] = [
-    { code: 'en', name: 'English', native: 'English' },
-    { code: 'es', name: 'Spanish', native: 'Español' },
-];
-
 export default function LanguageSelector() {
     const [isOpen, setIsOpen] = useState(false);
-    const currentLocale = window.location.pathname.split('/')[1] || 'es';
+    const currentLocale = useLocale();
+    const { availableLocales = [] } = usePage().props as {
+        availableLocales?: AvailableLocale[];
+    };
+
+    const languages =
+        availableLocales.length > 0
+            ? availableLocales
+            : [
+                  { code: 'es', name: 'Spanish', native: 'Español' },
+                  { code: 'en', name: 'English', native: 'English' },
+              ];
 
     const changeLanguage = (localeCode: string) => {
-        const currentPath = window.location.pathname;
-        const pathWithoutLocale = currentPath.replace(/^\/(en|es)/, '');
-        const newPath = `/${localeCode}${pathWithoutLocale || '/'}`;
+        const { pathname, search, hash } = window.location;
+        const segments = pathname.split('/').filter(Boolean);
+        segments[0] = localeCode;
 
-        window.location.href = newPath;
+        const nextPath = `/${segments.join('/') || localeCode}`;
+
+        router.visit(`${nextPath}${search}${hash}`, {
+            preserveState: true,
+            preserveScroll: true,
+        });
         setIsOpen(false);
     };
 
-    const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[1];
+    const currentLanguage =
+        languages.find((lang) => lang.code === currentLocale) ?? languages[0];
 
     return (
         <div className="relative">

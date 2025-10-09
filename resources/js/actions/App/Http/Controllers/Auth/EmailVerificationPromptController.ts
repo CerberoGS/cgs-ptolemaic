@@ -1,73 +1,103 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-const EmailVerificationPromptController = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: EmailVerificationPromptController.url(options),
+const EmailVerificationPromptController = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: EmailVerificationPromptController.url(args, options),
     method: 'get',
 })
 
 EmailVerificationPromptController.definition = {
     methods: ["get","head"],
-    url: '/verify-email',
+    url: '/{locale?}/verify-email',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-EmailVerificationPromptController.url = (options?: RouteQueryOptions) => {
-    return EmailVerificationPromptController.definition.url + queryParams(options)
+EmailVerificationPromptController.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return EmailVerificationPromptController.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-EmailVerificationPromptController.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: EmailVerificationPromptController.url(options),
+EmailVerificationPromptController.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: EmailVerificationPromptController.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-EmailVerificationPromptController.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: EmailVerificationPromptController.url(options),
+EmailVerificationPromptController.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: EmailVerificationPromptController.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-    const EmailVerificationPromptControllerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: EmailVerificationPromptController.url(options),
+    const EmailVerificationPromptControllerForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: EmailVerificationPromptController.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-        EmailVerificationPromptControllerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: EmailVerificationPromptController.url(options),
+        EmailVerificationPromptControllerForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: EmailVerificationPromptController.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '/verify-email'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/verify-email'
  */
-        EmailVerificationPromptControllerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: EmailVerificationPromptController.url({
+        EmailVerificationPromptControllerForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: EmailVerificationPromptController.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),

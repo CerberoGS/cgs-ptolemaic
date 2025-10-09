@@ -1,74 +1,212 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 import loginDf2c2a from './login'
+/**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+export const show = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+show.definition = {
+    methods: ["get","head"],
+    url: '/{locale?}/settings/two-factor',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+show.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return show.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+show.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+show.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: show.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+    const showForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: show.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+        showForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
+ * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/settings/two-factor'
+ */
+        showForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    show.form = showForm
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: login.url(options),
+export const login = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(args, options),
     method: 'get',
 })
 
 login.definition = {
     methods: ["get","head"],
-    url: '/two-factor-challenge',
+    url: '/{locale?}/two-factor-challenge',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-login.url = (options?: RouteQueryOptions) => {
-    return login.definition.url + queryParams(options)
+login.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { locale: args }
+    }
+
+    
+    if (Array.isArray(args)) {
+        args = {
+                    locale: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    validateParameters(args, [
+            "locale",
+        ])
+
+    const parsedArgs = {
+                        locale: args?.locale ?? 'es',
+                }
+
+    return login.definition.url
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: login.url(options),
+login.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(args, options),
     method: 'get',
 })
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: login.url(options),
+login.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: login.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-    const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: login.url(options),
+    const loginForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: login.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-        loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url(options),
+        loginForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url(args, options),
             method: 'get',
         })
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController::login
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticatedSessionController.php:42
- * @route '/two-factor-challenge'
+ * @param locale - Default: 'es'
+ * @route '/{locale?}/two-factor-challenge'
  */
-        loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url({
+        loginForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -542,86 +680,9 @@ regenerateRecoveryCodes.post = (options?: RouteQueryOptions): RouteDefinition<'p
         })
     
     regenerateRecoveryCodes.form = regenerateRecoveryCodesForm
-/**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-export const show = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(options),
-    method: 'get',
-})
-
-show.definition = {
-    methods: ["get","head"],
-    url: '/settings/two-factor',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-show.url = (options?: RouteQueryOptions) => {
-    return show.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(options),
-    method: 'get',
-})
-/**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: show.url(options),
-    method: 'head',
-})
-
-    /**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-    const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: show.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-        showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\Settings\TwoFactorAuthenticationController::show
- * @see app/Http/Controllers/Settings/TwoFactorAuthenticationController.php:28
- * @route '/settings/two-factor'
- */
-        showForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    show.form = showForm
 const twoFactor = {
-    login: Object.assign(login, loginDf2c2a),
+    show: Object.assign(show, show),
+login: Object.assign(login, loginDf2c2a),
 enable: Object.assign(enable, enable),
 confirm: Object.assign(confirm, confirm),
 disable: Object.assign(disable, disable),
@@ -629,7 +690,6 @@ qrCode: Object.assign(qrCode, qrCode),
 secretKey: Object.assign(secretKey, secretKey),
 recoveryCodes: Object.assign(recoveryCodes, recoveryCodes),
 regenerateRecoveryCodes: Object.assign(regenerateRecoveryCodes, regenerateRecoveryCodes),
-show: Object.assign(show, show),
 }
 
 export default twoFactor

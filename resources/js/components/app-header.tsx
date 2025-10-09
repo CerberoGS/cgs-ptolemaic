@@ -36,6 +36,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import LanguageSelector from '@/components/layout/LanguageSelector';
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -98,6 +99,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <SheetHeader className="flex justify-start text-left">
                                     <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
                                 </SheetHeader>
+                                <div className="px-4">
+                                    <LanguageSelector />
+                                </div>
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
@@ -196,6 +200,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
+                        <div className="mr-2 flex">
+                            <LanguageSelector />
+                        </div>
                         <div className="relative flex items-center space-x-1">
                             <Button
                                 variant="ghost"

@@ -1,5 +1,6 @@
-﻿import { home, login, register } from '@/routes';
+﻿import { home, login, register, dashboard } from '@/routes';
 import { type SharedData } from '@/types';
+import logo from '@/assets/logo1.svg?url';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,18 +34,26 @@ export default function Welcome() {
             <header className="relative z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/80">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                            <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
-                                <Brain className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold text-gray-900 dark:text-white">Ptolemaic</span>
-                        </div>
+                        <Link
+                            href={home({ locale: currentLocale })}
+                            prefetch
+                            className="inline-flex items-center gap-3 font-semibold text-lg text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-300"
+                        >
+                            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-white/95">
+                                <img
+                                    src={logo}
+                                    alt="Ptolemaic"
+                                    className="h-7 w-7"
+                                />
+                            </span>
+                            <span>Ptolemaic</span>
+                        </Link>
 
                         <nav className="flex items-center space-x-4">
                             <LanguageSelector />
                             {auth.user ? (
                                 <Link
-                                    href={home({ locale: currentLocale })}
+                                    href={dashboard({ locale: currentLocale })}
                                     className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                                 >
                                     {t('Dashboard')}
@@ -170,7 +179,7 @@ export default function Welcome() {
                   </div>
                 </section>
 
-                {/* 3. CÃ³mo Funciona - Proceso Visual */}
+                {/* 3. Cómo Funciona - Proceso Visual */}
                 <section className="py-24 bg-gray-50 dark:bg-gray-800">
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
@@ -245,7 +254,7 @@ export default function Welcome() {
                   </div>
                 </section>
 
-                {/* 4. Tipos de Inversor - SegmentaciÃ³n Inteligente */}
+                {/* 4. Tipos de Inversor - Segmentación Inteligente */}
                 <section className="py-24 bg-white dark:bg-gray-900">
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
@@ -449,12 +458,20 @@ export default function Welcome() {
             <footer className="bg-gray-900 px-6 py-12 lg:px-8">
                 <div className="mx-auto max-w-7xl">
                     <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-                        <div className="flex items-center space-x-2">
-                            <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
-                                <Brain className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold text-white">Ptolemaic</span>
-                        </div>
+                        <Link
+                            href={home({ locale: currentLocale })}
+                            prefetch
+                            className="inline-flex items-center gap-3 font-semibold text-white"
+                        >
+                            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white">
+                                <img
+                                    src={logo}
+                                    alt="Ptolemaic"
+                                    className="h-7 w-7"
+                                />
+                            </span>
+                            <span>Ptolemaic</span>
+                        </Link>
 
                         <div className="flex space-x-6 text-sm text-gray-400">
                             <a href="#" className="hover:text-white">{t('Terms')}</a>
@@ -471,6 +488,7 @@ export default function Welcome() {
         </>
     );
 }
+
 
 
 

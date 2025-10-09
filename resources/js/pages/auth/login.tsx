@@ -13,9 +13,9 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { register } from '@/routes';
+import { home, register } from '@/routes';
 import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 
@@ -55,7 +55,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
                     <div className="mb-4 flex justify-center">
-                        <AppLogo className="h-12 w-12" />
+                        <Link href={home({ locale: currentLocale })} prefetch>
+                            <AppLogo />
+                        </Link>
                     </div>
                     <CardTitle className="text-2xl">
                         {t('Log in to your account')}

@@ -74,6 +74,19 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 });
 
+Route::get('/login-google', function () {
+    return redirect()->route('login.google', ['locale' => app()->getLocale() ?? config('app.locale')]);
+});
+
+Route::get('/google-callback', function () {
+    $locale = app()->getLocale() ?? config('app.locale');
+
+    return redirect()->route('google.callback', array_merge(
+        ['locale' => $locale],
+        request()->query()
+    ));
+});
+
 if (Features::enabled(Features::twoFactorAuthentication())) {
     $authMiddleware = config('fortify.auth_middleware', 'auth').':'.config('fortify.guard');
 

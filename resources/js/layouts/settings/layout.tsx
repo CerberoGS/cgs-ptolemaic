@@ -9,6 +9,7 @@ import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { useTrans } from '@/hooks/useTrans';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -39,19 +40,24 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         return null;
     }
 
+    const t = useTrans();
     const currentPath = window.location.pathname;
+    const navItems = sidebarNavItems.map((item) => ({
+        ...item,
+        title: t(item.title),
+    }));
 
     return (
         <div className="px-4 py-6">
             <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
+                title={t('Settings')}
+                description={t('Manage your profile and account settings')}
             />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav className="flex flex-col space-y-1 space-x-0">
-                        {sidebarNavItems.map((item, index) => (
+                        {navItems.map((item, index) => (
                             <Button
                                 key={`${typeof item.href === 'string' ? item.href : item.href.url}-${index}`}
                                 size="sm"

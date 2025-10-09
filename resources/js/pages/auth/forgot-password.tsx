@@ -1,4 +1,4 @@
-import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
+﻿import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
 import AppLogo from '@/components/app-logo';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { login } from '@/routes';
-import { Form, Head } from '@inertiajs/react';
+import { home, login } from '@/routes';
+import { Form, Head, Link } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 
@@ -28,7 +28,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
                     <div className="mb-4 flex justify-center">
-                        <AppLogo className="h-12 w-12" />
+                        <Link href={home({ locale: currentLocale })} prefetch>
+                            <AppLogo />
+                        </Link>
                     </div>
                     <CardTitle className="text-2xl">
                         {t('Forgot your password?')}
@@ -98,3 +100,5 @@ export default function ForgotPassword({ status }: { status?: string }) {
         </div>
     );
 }
+
+

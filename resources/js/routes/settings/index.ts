@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -15,7 +15,7 @@ index.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -47,7 +47,7 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 }
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -56,7 +56,7 @@ index.get = (args?: { locale?: string | number } | [locale: string | number ] | 
     method: 'get',
 })
 /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -66,7 +66,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 })
 
     /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -76,7 +76,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     })
 
             /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -85,7 +85,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             method: 'get',
         })
             /**
- * @see [serialized-closure]:2
+ * @see routes/settings.php:10
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */

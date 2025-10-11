@@ -1,20 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProviderController;
+use App\Http\Controllers\Admin\AdminUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
-use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
 use Laravel\Fortify\Http\Controllers\ConfirmedTwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
-use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
@@ -31,44 +25,71 @@ Route::group([
         'locale' => config('app.locale'),
     ],
 ], function () {
-        Route::get('/', function () {
-            return Inertia::render('welcome');
-        })->name('home');
+    Route::get('/', function () {
+        return Inertia::render('welcome');
+    })->name('home');
 
-        Route::middleware(['auth', 'verified'])->group(function () {
-            Route::get('/dashboard', function () {
-                return Inertia::render('dashboard');
-            })->name('dashboard');
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('dashboard');
+        })->name('dashboard');
+
+        Route::prefix('admin')->as('admin.')->group(function () {
+            Route::get('/', AdminDashboardController::class)
+                ->middleware('permission:admin.dashboard')
+                ->name('dashboard');
+
+            Route::middleware('permission:providers.view|providers.manage')->group(function () {
+                Route::get('/providers', [AdminProviderController::class, 'index'])->name('providers.index');
+            });
+
+            Route::middleware('permission:providers.manage')->group(function () {
+                Route::post('/providers', [AdminProviderController::class, 'store'])->name('providers.store');
+                Route::put('/providers/{type}/{provider}', [AdminProviderController::class, 'update'])->name('providers.update');
+                Route::delete('/providers/{type}/{provider}', [AdminProviderController::class, 'destroy'])->name('providers.destroy');
+            });
+
+            Route::middleware('permission:users.view')->group(function () {
+                Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+            });
+
+            Route::middleware('permission:users.manage')->group(function () {
+                Route::put('/users/{user}/roles', [AdminUserController::class, 'updateRoles'])->name('users.roles.update');
+                Route::put('/users/{user}/defaults', [AdminUserController::class, 'updateDefaults'])->name('users.defaults.update');
+            });
         });
-
-        Route::get('/login-google', function () {
-            return Socialite::driver('google')->redirect();
-        })->name('login.google');
-
-        Route::get('/google-callback', function () {
-            $googleUser = Socialite::driver('google')->stateless()->user();
-
-            // Buscar o crear el usuario
-            $user = App\Models\User::firstOrCreate(
-                ['email' => $googleUser->getEmail()],
-                [
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'email_verified_at' => now(),
-                    'google_id' => $googleUser->getId(),
-                    'password' => null, // Los usuarios OAuth no necesitan password
-                ]
-            );
-
-            // Iniciar sesion con el usuario encontrado o creado
-            Auth::login($user, true);
-
-            return redirect()->route('dashboard');
-        })->name('google.callback');
-
-        require __DIR__.'/settings.php';
-        require __DIR__.'/auth.php';
     });
+
+    Route::get('/login-google', function () {
+        return Socialite::driver('google')->redirect();
+    })->name('login.google');
+
+    Route::get('/google-callback', function () {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        // Buscar o crear el usuario
+        $user = App\Models\User::firstOrCreate(
+            ['email' => $googleUser->getEmail()],
+            [
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'email_verified_at' => now(),
+                'google_id' => $googleUser->getId(),
+                'password' => null, // Los usuarios OAuth no necesitan password
+            ]
+        );
+
+        $user->ensureDefaultRole();
+
+        // Iniciar sesion con el usuario encontrado o creado
+        Auth::login($user, true);
+
+        return redirect()->route('dashboard');
+    })->name('google.callback');
+
+    require __DIR__.'/settings.php';
+    require __DIR__.'/auth.php';
+});
 
 Route::get('/', function () {
     return Inertia::render('welcome');

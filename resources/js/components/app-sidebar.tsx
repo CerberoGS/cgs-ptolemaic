@@ -10,10 +10,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { BookOpen, Folder, LayoutGrid, ShieldCheck } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 
@@ -33,6 +34,8 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
     const locale = useLocale();
     const t = useTrans();
+    const page = usePage<{ auth: { roles: string[]; permissions: string[] } }>();
+    const permissions = page.props.auth?.permissions ?? [];
 
     const mainNavItems: NavItem[] = [
         {
@@ -41,6 +44,21 @@ export function AppSidebar() {
             icon: LayoutGrid,
         },
     ];
+
+    const canAccessAdmin =
+        permissions.includes('admin.dashboard') ||
+        permissions.includes('providers.view') ||
+        permissions.includes('providers.manage') ||
+        permissions.includes('users.view') ||
+        permissions.includes('users.manage');
+
+    if (canAccessAdmin) {
+        mainNavItems.push({
+            title: t('Administration'),
+            href: adminRoutes.dashboard({ locale }),
+            icon: ShieldCheck,
+        });
+    }
 
     const localizedFooter = footerNavItems.map((item) => ({
         ...item,

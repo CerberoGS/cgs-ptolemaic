@@ -192,7 +192,7 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -208,7 +208,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -241,7 +241,7 @@ destroy.url = (args?: { locale?: string | number } | [locale: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -252,7 +252,7 @@ destroy.post = (args?: { locale?: string | number } | [locale: string | number ]
 
     /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -263,7 +263,7 @@ destroy.post = (args?: { locale?: string | number } | [locale: string | number ]
 
             /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */

@@ -39,7 +39,10 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'roles' => $request->user()?->getRoleNames()?->toArray() ?? [],
+                'permissions' => $request->user()?->getAllPermissions()?->pluck('name')->toArray() ?? [],
             ],
+            'csrfToken' => csrf_token(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'locale' => app()->getLocale(),
             'fallbackLocale' => config('app.fallback_locale'),
@@ -71,7 +74,7 @@ class HandleInertiaRequests extends Middleware
     protected function getAvailableLocales(): array
     {
         $meta = [
-            'es' => ['code' => 'es', 'name' => 'Spanish', 'native' => 'Español'],
+            'es' => ['code' => 'es', 'name' => 'Spanish', 'native' => 'Espanol'],
             'en' => ['code' => 'en', 'name' => 'English', 'native' => 'English'],
         ];
 

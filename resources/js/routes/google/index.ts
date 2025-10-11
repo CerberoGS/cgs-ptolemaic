@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -15,7 +15,7 @@ callback.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -47,7 +47,7 @@ callback.url = (args?: { locale?: string | number } | [locale: string | number ]
 }
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -56,7 +56,7 @@ callback.get = (args?: { locale?: string | number } | [locale: string | number ]
     method: 'get',
 })
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -66,7 +66,7 @@ callback.head = (args?: { locale?: string | number } | [locale: string | number 
 })
 
     /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -76,7 +76,7 @@ callback.head = (args?: { locale?: string | number } | [locale: string | number 
     })
 
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */
@@ -85,7 +85,7 @@ callback.head = (args?: { locale?: string | number } | [locale: string | number 
             method: 'get',
         })
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:67
  * @param locale - Default: 'es'
  * @route '/{locale?}/google-callback'
  */

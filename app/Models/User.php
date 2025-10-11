@@ -4,14 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +51,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
     /**
      * Get the password attribute.
      * Return null if password is null (for OAuth users)
@@ -55,5 +59,44 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function defaultProviderSetting(): HasOne
+    {
+        return $this->hasOne(UserDefaultProviderSetting::class);
+    }
+
+    public function aiProviderKeys(): HasMany
+    {
+        return $this->hasMany(AiProviderKey::class);
+    }
+
+    public function marketDataProviderKeys(): HasMany
+    {
+        return $this->hasMany(MarketDataProviderKey::class);
+    }
+
+    public function newsProviderKeys(): HasMany
+    {
+        return $this->hasMany(NewsProviderKey::class);
+    }
+
+    public function tradingProviderKeys(): HasMany
+    {
+        return $this->hasMany(TradingProviderKey::class);
+    }
+
+    public function ensureDefaultRole(): void
+    {
+        if ($this->roles()->exists()) {
+            return;
+        }
+
+        $defaultRole = Role::query()->firstOrCreate(
+            ['name' => 'User'],
+            ['guard_name' => 'web']
+        );
+
+        $this->assignRole($defaultRole);
     }
 }

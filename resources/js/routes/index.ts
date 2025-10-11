@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../wayfinder'
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -15,7 +15,7 @@ home.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -47,7 +47,7 @@ home.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 }
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -56,7 +56,7 @@ home.get = (args?: { locale?: string | number } | [locale: string | number ] | s
     method: 'get',
 })
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -66,7 +66,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
 })
 
     /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -76,7 +76,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     })
 
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -85,7 +85,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
             method: 'get',
         })
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -101,7 +101,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     
     home.form = homeForm
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -116,7 +116,7 @@ dashboard.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -148,7 +148,7 @@ dashboard.url = (args?: { locale?: string | number } | [locale: string | number 
 }
 
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -157,7 +157,7 @@ dashboard.get = (args?: { locale?: string | number } | [locale: string | number 
     method: 'get',
 })
 /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -167,7 +167,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
 })
 
     /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -177,7 +177,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
     })
 
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -186,7 +186,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
             method: 'get',
         })
             /**
- * @see [serialized-closure]:2
+ * @see routes/web.php:33
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -419,7 +419,7 @@ login.head = (args?: { locale?: string | number } | [locale: string | number ] |
     login.form = loginForm
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -435,7 +435,7 @@ logout.definition = {
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -468,7 +468,7 @@ logout.url = (args?: { locale?: string | number } | [locale: string | number ] |
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -479,7 +479,7 @@ logout.post = (args?: { locale?: string | number } | [locale: string | number ] 
 
     /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */
@@ -490,7 +490,7 @@ logout.post = (args?: { locale?: string | number } | [locale: string | number ] 
 
             /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+ * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:56
  * @param locale - Default: 'es'
  * @route '/{locale?}/logout'
  */

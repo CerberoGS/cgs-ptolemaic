@@ -32,6 +32,8 @@ class AuthenticatedSessionController extends Controller
     {
         $user = $request->validateCredentials();
 
+        $user->ensureDefaultRole();
+
         if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
             $request->session()->put([
                 'login.id' => $user->getKey(),

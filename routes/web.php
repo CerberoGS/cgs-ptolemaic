@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
+use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,16 @@ Route::group([
             Route::middleware('permission:users.manage')->group(function () {
                 Route::put('/users/{user}/roles', [AdminUserController::class, 'updateRoles'])->name('users.roles.update');
                 Route::put('/users/{user}/defaults', [AdminUserController::class, 'updateDefaults'])->name('users.defaults.update');
+            });
+
+            Route::middleware('permission:roles.view|roles.manage')->group(function () {
+                Route::get('/roles', [AdminRoleController::class, 'index'])->name('roles.index');
+            });
+
+            Route::middleware('permission:roles.manage')->group(function () {
+                Route::post('/roles', [AdminRoleController::class, 'store'])->name('roles.store');
+                Route::put('/roles/{role}', [AdminRoleController::class, 'update'])->name('roles.update');
+                Route::delete('/roles/{role}', [AdminRoleController::class, 'destroy'])->name('roles.destroy');
             });
         });
     });

@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -15,7 +15,7 @@ google.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -47,7 +47,7 @@ google.url = (args?: { locale?: string | number } | [locale: string | number ] |
 }
 
 /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -56,7 +56,7 @@ google.get = (args?: { locale?: string | number } | [locale: string | number ] |
     method: 'get',
 })
 /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -66,7 +66,7 @@ google.head = (args?: { locale?: string | number } | [locale: string | number ] 
 })
 
     /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -76,7 +76,7 @@ google.head = (args?: { locale?: string | number } | [locale: string | number ] 
     })
 
             /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */
@@ -85,7 +85,7 @@ google.head = (args?: { locale?: string | number } | [locale: string | number ] 
             method: 'get',
         })
             /**
- * @see routes/web.php:63
+ * @see routes/web.php:74
  * @param locale - Default: 'es'
  * @route '/{locale?}/login-google'
  */

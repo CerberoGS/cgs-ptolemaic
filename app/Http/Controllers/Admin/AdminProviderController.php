@@ -79,13 +79,13 @@ class AdminProviderController extends Controller
             ->with('success', __('Provider :name created successfully.', ['name' => $provider->display_name]));
     }
 
-    public function update(UpdateProviderRequest $request, string $type, int $provider): RedirectResponse
+    public function update(UpdateProviderRequest $request, string $locale, string $type, string $provider): RedirectResponse
     {
         $providerType = $this->resolveType($type);
         $modelClass = $providerType->modelClass();
 
         /** @var \Illuminate\Database\Eloquent\Model $record */
-        $record = $modelClass::query()->findOrFail($provider);
+        $record = $modelClass::query()->findOrFail((int) $provider);
 
         $record->update($this->buildPayload($providerType, $request->validated(), $record->provider_category_id));
 
@@ -94,13 +94,13 @@ class AdminProviderController extends Controller
             ->with('success', __('Provider :name updated successfully.', ['name' => $record->display_name]));
     }
 
-    public function destroy(string $type, int $provider): RedirectResponse
+    public function destroy(string $locale, string $type, string $provider): RedirectResponse
     {
         $providerType = $this->resolveType($type);
         $modelClass = $providerType->modelClass();
 
         /** @var \Illuminate\Database\Eloquent\Model $record */
-        $record = $modelClass::query()->findOrFail($provider);
+        $record = $modelClass::query()->findOrFail((int) $provider);
         $name = $record->display_name ?? $record->slug;
         $record->delete();
 

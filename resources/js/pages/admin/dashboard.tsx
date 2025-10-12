@@ -132,6 +132,11 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                             </Link>
                         </Button>
                         <Button asChild variant="outline" size="sm">
+                            <Link href={adminRoutes.roles.index({ locale }).url}>
+                                {t('Manage roles')}
+                            </Link>
+                        </Button>
+                        <Button asChild variant="outline" size="sm">
                             <Link href={adminRoutes.users.index({ locale }).url}>
                                 {t('Manage users')}
                             </Link>

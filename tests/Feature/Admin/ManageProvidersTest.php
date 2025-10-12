@@ -71,3 +71,46 @@ it('forbids creating a provider without the manage permission', function () {
 
     expect(\App\Models\AiProvider::where('slug', 'test-provider-2')->exists())->toBeFalse();
 });
+
+it('updates a provider via http', function () {
+    $category = \App\Models\ProviderCategory::firstOrCreate([
+        'name' => 'ai',
+    ], [
+        'display_name' => 'Inteligencia Artificial',
+        'description' => 'Modelos y servicios de IA generativa.',
+    ]);
+
+    $provider = \App\Models\AiProvider::create([
+        'provider_category_id' => $category->id,
+        'slug' => 'openai',
+        'display_name' => 'OpenAI',
+        'description' => null,
+        'status' => 'active',
+        'test_json' => [],
+        'ops_json' => [],
+        'requires_organization' => false,
+    ]);
+
+    expect(route('admin.providers.update', ['locale' => 'es', 'type' => 'ai', 'provider' => $provider->id]))
+        ->toEndWith("/es/admin/providers/ai/{$provider->id}");
+
+    $payload = [
+        'type' => 'ai',
+        'slug' => 'openai',
+        'display_name' => 'OpenAI Updated',
+        'description' => 'Some description',
+        'status' => 'active',
+        'test_json' => [],
+        'ops_json' => [],
+        'requires_organization' => false,
+    ];
+
+    $response = $this->actingAs($this->admin)
+        ->from(route('admin.providers.index', ['locale' => 'es']))
+        ->put(route('admin.providers.update', ['locale' => 'es', 'type' => 'ai', 'provider' => $provider->id]), $payload);
+
+    $response->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect($provider->fresh()->display_name)->toBe('OpenAI Updated');
+});

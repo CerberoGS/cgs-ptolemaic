@@ -3,7 +3,7 @@ import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Transition } from '@headlessui/react';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
@@ -12,12 +12,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/password';
 import { useLocale, useTrans } from '@/hooks/useTrans';
+import { type Auth } from '@/types';
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
     const t = useTrans();
     const locale = useLocale();
+    const {
+        props: { auth },
+    } = usePage<{ auth: Auth }>();
+    const hasPassword = auth?.hasPassword ?? false;
     const breadcrumbs = [
         {
             title: t('Password settings'),
@@ -62,25 +67,33 @@ export default function Password() {
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="current_password">
-                                        {t('Current password')}
-                                    </Label>
+                                {hasPassword ? (
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="current_password">
+                                            {t('Current password')}
+                                        </Label>
 
-                                    <Input
-                                        id="current_password"
-                                        ref={currentPasswordInput}
-                                        name="current_password"
-                                        type="password"
-                                        className="mt-1 block w-full"
-                                        autoComplete="current-password"
-                                        placeholder={t('Current password')}
-                                    />
+                                        <Input
+                                            id="current_password"
+                                            ref={currentPasswordInput}
+                                            name="current_password"
+                                            type="password"
+                                            className="mt-1 block w-full"
+                                            autoComplete="current-password"
+                                            placeholder={t('Current password')}
+                                        />
 
-                                    <InputError
-                                        message={errors.current_password}
-                                    />
-                                </div>
+                                        <InputError
+                                            message={errors.current_password}
+                                        />
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">
+                                        {t(
+                                            'You signed in with a third-party provider. Set a new password below to enable password login.',
+                                        )}
+                                    </p>
+                                )}
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="password">

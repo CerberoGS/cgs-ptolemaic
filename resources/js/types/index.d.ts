@@ -5,6 +5,7 @@ export interface Auth {
     user: User | null;
     roles: string[];
     permissions: string[];
+    hasPassword?: boolean;
 }
 
 export interface BreadcrumbItem {

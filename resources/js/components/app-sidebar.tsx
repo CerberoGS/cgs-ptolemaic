@@ -50,7 +50,9 @@ export function AppSidebar() {
         permissions.includes('providers.view') ||
         permissions.includes('providers.manage') ||
         permissions.includes('users.view') ||
-        permissions.includes('users.manage');
+        permissions.includes('users.manage') ||
+        permissions.includes('roles.view') ||
+        permissions.includes('roles.manage');
 
     if (canAccessAdmin) {
         mainNavItems.push({

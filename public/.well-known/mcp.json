@@ -1,0 +1,86 @@
+{
+    "schema_version": "1.0",
+    "name": "Ptolemaic Admin Insights MCP",
+    "description": "Exposes read-only administrative insights for the CGS Ptolemaic platform, including users, data providers, and high-level application status.",
+    "homepage_url": "https://ptolemaic.cerberogrowthsolutions.com",
+    "contact_email": "cerbero@cerberogrowthsolutions.com",
+    "endpoints": [
+        {
+            "type": "http",
+            "url": "https://ptolemaic.cerberogrowthsolutions.com/mcp/admin-insights",
+            "methods": [
+                "POST"
+            ],
+            "description": "Primary JSON-RPC endpoint for the Admin Insights MCP server."
+        }
+    ],
+    "resources": {
+        "users": {
+            "uri": "file://resources/users-resource",
+            "title": "Registered Users",
+            "description": "Provides a snapshot of registered users with optional filters for search, role, verification status, and limit.",
+            "mimeType": "application/json",
+            "parameters": {
+                "search": {
+                    "type": "string",
+                    "description": "Optional substring to match against the user name or email."
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Optional role name used to filter the users."
+                },
+                "verified": {
+                    "type": "boolean",
+                    "description": "Filter by email verification status."
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of users to return (defaults to 25, maximum 50)."
+                }
+            }
+        },
+        "providers": {
+            "uri": "file://resources/providers-resource",
+            "title": "Registered Providers",
+            "description": "Lists registered providers across AI, market data, news, and trading integrations with optional filters.",
+            "mimeType": "application/json",
+            "parameters": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "ai",
+                        "market_data",
+                        "news",
+                        "trading"
+                    ],
+                    "description": "Restrict results to a specific provider category."
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "inactive",
+                        "deprecated"
+                    ],
+                    "description": "Filter by provider status."
+                },
+                "search": {
+                    "type": "string",
+                    "description": "Optional substring to match against the provider slug or display name."
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of providers to return (defaults to 25, maximum 50)."
+                }
+            }
+        },
+        "app-status": {
+            "uri": "file://resources/app-status-resource",
+            "title": "Application Status Overview",
+            "description": "Returns an operational snapshot with aggregate counts and recent activity for users and providers.",
+            "mimeType": "application/json"
+        }
+    },
+    "tools": {},
+    "resources_url": "https://ptolemaic.cerberogrowthsolutions.com/mcp/admin-insights"
+}

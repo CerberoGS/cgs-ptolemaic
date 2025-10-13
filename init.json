@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","id":"init","method":"initialize","params":{"capabilities":{},"modelName":"manual","controller":{"name":"Manual","version":"0.1"},"protocolVersion":"2024-11-05","locale":"en"}}

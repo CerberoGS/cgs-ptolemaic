@@ -1,6 +1,8 @@
+import Passport from './Passport'
 import Fortify from './Fortify'
 const Laravel = {
-    Fortify: Object.assign(Fortify, Fortify),
+    Passport: Object.assign(Passport, Passport),
+Fortify: Object.assign(Fortify, Fortify),
 }
 
 export default Laravel

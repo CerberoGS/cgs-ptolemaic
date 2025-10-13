@@ -20,6 +20,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+
+            if ($appUrl = config('app.url')) {
+                URL::forceRootUrl($appUrl);
+            }
+        }
+
         // Define un locale por defecto para la generación de rutas fuera del ciclo HTTP
         URL::defaults([
             'locale' => config('app.locale'),

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\UserPlanController;
+use App\Http\Controllers\JournalEntryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +36,10 @@ Route::group([
         Route::get('/dashboard', function () {
             return Inertia::render('dashboard');
         })->name('dashboard');
+
+        // Journal routes
+        Route::resource('journal', JournalEntryController::class)->except(['index']);
+        Route::get('/journal', [JournalEntryController::class, 'index'])->name('journal.index');
 
         Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/', AdminDashboardController::class)

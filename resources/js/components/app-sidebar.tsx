@@ -14,11 +14,12 @@ import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 import integrationsRoutes from '@/routes/settings/integrations';
 import planRoutes from '@/routes/settings/plan';
+import journalRoutes from '@/routes/journal';
 
 const footerNavItems: NavItem[] = [
     {
@@ -45,6 +46,11 @@ export function AppSidebar() {
             title: t('Dashboard'),
             href: dashboard({ locale }),
             icon: LayoutGrid,
+        },
+        {
+            title: t('Trading Journal'),
+            href: journalRoutes.index({ locale }),
+            icon: BookText,
         },
     ];
 

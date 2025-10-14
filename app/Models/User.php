@@ -103,6 +103,11 @@ class User extends Authenticatable
         return $this->hasMany(PlanChange::class);
     }
 
+    public function journalEntries(): HasMany
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
+
     public function hasPlan(PlanType $plan): bool
     {
         return $this->plan === $plan;

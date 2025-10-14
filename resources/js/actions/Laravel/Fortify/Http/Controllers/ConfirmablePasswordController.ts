@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -17,7 +17,7 @@ show.definition = {
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -50,7 +50,7 @@ show.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -60,7 +60,7 @@ show.get = (args?: { locale?: string | number } | [locale: string | number ] | s
 })
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -71,7 +71,7 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -82,7 +82,7 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
 
             /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -92,7 +92,7 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
         })
             /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::show
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:41
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:40
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -109,7 +109,7 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     show.form = showForm
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:52
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -125,7 +125,7 @@ store.definition = {
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:52
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -158,7 +158,7 @@ store.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:52
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -169,7 +169,7 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
 
     /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:52
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */
@@ -180,7 +180,7 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
 
             /**
 * @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
- * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:52
+ * @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
  * @param locale - Default: 'es'
  * @route '/{locale?}/confirm-password'
  */

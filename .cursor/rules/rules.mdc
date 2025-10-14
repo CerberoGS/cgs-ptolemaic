@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+---
+Plan Ladder: estas son las tareas que iremos desarrollando:
+Free – Bitácora + Foro; sin proveedores ni automatizaciones; CTA constante a “Activa tu prueba”.
+Trial (30 días) – Todo desbloqueado con tus llaves; sirve para que prueben la configuración avanzada.
+Managed (nuevo) – Suscripción mensual administrada; tú provees y rotas las API keys; incluye límites (p.ej. 50 consultas/día, 1 000/mes) + reportes resumidos.
+Pro – Igual que Trial pero permanente y con llaves propias, límites ampliados o sin límite “suave”.
+Enterprise – Personalizado, SSO, límites altos, pricing bajo contacto.
+Mensajería & Upsell
+Pantalla de planes con tabla de beneficios (checkmarks): destacar “Sin configuración de llaves” para Managed y “Control total / integraciones infinitas” para Pro.
+En planes inferiores, mostrar cápsulas de lo que se pierde (“Integraciones automáticas”, “Alertas por proveedor”).
+En Managed, resaltar ahorro de tiempo + soporte proactivo; CTA clara de upgrade a Pro si agotó límites.
+Límites y telemetría
+Añadir contador diario/mensual en tabla provider_usage (user_id, plan, period, count).
+Middleware que valide plan y UsageGuard que regrese error/CTA al exceder cuota; reiniciar contadores via Scheduler (php artisan schedule:list).
+Página de configuración muestra “Consultas hoy: 34/50 · Este mes: 412/1000”.
+Backend
+Enum PlanType (Free, Trial, Managed, Pro, Enterprise) en app/Enums.
+Campo plan + trial_ends_at + managed_key_pool_id (si usas pool).
+Servicios para distribución/rotación de keys (ManagedApiKeyService), con logs de renovación.
+Policies/Middleware: EnsureCanManageProviders (Pro, Managed, Trial) y EnsureOwnKeys (solo Pro).
+Jobs para regenerar llaves, enviar avisos de quotas.
+Frontend
+Actualizar layout Inertia para mostrar badge del plan; menú “Integraciones” visible en Trial/Managed/Pro/Enterprise.
+Página Settings/Plan con cards:
+Resumen plan actual + tiempo restante trial.
+Tabla comparativa (component PlanComparison).
+Botón Actualizar que apunta a checkout o contacto.
+Mostrar alertas en dashboard cuando se acerca al límite Managed.
+Marketing & Operaciones
+Email onboarding específico:
+Free → beneficio Trial.
+Trial (día 3, 14, 25).
+Managed: consejos de uso y recordatorio de límites.
+Notificaciones al 80 % de cuota mensual.
+Integrar métricas en CRM para detectar quién debe migrar a Pro (uso alto en Managed).
+Así tendrás una escalera clara: Free para captar, Trial para convencer, Managed como puente “llave en mano”, Pro para power users, Enterprise para organizaciones grandes, con soporte técnico y comercial en cada paso.

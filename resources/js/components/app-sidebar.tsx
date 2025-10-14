@@ -12,11 +12,13 @@ import {
 } from '@/components/ui/sidebar';
 import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
-import { type NavItem } from '@/types';
+import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ShieldCheck } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
+import integrationsRoutes from '@/routes/settings/integrations';
+import planRoutes from '@/routes/settings/plan';
 
 const footerNavItems: NavItem[] = [
     {
@@ -34,8 +36,9 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
     const locale = useLocale();
     const t = useTrans();
-    const page = usePage<{ auth: { roles: string[]; permissions: string[] } }>();
+    const page = usePage<SharedData>();
     const permissions = page.props.auth?.permissions ?? [];
+    const plan = page.props.auth?.plan;
 
     const mainNavItems: NavItem[] = [
         {
@@ -61,6 +64,20 @@ export function AppSidebar() {
             icon: ShieldCheck,
         });
     }
+
+    if (plan?.canAccessIntegrations) {
+        mainNavItems.push({
+            title: t('Integrations'),
+            href: integrationsRoutes.index({ locale }),
+            icon: Plug,
+        });
+    }
+
+    mainNavItems.push({
+        title: t('Plan & Billing'),
+        href: planRoutes.show({ locale }),
+        icon: CreditCard,
+    });
 
     const localizedFooter = footerNavItems.map((item) => ({
         ...item,

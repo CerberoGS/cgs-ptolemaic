@@ -33,15 +33,38 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $user = $request->user();
+        $planSummary = null;
+
+        if ($user !== null) {
+            $plan = $user->planOrDefault();
+            $planSummary = [
+                'type' => $plan->value,
+                'label' => $plan->label(),
+                'isTrial' => $user->isOnTrial(),
+                'isPaid' => $plan->isPaid(),
+                'trialEndsAt' => $user->trial_ends_at?->toIso8601String(),
+                'canAccessIntegrations' => $user->canAccessProviderIntegrations(),
+                'canManageProviderKeys' => $user->canManageProviderKeys(),
+                'usesManagedKeys' => $user->usesManagedProviderKeys(),
+                'managedLimits' => [
+                    'daily' => $user->managedDailyLimit(),
+                    'monthly' => $user->managedMonthlyLimit(),
+                ],
+                'features' => $plan->availableFeatures(),
+            ];
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
-                'roles' => $request->user()?->getRoleNames()?->toArray() ?? [],
-                'permissions' => $request->user()?->getAllPermissions()?->pluck('name')->toArray() ?? [],
-                'hasPassword' => ! empty($request->user()?->password),
+                'user' => $user,
+                'roles' => $user?->getRoleNames()?->toArray() ?? [],
+                'permissions' => $user?->getAllPermissions()?->pluck('name')->toArray() ?? [],
+                'hasPassword' => ! empty($user?->password),
+                'plan' => $planSummary,
             ],
             'csrfToken' => csrf_token(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
@@ -93,5 +116,14 @@ class HandleInertiaRequests extends Middleware
             })
             ->values()
             ->all();
+    }
+
+    public function rootView(Request $request): string
+    {
+        if (app()->runningUnitTests()) {
+            return 'testing';
+        }
+
+        return parent::rootView($request);
     }
 }

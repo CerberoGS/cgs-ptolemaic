@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Settings\IntegrationsController;
 use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\PlanController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\TrialController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,4 +30,12 @@ Route::middleware('auth')->prefix('settings')->group(function () {
 
     Route::get('/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    Route::get('/plan', PlanController::class)->name('settings.plan.show');
+
+    Route::post('/trial', [TrialController::class, 'store'])->name('settings.trial.store');
+
+    Route::get('/integrations', [IntegrationsController::class, 'index'])
+        ->middleware('plan.integrations')
+        ->name('settings.integrations.index');
 });

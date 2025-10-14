@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PlanType;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +29,11 @@ class User extends Authenticatable
         'email',
         'password',
         'google_id',
+        'plan',
+        'plan_started_at',
+        'plan_expires_at',
+        'trial_ends_at',
+        'plan_metadata',
     ];
 
     /**
@@ -50,6 +56,11 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'plan' => PlanType::class,
+            'plan_started_at' => 'datetime',
+            'plan_expires_at' => 'datetime',
+            'trial_ends_at' => 'datetime',
+            'plan_metadata' => 'array',
         ];
     }
 
@@ -85,6 +96,92 @@ class User extends Authenticatable
     public function tradingProviderKeys(): HasMany
     {
         return $this->hasMany(TradingProviderKey::class);
+    }
+
+    public function planChanges(): HasMany
+    {
+        return $this->hasMany(PlanChange::class);
+    }
+
+    public function hasPlan(PlanType $plan): bool
+    {
+        return $this->plan === $plan;
+    }
+
+    public function planOrDefault(): PlanType
+    {
+        return $this->plan ?? PlanType::default();
+    }
+
+    public function isOnTrial(): bool
+    {
+        if (! $this->planOrDefault()->isTrial()) {
+            return false;
+        }
+
+        if ($this->trial_ends_at === null) {
+            return true;
+        }
+
+        return now()->lessThanOrEqualTo($this->trial_ends_at);
+    }
+
+    public function canAccessProviderIntegrations(): bool
+    {
+        return $this->planOrDefault()->canAccessIntegrations();
+    }
+
+    public function canManageProviderKeys(): bool
+    {
+        return $this->planOrDefault()->canManageProviderKeys();
+    }
+
+    public function usesManagedProviderKeys(): bool
+    {
+        return $this->planOrDefault()->usesManagedKeys();
+    }
+
+    public function managedDailyLimit(): ?int
+    {
+        return $this->planOrDefault()->dailyUsageLimit();
+    }
+
+    public function managedMonthlyLimit(): ?int
+    {
+        return $this->planOrDefault()->monthlyUsageLimit();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function planFeatures(): array
+    {
+        return $this->planOrDefault()->availableFeatures();
+    }
+
+    public function canUseFeature(string $feature): bool
+    {
+        return $this->planOrDefault()->allowsFeature($feature);
+    }
+
+    public function startTrial(): bool
+    {
+        if (! $this->hasPlan(PlanType::Free)) {
+            return false;
+        }
+
+        $this->update([
+            'plan' => PlanType::Trial->value,
+            'plan_started_at' => now(),
+            'trial_ends_at' => now()->addDays(30),
+        ]);
+
+        return true;
+    }
+
+    public function canStartTrial(): bool
+    {
+        return $this->hasPlan(PlanType::Free) && $this->trial_ends_at === null;
     }
 
     public function ensureDefaultRole(): void

@@ -6,20 +6,23 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { useTrans } from '@/hooks/useTrans';
+import { useLocale, useTrans } from '@/hooks/useTrans';
 import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
-import { type User } from '@/types';
+import planRoutes from '@/routes/settings/plan';
+import { type PlanSummary, type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { CreditCard, LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
+    plan: PlanSummary | null;
 }
 
-export function UserMenuContent({ user }: UserMenuContentProps) {
+export function UserMenuContent({ user, plan }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
     const t = useTrans();
+    const locale = useLocale();
 
     const handleLogout = () => {
         cleanup();
@@ -33,6 +36,14 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     <UserInfo user={user} showEmail={true} />
                 </div>
             </DropdownMenuLabel>
+            {plan && (
+                <div className="flex items-center justify-between px-1.5 pb-2 text-xs text-muted-foreground">
+                    <span>{t('Current Plan')}</span>
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+                        {plan.label}
+                    </span>
+                </div>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
@@ -45,6 +56,18 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     >
                         <Settings className="mr-2" />
                         {t('Settings')}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full"
+                        href={planRoutes.show({ locale }).url}
+                        as="button"
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <CreditCard className="mr-2" />
+                        {t('Plan & Billing')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>

@@ -26,6 +26,8 @@ type UserRecord = {
     id: number;
     name: string;
     email: string;
+    plan?: string;
+    planLabel?: string;
     roles: string[];
     defaults: {
         ai_provider_key_id: number | null;
@@ -218,6 +220,9 @@ export default function UsersIndex({ users, roles }: UsersPageProps) {
                                             {t('Email')}
                                         </th>
                                         <th className="px-4 py-3 font-semibold">
+                                            {t('Plan')}
+                                        </th>
+                                        <th className="px-4 py-3 font-semibold">
                                             {t('Roles')}
                                         </th>
                                         <th className="px-4 py-3 font-semibold text-right">
@@ -229,7 +234,7 @@ export default function UsersIndex({ users, roles }: UsersPageProps) {
                                     {users.length === 0 && (
                                         <tr>
                                             <td
-                                                colSpan={4}
+                                                colSpan={5}
                                                 className="px-4 py-6 text-center text-sm text-muted-foreground"
                                             >
                                                 {t('No users found.')}
@@ -243,6 +248,11 @@ export default function UsersIndex({ users, roles }: UsersPageProps) {
                                             </td>
                                             <td className="px-4 py-3">
                                                 {user.email}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                                                    {user.planLabel || 'Free'}
+                                                </span>
                                             </td>
                                             <td className="px-4 py-3">
                                                 <div className="flex flex-wrap gap-2">
@@ -262,24 +272,36 @@ export default function UsersIndex({ users, roles }: UsersPageProps) {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3 text-right">
-                                                <Button
-                                                    variant={
-                                                        selected?.id === user.id
-                                                            ? 'secondary'
-                                                            : 'outline'
-                                                    }
-                                                    size="sm"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        selected?.id === user.id
-                                                            ? handleReset()
-                                                            : handleSelect(user)
-                                                    }
-                                                >
-                                                    {selected?.id === user.id
-                                                        ? t('Close')
-                                                        : t('Manage')}
-                                                </Button>
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        type="button"
+                                                        asChild
+                                                    >
+                                                        <a href={adminRoutes.users.plan.edit({ locale, user: user.id }).url}>
+                                                            {t('Change Plan')}
+                                                        </a>
+                                                    </Button>
+                                                    <Button
+                                                        variant={
+                                                            selected?.id === user.id
+                                                                ? 'secondary'
+                                                                : 'outline'
+                                                        }
+                                                        size="sm"
+                                                        type="button"
+                                                        onClick={() =>
+                                                            selected?.id === user.id
+                                                                ? handleReset()
+                                                                : handleSelect(user)
+                                                        }
+                                                    >
+                                                        {selected?.id === user.id
+                                                            ? t('Close')
+                                                            : t('Manage')}
+                                                    </Button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

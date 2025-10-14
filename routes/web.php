@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\UserPlanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,6 +58,8 @@ Route::group([
             Route::middleware('permission:users.manage')->group(function () {
                 Route::put('/users/{user}/roles', [AdminUserController::class, 'updateRoles'])->name('users.roles.update');
                 Route::put('/users/{user}/defaults', [AdminUserController::class, 'updateDefaults'])->name('users.defaults.update');
+                Route::get('/users/{user}/plan', [UserPlanController::class, 'edit'])->name('users.plan.edit');
+                Route::put('/users/{user}/plan', [UserPlanController::class, 'update'])->name('users.plan.update');
             });
 
             Route::middleware('permission:roles.view|roles.manage')->group(function () {

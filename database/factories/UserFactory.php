@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PlanType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,6 +30,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'plan' => PlanType::default()->value,
+            'plan_started_at' => now(),
         ];
     }
 

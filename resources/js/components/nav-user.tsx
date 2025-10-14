@@ -46,7 +46,7 @@ export function NavUser() {
                                   : 'bottom'
                         }
                     >
-                        <UserMenuContent user={auth.user} />
+                        <UserMenuContent user={auth.user} plan={auth.plan} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

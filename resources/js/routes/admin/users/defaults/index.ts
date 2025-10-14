@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::update
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -17,7 +17,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::update
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -50,7 +50,7 @@ update.url = (args: { locale?: string | number, user: number | { id: number } } 
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::update
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -61,7 +61,7 @@ update.put = (args: { locale?: string | number, user: number | { id: number } } 
 
     /**
 * @see \App\Http\Controllers\Admin\AdminUserController::update
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -77,7 +77,7 @@ update.put = (args: { locale?: string | number, user: number | { id: number } } 
 
             /**
 * @see \App\Http\Controllers\Admin\AdminUserController::update
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */

@@ -109,7 +109,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateRoles
- * @see app/Http/Controllers/Admin/AdminUserController.php:82
+ * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/roles'
  */
@@ -125,7 +125,7 @@ updateRoles.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateRoles
- * @see app/Http/Controllers/Admin/AdminUserController.php:82
+ * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/roles'
  */
@@ -158,7 +158,7 @@ updateRoles.url = (args: { locale?: string | number, user: number | { id: number
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateRoles
- * @see app/Http/Controllers/Admin/AdminUserController.php:82
+ * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/roles'
  */
@@ -169,7 +169,7 @@ updateRoles.put = (args: { locale?: string | number, user: number | { id: number
 
     /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateRoles
- * @see app/Http/Controllers/Admin/AdminUserController.php:82
+ * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/roles'
  */
@@ -185,7 +185,7 @@ updateRoles.put = (args: { locale?: string | number, user: number | { id: number
 
             /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateRoles
- * @see app/Http/Controllers/Admin/AdminUserController.php:82
+ * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/roles'
  */
@@ -202,7 +202,7 @@ updateRoles.put = (args: { locale?: string | number, user: number | { id: number
     updateRoles.form = updateRolesForm
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateDefaults
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -218,7 +218,7 @@ updateDefaults.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateDefaults
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -251,7 +251,7 @@ updateDefaults.url = (args: { locale?: string | number, user: number | { id: num
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateDefaults
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -262,7 +262,7 @@ updateDefaults.put = (args: { locale?: string | number, user: number | { id: num
 
     /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateDefaults
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */
@@ -278,7 +278,7 @@ updateDefaults.put = (args: { locale?: string | number, user: number | { id: num
 
             /**
 * @see \App\Http\Controllers\Admin\AdminUserController::updateDefaults
- * @see app/Http/Controllers/Admin/AdminUserController.php:92
+ * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/defaults'
  */

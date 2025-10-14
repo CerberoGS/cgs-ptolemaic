@@ -1,12 +1,9 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../wayfinder'
-import roles from './roles'
-import defaults from './defaults'
-import plan from './plan'
 /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
 export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
@@ -15,14 +12,14 @@ export const index = (args?: { locale?: string | number } | [locale: string | nu
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin/users',
+    url: '/{locale?}/settings/integrations',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
 index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -52,20 +49,20 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 }
 
 /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
 index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
 index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
@@ -73,10 +70,10 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 })
 
     /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
     const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
@@ -84,20 +81,20 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     })
 
             /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
         indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Admin\AdminUserController::index
- * @see app/Http/Controllers/Admin/AdminUserController.php:17
+* @see \App\Http\Controllers\Settings\IntegrationsController::index
+ * @see app/Http/Controllers/Settings/IntegrationsController.php:16
  * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale?}/settings/integrations'
  */
         indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
@@ -110,11 +107,8 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
         })
     
     index.form = indexForm
-const users = {
+const integrations = {
     index: Object.assign(index, index),
-roles: Object.assign(roles, roles),
-defaults: Object.assign(defaults, defaults),
-plan: Object.assign(plan, plan),
 }
 
-export default users
+export default integrations

@@ -6,6 +6,7 @@ export interface Auth {
     roles: string[];
     permissions: string[];
     hasPassword?: boolean;
+    plan: PlanSummary | null;
 }
 
 export interface BreadcrumbItem {
@@ -31,6 +32,21 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     [key: string]: unknown;
+}
+
+export interface PlanSummary {
+    type: string;
+    label: string;
+    isTrial: boolean;
+    isPaid: boolean;
+    trialEndsAt: string | null;
+    canAccessIntegrations: boolean;
+    canManageProviderKeys: boolean;
+    usesManagedKeys: boolean;
+    managedLimits: {
+        daily: number | null;
+        monthly: number | null;
+    };
 }
 
 export interface User {

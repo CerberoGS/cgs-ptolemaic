@@ -39,6 +39,8 @@ class AdminUserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'plan' => $user->plan->value,
+                    'planLabel' => $user->plan->label(),
                     'roles' => $user->roles->pluck('name')->values(),
                     'defaults' => [
                         'ai_provider_key_id' => $user->defaultProviderSetting->ai_provider_key_id ?? null,

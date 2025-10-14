@@ -1,6 +1,9 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import plan from './plan'
+import trial from './trial'
+import integrations from './integrations'
 /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -15,7 +18,7 @@ index.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -47,7 +50,7 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 }
 
 /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -56,7 +59,7 @@ index.get = (args?: { locale?: string | number } | [locale: string | number ] | 
     method: 'get',
 })
 /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -66,7 +69,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 })
 
     /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -76,7 +79,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     })
 
             /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -85,7 +88,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             method: 'get',
         })
             /**
- * @see routes/settings.php:10
+ * @see routes/settings.php:13
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -102,6 +105,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     index.form = indexForm
 const settings = {
     index: Object.assign(index, index),
+plan: Object.assign(plan, plan),
+trial: Object.assign(trial, trial),
+integrations: Object.assign(integrations, integrations),
 }
 
 export default settings

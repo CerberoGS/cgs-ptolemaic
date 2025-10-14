@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\UserPlanController;
+use App\Http\Controllers\AnalyticsDashboardController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\JournalEntryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,12 +37,39 @@ Route::group([
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', function () {
-            return Inertia::render('dashboard');
+            $recentTrades = auth()->user()
+                ->journalEntries()
+                ->latest('trade_date')
+                ->limit(5)
+                ->get()
+                ->map(fn ($entry) => [
+                    'id' => $entry->id,
+                    'symbol' => $entry->symbol,
+                    'direction' => $entry->direction instanceof \BackedEnum ? $entry->direction->value : $entry->direction,
+                    'asset_type' => $entry->asset_type instanceof \BackedEnum ? $entry->asset_type->value : $entry->asset_type,
+                    'pnl' => $entry->pnl,
+                    'pnl_percentage' => $entry->pnl_percentage,
+                    'trade_date' => $entry->trade_date->format('Y-m-d'),
+                    'is_closed' => $entry->isClosed(),
+                    'is_profitable' => $entry->isProfitable(),
+                ]);
+
+            return Inertia::render('dashboard', [
+                'recentTrades' => $recentTrades,
+            ]);
         })->name('dashboard');
 
         // Journal routes
-        Route::resource('journal', JournalEntryController::class)->except(['index']);
+        Route::get('/journal/export/csv', [JournalEntryController::class, 'exportCsv'])->name('journal.export.csv');
+        Route::get('/journal/export/pdf', [JournalEntryController::class, 'exportPdf'])->name('journal.export.pdf');
         Route::get('/journal', [JournalEntryController::class, 'index'])->name('journal.index');
+        Route::resource('journal', JournalEntryController::class)->except(['index']);
+
+        Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+        Route::get('/analytics', [AnalyticsDashboardController::class, 'index'])->name('analytics.index');
+
+        // Feedback route (anyone can submit)
+        Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
         Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/', AdminDashboardController::class)
@@ -75,6 +105,13 @@ Route::group([
                 Route::post('/roles', [AdminRoleController::class, 'store'])->name('roles.store');
                 Route::put('/roles/{role}', [AdminRoleController::class, 'update'])->name('roles.update');
                 Route::delete('/roles/{role}', [AdminRoleController::class, 'destroy'])->name('roles.destroy');
+            });
+
+            // Feedback management (admin only)
+            Route::middleware('permission:feedback.manage')->group(function () {
+                Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+                Route::get('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'show'])->name('feedback.show');
+                Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
             });
         });
     });

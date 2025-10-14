@@ -16,6 +16,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { ImageUploader } from '@/components/image-uploader';
+import { RichTextEditor } from '@/components/rich-text-editor';
 import AppLayout from '@/layouts/app-layout';
 import journalRoutes from '@/routes/journal';
 import { dashboard as dashboardRoute } from '@/routes';
@@ -33,14 +35,22 @@ type JournalEditProps = {
         asset_type: string;
         entry_price: string;
         exit_price: string | null;
+        stop_loss: string | null;
+        take_profit: string | null;
+        risk_reward_ratio: string | null;
+        account_risk_percent: string | null;
         quantity: string;
         setup_type: string | null;
         notes: string | null;
         tags: string[];
+        images: string[];
         emotion: number | null;
         trade_date: string;
         entry_time: string | null;
         exit_time: string | null;
+        followed_plan: boolean;
+        mistakes: string | null;
+        lessons_learned: string | null;
     };
 };
 
@@ -69,6 +79,10 @@ export default function JournalEdit({ entry }: JournalEditProps) {
         asset_type: entry.asset_type || 'stock',
         entry_price: entry.entry_price || '',
         exit_price: entry.exit_price || '',
+        stop_loss: entry.stop_loss || '',
+        take_profit: entry.take_profit || '',
+        risk_reward_ratio: entry.risk_reward_ratio || '',
+        account_risk_percent: entry.account_risk_percent || '',
         quantity: entry.quantity || '',
         setup_type: entry.setup_type || '',
         notes: entry.notes || '',
@@ -77,6 +91,10 @@ export default function JournalEdit({ entry }: JournalEditProps) {
         trade_date: entry.trade_date || '',
         entry_time: entry.entry_time || '',
         exit_time: entry.exit_time || '',
+        followed_plan: entry.followed_plan ?? true,
+        mistakes: entry.mistakes || '',
+        lessons_learned: entry.lessons_learned || '',
+        images: (entry.images as string[]) || [],
     });
 
     const submit: FormEventHandler = (e) => {
@@ -308,11 +326,9 @@ export default function JournalEdit({ entry }: JournalEditProps) {
                             {/* Notes & Tags */}
                             <div className="space-y-2">
                                 <Label htmlFor="notes">{t('Notes')}</Label>
-                                <textarea
-                                    id="notes"
-                                    className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                <RichTextEditor
                                     value={data.notes}
-                                    onChange={(e) => setData('notes', e.target.value)}
+                                    onChange={(value) => setData('notes', value)}
                                     placeholder={t('Analysis, reasons, lessons learned...')}
                                 />
                                 <p className="text-xs text-muted-foreground">
@@ -352,6 +368,20 @@ export default function JournalEdit({ entry }: JournalEditProps) {
                                     </p>
                                     <InputError message={errors.emotion} />
                                 </div>
+                            </div>
+
+                            {/* Images */}
+                            <div className="space-y-2">
+                                <Label>{t('Screenshots / Charts')}</Label>
+                                <ImageUploader
+                                    value={data.images}
+                                    onChange={(images) => setData('images', images)}
+                                    maxFiles={5}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    {t('Upload up to 5 images: charts, setups, or screenshots')}
+                                </p>
+                                <InputError message={errors.images} />
                             </div>
 
                             <div className="flex gap-4">

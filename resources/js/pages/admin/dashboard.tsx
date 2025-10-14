@@ -141,6 +141,11 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                                 {t('Manage users')}
                             </Link>
                         </Button>
+                        <Button asChild variant="outline" size="sm">
+                            <Link href={`/${locale}/admin/feedback`}>
+                                {t('Manage feedback')}
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </section>

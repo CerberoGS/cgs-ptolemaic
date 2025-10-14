@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../wayfinder'
 /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -15,7 +15,7 @@ home.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -47,7 +47,7 @@ home.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 }
 
 /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -56,7 +56,7 @@ home.get = (args?: { locale?: string | number } | [locale: string | number ] | s
     method: 'get',
 })
 /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -66,7 +66,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
 })
 
     /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -76,7 +76,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     })
 
             /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -85,7 +85,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
             method: 'get',
         })
             /**
- * @see routes/web.php:31
+ * @see routes/web.php:34
  * @param locale - Default: 'es'
  * @route '/{locale?}'
  */
@@ -101,7 +101,7 @@ home.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     
     home.form = homeForm
 /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -116,7 +116,7 @@ dashboard.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -148,7 +148,7 @@ dashboard.url = (args?: { locale?: string | number } | [locale: string | number 
 }
 
 /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -157,7 +157,7 @@ dashboard.get = (args?: { locale?: string | number } | [locale: string | number 
     method: 'get',
 })
 /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -167,7 +167,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
 })
 
     /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -177,7 +177,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
     })
 
             /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */
@@ -186,7 +186,7 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
             method: 'get',
         })
             /**
- * @see routes/web.php:36
+ * @see routes/web.php:39
  * @param locale - Default: 'es'
  * @route '/{locale?}/dashboard'
  */

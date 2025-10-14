@@ -8,6 +8,8 @@ import {
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { DiscordWidget } from '@/components/discord-widget';
+import { RecentTradesWidget } from '@/components/recent-trades-widget';
 import AppLayout from '@/layouts/app-layout';
 import planRoutes from '@/routes/settings/plan';
 import { dashboard } from '@/routes';
@@ -18,7 +20,23 @@ import { useLocale, useTrans } from '@/hooks/useTrans';
 import { FormEventHandler, useState } from 'react';
 import settingsRoutes from '@/routes/settings';
 
-export default function Dashboard() {
+type RecentTrade = {
+    id: number;
+    symbol: string;
+    direction: string;
+    asset_type: string;
+    pnl: string | null;
+    pnl_percentage: string | null;
+    trade_date: string;
+    is_closed: boolean;
+    is_profitable: boolean | null;
+};
+
+type DashboardProps = {
+    recentTrades?: RecentTrade[];
+};
+
+export default function Dashboard({ recentTrades = [] }: DashboardProps) {
     const t = useTrans();
     const locale = useLocale();
     const { auth } = usePage<SharedData>().props;
@@ -176,6 +194,14 @@ export default function Dashboard() {
                                 ))}
                             </CardContent>
                         </Card>
+
+                        {/* Discord Community Widget */}
+                        <DiscordWidget />
+                    </section>
+
+                    {/* Recent Trades Widget */}
+                    <section className="mt-6">
+                        <RecentTradesWidget trades={recentTrades} />
                     </section>
                 </div>
             </AppLayout>
@@ -199,6 +225,11 @@ export default function Dashboard() {
                 </div>
                 <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                     <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                </div>
+
+                {/* Recent Trades Widget */}
+                <div className="mt-4">
+                    <RecentTradesWidget trades={recentTrades} />
                 </div>
             </div>
         </AppLayout>

@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                 'canAccessIntegrations' => $user->canAccessProviderIntegrations(),
                 'canManageProviderKeys' => $user->canManageProviderKeys(),
                 'usesManagedKeys' => $user->usesManagedProviderKeys(),
+                'isInternal' => $plan->isInternal(),
                 'managedLimits' => [
                     'daily' => $user->managedDailyLimit(),
                     'monthly' => $user->managedMonthlyLimit(),

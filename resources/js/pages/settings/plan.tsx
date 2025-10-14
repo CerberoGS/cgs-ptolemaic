@@ -14,7 +14,8 @@ import settingsRoutes from '@/routes/settings';
 import integrationsRoutes from '@/routes/settings/integrations';
 import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Lock, Shield } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type PlanFeature = string;
 
@@ -34,6 +35,7 @@ type PlanCard = {
         monthly: number | null;
     };
     isCurrent: boolean;
+    isInternal: boolean;
 };
 
 type CurrentPlan = {
@@ -48,6 +50,7 @@ type CurrentPlan = {
         daily: number | null;
         monthly: number | null;
     };
+    isInternal: boolean;
 };
 
 interface PlanPageProps {
@@ -95,6 +98,9 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
               })
             : undefined;
 
+    const publicPlans = plans.filter((p) => !p.isInternal);
+    const internalPlans = plans.filter((p) => p.isInternal);
+
     return (
         <AppSidebarLayout breadcrumbs={breadcrumbs}>
             <Head title={t('Plan & Billing')} />
@@ -103,15 +109,39 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                 <section className="rounded-xl border bg-card p-6 shadow-sm dark:bg-neutral-900">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <div className="space-y-2">
-                            <Badge variant="secondary" className="uppercase">
-                                {t('Current')}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                                <Badge variant="secondary" className="uppercase">
+                                    {t('Current')}
+                                </Badge>
+                                {currentPlan.isInternal && (
+                                    <Badge
+                                        variant="outline"
+                                        className="gap-1 border-primary text-primary"
+                                    >
+                                        <Shield className="size-3" />
+                                        {t('Internal Plan')}
+                                    </Badge>
+                                )}
+                            </div>
                             <h1 className="text-2xl font-semibold">
                                 {currentPlan.label}
                             </h1>
                             <p className="max-w-2xl text-muted-foreground">
                                 {currentPlan.description}
                             </p>
+                            {currentPlan.isInternal && (
+                                <Alert className="border-primary/50 bg-primary/5">
+                                    <Shield className="size-4" />
+                                    <AlertDescription>
+                                        {t(
+                                            'This plan is assigned automatically based on your role.',
+                                        )}{' '}
+                                        {t(
+                                            'You cannot change your plan. Contact an administrator if you need changes.',
+                                        )}
+                                    </AlertDescription>
+                                </Alert>
+                            )}
                             {trialEndsMessage && (
                                 <p className="text-sm text-primary">
                                     {trialEndsMessage}
@@ -151,10 +181,10 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                     </div>
                 </section>
 
-                <section className="space-y-4">
+                <section className="space-y-6">
                     <div>
                         <h2 className="text-lg font-semibold">
-                            {t('Compare plans')}
+                            {t('Public Plans')}
                         </h2>
                         <p className="text-sm text-muted-foreground">
                             {t(
@@ -163,7 +193,7 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                         </p>
                     </div>
                     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                        {plans.map((plan) => {
+                        {publicPlans.map((plan) => {
                             const isCurrent = plan.isCurrent;
 
                             return (
@@ -240,6 +270,96 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                             );
                         })}
                     </div>
+
+                    {internalPlans.length > 0 && (
+                        <div className="mt-8 space-y-4">
+                            <div className="flex items-center gap-2">
+                                <Lock className="size-5 text-muted-foreground" />
+                                <div>
+                                    <h3 className="text-base font-semibold">
+                                        {t('Internal Plans')}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        {t('Internal plans (Administration only)')}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                                {internalPlans.map((plan) => {
+                                    const isCurrent = plan.isCurrent;
+
+                                    return (
+                                        <Card
+                                            key={plan.type}
+                                            className={cn(
+                                                'h-full border-muted-foreground/20 opacity-90',
+                                                isCurrent &&
+                                                    'border-primary opacity-100 shadow-lg shadow-primary/10',
+                                            )}
+                                        >
+                                            <CardHeader className="space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <CardTitle className="flex items-center gap-2 text-xl">
+                                                        <Shield className="size-5 text-primary" />
+                                                        {plan.label}
+                                                    </CardTitle>
+                                                    {isCurrent && (
+                                                        <Badge variant="default">
+                                                            {t('Current')}
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <CardDescription className="text-base">
+                                                    {plan.summary}
+                                                </CardDescription>
+                                                <p className="flex items-center gap-1 text-sm font-semibold text-muted-foreground">
+                                                    <Lock className="size-3" />
+                                                    {plan.price}
+                                                </p>
+                                            </CardHeader>
+                                            <CardContent className="space-y-4">
+                                                <ul className="space-y-2 text-sm">
+                                                    {plan.features.map((feature) => (
+                                                        <li
+                                                            key={feature}
+                                                            className="flex items-start gap-2 text-left"
+                                                        >
+                                                            <CheckCircle2 className="mt-0.5 size-4 text-primary" />
+                                                            <span>{feature}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </CardContent>
+                                            <CardFooter className="flex flex-col items-start gap-2">
+                                                <div className="text-xs text-muted-foreground">
+                                                    {t('Assigned by role')}
+                                                </div>
+                                                {plan.hasUsageLimits && (
+                                                    <div className="text-xs text-muted-foreground">
+                                                        {t(':daily daily / :monthly monthly requests included.', {
+                                                            daily: formatLimit(
+                                                                plan.usageLimits.daily,
+                                                            ),
+                                                            monthly: formatLimit(
+                                                                plan.usageLimits.monthly,
+                                                            ),
+                                                        })}
+                                                    </div>
+                                                )}
+                                                <Button
+                                                    variant="outline"
+                                                    className="mt-2 w-full justify-center"
+                                                    disabled
+                                                >
+                                                    {t('Cannot be changed')}
+                                                </Button>
+                                            </CardFooter>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </section>
             </div>
         </AppSidebarLayout>

@@ -43,6 +43,7 @@ export interface PlanSummary {
     canAccessIntegrations: boolean;
     canManageProviderKeys: boolean;
     usesManagedKeys: boolean;
+    isInternal: boolean;
     managedLimits: {
         daily: number | null;
         monthly: number | null;

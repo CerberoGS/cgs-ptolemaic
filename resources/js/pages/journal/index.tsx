@@ -16,13 +16,14 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { JournalCharts } from '@/components/journal-charts';
 import AppLayout from '@/layouts/app-layout';
 import journalRoutes from '@/routes/journal';
 import { dashboard as dashboardRoute } from '@/routes';
 import { type BreadcrumbItem, type PaginatedData } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { useLocale, useTrans } from '@/hooks/useTrans';
-import { Plus, TrendingUp, TrendingDown, Activity, DollarSign } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, Activity, DollarSign, Download, FileText } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 type JournalEntry = {
@@ -47,6 +48,9 @@ type Stats = {
     total_pnl: number;
     avg_win: number;
     avg_loss: number;
+    pnl_timeline: Array<{ date: string; pnl: number }>;
+    asset_distribution: Array<{ name: string; value: number; pnl: number }>;
+    win_loss_distribution: Array<{ name: string; value: number; fill: string }>;
 };
 
 type Filters = {
@@ -129,12 +133,26 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                             {t('Track and analyze your trading performance')}
                         </p>
                     </div>
-                    <Button asChild>
-                        <Link href={journalRoutes.create({ locale }).url}>
-                            <Plus className="mr-2 h-4 w-4" />
-                            {t('New Entry')}
-                        </Link>
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant="outline" asChild>
+                            <a href={journalRoutes.export.csv({ locale, ...filters }).url}>
+                                <Download className="mr-2 h-4 w-4" />
+                                {t('Export CSV')}
+                            </a>
+                        </Button>
+                        <Button variant="outline" asChild>
+                            <a href={journalRoutes.export.pdf({ locale, ...filters }).url}>
+                                <FileText className="mr-2 h-4 w-4" />
+                                {t('Export PDF')}
+                            </a>
+                        </Button>
+                        <Button asChild>
+                            <Link href={journalRoutes.create({ locale }).url}>
+                                <Plus className="mr-2 h-4 w-4" />
+                                {t('New Entry')}
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Statistics Cards */}
@@ -209,6 +227,13 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* Charts */}
+                <JournalCharts
+                    pnlTimeline={stats.pnl_timeline}
+                    assetDistribution={stats.asset_distribution}
+                    winLossDistribution={stats.win_loss_distribution}
+                />
 
                 {/* Filters */}
                 <Card>

@@ -280,7 +280,10 @@ export default function JournalShow({ entry }: JournalShowProps) {
                             <CardTitle>{t('Notes')}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="whitespace-pre-wrap text-sm">{entry.notes}</p>
+                            <div
+                                className="prose prose-sm dark:prose-invert max-w-none"
+                                dangerouslySetInnerHTML={{ __html: entry.notes }}
+                            />
                         </CardContent>
                     </Card>
                 )}

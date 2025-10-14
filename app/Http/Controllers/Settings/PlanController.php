@@ -17,40 +17,45 @@ class PlanController extends Controller
     {
         $user = $request->user();
         $currentPlan = $user?->planOrDefault() ?? PlanType::default();
+        $isAdmin = $user?->hasRole('Admin') ?? false;
 
-        $plans = collect(PlanType::cases())->map(
-            function (PlanType $plan) use ($currentPlan): array {
-                $dailyLimit = $plan->dailyUsageLimit();
-                $monthlyLimit = $plan->monthlyUsageLimit();
+        $plans = collect(PlanType::cases())
+            // Filter: Only show internal plans to Admins
+            ->filter(fn (PlanType $plan) => ! $plan->isInternal() || $isAdmin)
+            ->map(
+                function (PlanType $plan) use ($currentPlan): array {
+                    $dailyLimit = $plan->dailyUsageLimit();
+                    $monthlyLimit = $plan->monthlyUsageLimit();
 
-                $features = collect($plan->features())
-                    ->map(function (string $feature) use ($dailyLimit, $monthlyLimit): string {
-                        return __($feature, [
-                            'daily' => $dailyLimit !== null ? number_format($dailyLimit) : '',
-                            'monthly' => $monthlyLimit !== null ? number_format($monthlyLimit) : '',
-                        ]);
-                    })
-                    ->values();
+                    $features = collect($plan->features())
+                        ->map(function (string $feature) use ($dailyLimit, $monthlyLimit): string {
+                            return __($feature, [
+                                'daily' => $dailyLimit !== null ? number_format($dailyLimit) : '',
+                                'monthly' => $monthlyLimit !== null ? number_format($monthlyLimit) : '',
+                            ]);
+                        })
+                        ->values();
 
-                return [
-                    'type' => $plan->value,
-                    'label' => $plan->label(),
-                    'price' => $plan->price(),
-                    'summary' => $plan->summary(),
-                    'features' => $features,
-                    'description' => $plan->description(),
-                    'canAccessIntegrations' => $plan->canAccessIntegrations(),
-                    'canManageProviderKeys' => $plan->canManageProviderKeys(),
-                    'usesManagedKeys' => $plan->usesManagedKeys(),
-                    'hasUsageLimits' => $plan->hasUsageLimits(),
-                    'usageLimits' => [
-                        'daily' => $dailyLimit,
-                        'monthly' => $monthlyLimit,
-                    ],
-                    'isCurrent' => $plan === $currentPlan,
-                ];
-            }
-        )->values();
+                    return [
+                        'type' => $plan->value,
+                        'label' => $plan->label(),
+                        'price' => $plan->price(),
+                        'summary' => $plan->summary(),
+                        'features' => $features,
+                        'description' => $plan->description(),
+                        'canAccessIntegrations' => $plan->canAccessIntegrations(),
+                        'canManageProviderKeys' => $plan->canManageProviderKeys(),
+                        'usesManagedKeys' => $plan->usesManagedKeys(),
+                        'hasUsageLimits' => $plan->hasUsageLimits(),
+                        'usageLimits' => [
+                            'daily' => $dailyLimit,
+                            'monthly' => $monthlyLimit,
+                        ],
+                        'isCurrent' => $plan === $currentPlan,
+                        'isInternal' => $plan->isInternal(),
+                    ];
+                }
+            )->values();
 
         return Inertia::render('settings/plan', [
             'currentPlan' => [
@@ -65,6 +70,7 @@ class PlanController extends Controller
                     'daily' => $user?->managedDailyLimit(),
                     'monthly' => $user?->managedMonthlyLimit(),
                 ],
+                'isInternal' => $currentPlan->isInternal(),
             ],
             'plans' => $plans,
             'upgradeOrder' => config('plans.upgrade_order'),

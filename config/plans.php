@@ -10,6 +10,10 @@ return [
             'daily' => (int) env('MANAGED_PLAN_DAILY_LIMIT', 50),
             'monthly' => (int) env('MANAGED_PLAN_MONTHLY_LIMIT', 1000),
         ],
+        'staff' => [
+            'daily' => (int) env('STAFF_PLAN_DAILY_LIMIT', 500),
+            'monthly' => (int) env('STAFF_PLAN_MONTHLY_LIMIT', 10000),
+        ],
     ],
 
     'upgrade_order' => [
@@ -67,6 +71,34 @@ return [
                 'plans.features.enterprise.custom_slas',
             ],
         ],
+        // Internal plans
+        PlanType::Staff->value => [
+            'price' => 'plans.price.staff',
+            'summary' => 'plans.summary.staff',
+            'features' => [
+                'plans.features.staff.pro_features',
+                'plans.features.staff.feedback_management',
+                'plans.features.staff.extended_limits',
+            ],
+        ],
+        PlanType::BetaTesting->value => [
+            'price' => 'plans.price.beta_testing',
+            'summary' => 'plans.summary.beta_testing',
+            'features' => [
+                'plans.features.beta_testing.all_features',
+                'plans.features.beta_testing.experimental',
+                'plans.features.beta_testing.priority_support',
+            ],
+        ],
+        PlanType::Internal->value => [
+            'price' => 'plans.price.internal',
+            'summary' => 'plans.summary.internal',
+            'features' => [
+                'plans.features.internal.unlimited_access',
+                'plans.features.internal.admin_panel',
+                'plans.features.internal.all_management',
+            ],
+        ],
     ],
 
     'features' => [
@@ -112,6 +144,39 @@ return [
             'automation.advanced',
             'analytics.advanced',
             'enterprise.support',
+        ],
+        // Internal plans features
+        PlanType::Staff->value => [
+            'logbook.view',
+            'logbook.create',
+            'forum.view',
+            'forum.participate',
+            'forum.moderate',
+            'integrations.view',
+            'integrations.own_keys',
+            'automation.advanced',
+            'analytics.advanced',
+            'feedback.manage',
+        ],
+        PlanType::BetaTesting->value => [
+            'logbook.view',
+            'logbook.create',
+            'forum.view',
+            'forum.participate',
+            'integrations.view',
+            'integrations.own_keys',
+            'automation.advanced',
+            'analytics.advanced',
+            'experimental.features',
+            'priority.support',
+        ],
+        PlanType::Internal->value => [
+            'all.features',
+            'admin.panel',
+            'user.management',
+            'provider.management',
+            'feedback.manage',
+            'system.configuration',
         ],
     ],
 ];

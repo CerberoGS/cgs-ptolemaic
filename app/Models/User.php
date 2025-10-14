@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PlanType;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -108,6 +109,18 @@ class User extends Authenticatable
         return $this->hasMany(JournalEntry::class);
     }
 
+    public function tradingStats(): HasOne
+    {
+        return $this->hasOne(UserTradingStats::class);
+    }
+
+    public function achievements(): BelongsToMany
+    {
+        return $this->belongsToMany(Achievement::class, 'user_achievements')
+            ->withTimestamps()
+            ->withPivot('unlocked_at');
+    }
+
     public function hasPlan(PlanType $plan): bool
     {
         return $this->plan === $plan;
@@ -201,5 +214,40 @@ class User extends Authenticatable
         );
 
         $this->assignRole($defaultRole);
+    }
+
+    /**
+     * Get or create trading stats for user.
+     */
+    public function getOrCreateStats(): UserTradingStats
+    {
+        return $this->tradingStats ?? $this->tradingStats()->create([
+            'user_id' => $this->id,
+        ]);
+    }
+
+    /**
+     * Check if user has unlocked an achievement.
+     */
+    public function hasAchievement(string $achievementKey): bool
+    {
+        return $this->achievements()->where('key', $achievementKey)->exists();
+    }
+
+    /**
+     * Unlock an achievement for the user.
+     */
+    public function unlockAchievement(Achievement $achievement): void
+    {
+        if (! $this->hasAchievement($achievement->key)) {
+            $this->achievements()->attach($achievement->id, [
+                'unlocked_at' => now(),
+            ]);
+
+            $stats = $this->getOrCreateStats();
+            $stats->total_points += $achievement->points;
+            $stats->updateLevel();
+            $stats->save();
+        }
     }
 }

@@ -2,6 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 import providers from './providers'
 import users from './users'
 import roles from './roles'
+import feedback from './feedback'
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
@@ -115,6 +116,7 @@ const admin = {
 providers: Object.assign(providers, providers),
 users: Object.assign(users, users),
 roles: Object.assign(roles, roles),
+feedback: Object.assign(feedback, feedback),
 }
 
 export default admin

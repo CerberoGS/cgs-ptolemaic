@@ -12,7 +12,7 @@ import { edit } from '@/routes/profile';
 import planRoutes from '@/routes/settings/plan';
 import { type PlanSummary, type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { CreditCard, LogOut, Settings } from 'lucide-react';
+import { CreditCard, LogOut, Settings, Shield } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -39,7 +39,14 @@ export function UserMenuContent({ user, plan }: UserMenuContentProps) {
             {plan && (
                 <div className="flex items-center justify-between px-1.5 pb-2 text-xs text-muted-foreground">
                     <span>{t('Current Plan')}</span>
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+                    <span
+                        className={`flex items-center gap-1 rounded-full px-2 py-0.5 ${
+                            plan.isInternal
+                                ? 'bg-primary/20 text-primary'
+                                : 'bg-primary/10 text-primary'
+                        }`}
+                    >
+                        {plan.isInternal && <Shield className="size-3" />}
                         {plan.label}
                     </span>
                 </div>

@@ -4,15 +4,40 @@ namespace App\Enums;
 
 enum PlanType: string
 {
+    // Public plans
     case Free = 'free';
     case Trial = 'trial';
     case Managed = 'managed';
     case Pro = 'pro';
     case Enterprise = 'enterprise';
 
+    // Internal plans
+    case Staff = 'staff';
+    case BetaTesting = 'beta_testing';
+    case Internal = 'internal';
+
     public static function default(): self
     {
         return self::Free;
+    }
+
+    public function isPublic(): bool
+    {
+        return ! in_array($this, [
+            self::Staff,
+            self::BetaTesting,
+            self::Internal,
+        ], true);
+    }
+
+    public function isInternal(): bool
+    {
+        return ! $this->isPublic();
+    }
+
+    public function isStaffPlan(): bool
+    {
+        return in_array($this, [self::Staff, self::Internal], true);
     }
 
     public function label(): string
@@ -74,28 +99,52 @@ enum PlanType: string
 
     public function canAccessIntegrations(): bool
     {
+        // Internal plans have full access
+        if ($this->isInternal()) {
+            return true;
+        }
+
         return $this !== self::Free;
     }
 
     public function canManageProviderKeys(): bool
     {
+        // Internal plans can manage their own keys
+        if ($this->isInternal()) {
+            return true;
+        }
+
         return in_array($this, [self::Pro, self::Enterprise], true);
     }
 
     public function usesManagedKeys(): bool
     {
+        // Internal plans don't use managed keys
+        if ($this->isInternal()) {
+            return false;
+        }
+
         return in_array($this, [self::Trial, self::Managed], true);
     }
 
     public function hasUsageLimits(): bool
     {
-        return $this === self::Managed;
+        // Internal plans don't have limits (except Staff has soft limits)
+        if ($this === self::Internal || $this === self::BetaTesting) {
+            return false;
+        }
+
+        return $this === self::Managed || $this === self::Staff;
     }
 
     public function dailyUsageLimit(): ?int
     {
         if (! $this->hasUsageLimits()) {
             return null;
+        }
+
+        if ($this === self::Staff) {
+            return config('plans.limits.staff.daily', 500);
         }
 
         return config('plans.limits.managed.daily');
@@ -105,6 +154,10 @@ enum PlanType: string
     {
         if (! $this->hasUsageLimits()) {
             return null;
+        }
+
+        if ($this === self::Staff) {
+            return config('plans.limits.staff.monthly', 10000);
         }
 
         return config('plans.limits.managed.monthly');

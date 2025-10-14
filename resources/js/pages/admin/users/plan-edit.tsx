@@ -21,6 +21,7 @@ type PlanOption = {
     value: string;
     label: string;
     description: string;
+    isInternal: boolean;
 };
 
 type User = {
@@ -94,6 +95,9 @@ export default function PlanEdit({
 
     const selectedPlan = plans.find((p) => p.value === form.data.plan);
     const isTrialPlan = form.data.plan === 'trial';
+    
+    const publicPlans = plans.filter((p) => !p.isInternal);
+    const internalPlans = plans.filter((p) => p.isInternal);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -162,14 +166,28 @@ export default function PlanEdit({
                                             }
                                             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                         >
-                                            {plans.map((plan) => (
-                                                <option
-                                                    key={plan.value}
-                                                    value={plan.value}
-                                                >
-                                                    {plan.label}
-                                                </option>
-                                            ))}
+                                            <optgroup label={t('Public Plans')}>
+                                                {publicPlans.map((plan) => (
+                                                    <option
+                                                        key={plan.value}
+                                                        value={plan.value}
+                                                    >
+                                                        {plan.label}
+                                                    </option>
+                                                ))}
+                                            </optgroup>
+                                            {internalPlans.length > 0 && (
+                                                <optgroup label={t('Internal Plans')}>
+                                                    {internalPlans.map((plan) => (
+                                                        <option
+                                                            key={plan.value}
+                                                            value={plan.value}
+                                                        >
+                                                            🛡️ {plan.label}
+                                                        </option>
+                                                    ))}
+                                                </optgroup>
+                                            )}
                                         </select>
                                         {selectedPlan && (
                                             <p className="text-sm text-muted-foreground">

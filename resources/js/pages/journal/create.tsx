@@ -16,6 +16,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { ImageUploader } from '@/components/image-uploader';
+import { RichTextEditor } from '@/components/rich-text-editor';
 import AppLayout from '@/layouts/app-layout';
 import journalRoutes from '@/routes/journal';
 import { dashboard as dashboardRoute } from '@/routes';
@@ -49,6 +51,10 @@ export default function JournalCreate() {
         asset_type: 'stock',
         entry_price: '',
         exit_price: '',
+        stop_loss: '',
+        take_profit: '',
+        risk_reward_ratio: '',
+        account_risk_percent: '',
         quantity: '',
         setup_type: '',
         notes: '',
@@ -57,6 +63,10 @@ export default function JournalCreate() {
         trade_date: new Date().toISOString().split('T')[0],
         entry_time: '',
         exit_time: '',
+        followed_plan: true,
+        mistakes: '',
+        lessons_learned: '',
+        images: [] as string[],
     });
 
     const submit: FormEventHandler = (e) => {
@@ -225,6 +235,64 @@ export default function JournalCreate() {
                                 </div>
                             </div>
 
+                            {/* Risk Management */}
+                            <div className="space-y-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+                                <h3 className="font-semibold text-sm">{t('Risk Management')}</h3>
+                                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="stop_loss">{t('Stop Loss')}</Label>
+                                        <Input
+                                            id="stop_loss"
+                                            type="number"
+                                            step="0.0001"
+                                            value={data.stop_loss}
+                                            onChange={(e) => setData('stop_loss', e.target.value)}
+                                            placeholder="145.00"
+                                        />
+                                        <InputError message={errors.stop_loss} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="take_profit">{t('Take Profit')}</Label>
+                                        <Input
+                                            id="take_profit"
+                                            type="number"
+                                            step="0.0001"
+                                            value={data.take_profit}
+                                            onChange={(e) => setData('take_profit', e.target.value)}
+                                            placeholder="160.00"
+                                        />
+                                        <InputError message={errors.take_profit} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="risk_reward_ratio">{t('R:R Planned')}</Label>
+                                        <Input
+                                            id="risk_reward_ratio"
+                                            type="number"
+                                            step="0.01"
+                                            value={data.risk_reward_ratio}
+                                            onChange={(e) => setData('risk_reward_ratio', e.target.value)}
+                                            placeholder="2.0"
+                                        />
+                                        <InputError message={errors.risk_reward_ratio} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="account_risk_percent">{t('Risk %')}</Label>
+                                        <Input
+                                            id="account_risk_percent"
+                                            type="number"
+                                            step="0.1"
+                                            value={data.account_risk_percent}
+                                            onChange={(e) => setData('account_risk_percent', e.target.value)}
+                                            placeholder="1.0"
+                                        />
+                                        <InputError message={errors.account_risk_percent} />
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Dates & Times */}
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div className="space-y-2">
@@ -276,11 +344,9 @@ export default function JournalCreate() {
                             {/* Notes & Tags */}
                             <div className="space-y-2">
                                 <Label htmlFor="notes">{t('Notes')}</Label>
-                                <textarea
-                                    id="notes"
-                                    className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                <RichTextEditor
                                     value={data.notes}
-                                    onChange={(e) => setData('notes', e.target.value)}
+                                    onChange={(value) => setData('notes', value)}
                                     placeholder={t('Analysis, reasons, lessons learned...')}
                                 />
                                 <p className="text-xs text-muted-foreground">
@@ -319,6 +385,61 @@ export default function JournalCreate() {
                                         {t('Your emotional state during the trade: 1=Fearful/Anxious, 2=Uncertain, 3=Neutral, 4=Confident, 5=Very Confident')}
                                     </p>
                                     <InputError message={errors.emotion} />
+                                </div>
+                            </div>
+
+                            {/* Images */}
+                            <div className="space-y-2">
+                                <Label>{t('Screenshots / Charts')}</Label>
+                                <ImageUploader
+                                    value={data.images}
+                                    onChange={(images) => setData('images', images)}
+                                    maxFiles={5}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    {t('Upload up to 5 images: charts, setups, or screenshots')}
+                                </p>
+                                <InputError message={errors.images} />
+                            </div>
+
+                            {/* Trading Discipline */}
+                            <div className="space-y-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/20">
+                                <h3 className="font-semibold text-sm">{t('Trading Discipline & Lessons')}</h3>
+                                <div className="space-y-4">
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            id="followed_plan"
+                                            type="checkbox"
+                                            checked={data.followed_plan}
+                                            onChange={(e) => setData('followed_plan', e.target.checked)}
+                                            className="h-4 w-4 rounded border-gray-300"
+                                        />
+                                        <Label htmlFor="followed_plan" className="cursor-pointer">
+                                            {t('I followed my trading plan')}
+                                        </Label>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="mistakes">{t('Mistakes Made')}</Label>
+                                        <Input
+                                            id="mistakes"
+                                            value={data.mistakes}
+                                            onChange={(e) => setData('mistakes', e.target.value)}
+                                            placeholder={t('What went wrong?')}
+                                        />
+                                        <InputError message={errors.mistakes} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="lessons_learned">{t('Lessons Learned')}</Label>
+                                        <Input
+                                            id="lessons_learned"
+                                            value={data.lessons_learned}
+                                            onChange={(e) => setData('lessons_learned', e.target.value)}
+                                            placeholder={t('What did you learn?')}
+                                        />
+                                        <InputError message={errors.lessons_learned} />
+                                    </div>
                                 </div>
                             </div>
 

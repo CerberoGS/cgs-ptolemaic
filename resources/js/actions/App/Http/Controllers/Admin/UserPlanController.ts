@@ -109,7 +109,7 @@ edit.head = (args: { locale?: string | number, user: number | { id: number } } |
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\UserPlanController::update
- * @see app/Http/Controllers/Admin/UserPlanController.php:58
+ * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/plan'
  */
@@ -125,7 +125,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\UserPlanController::update
- * @see app/Http/Controllers/Admin/UserPlanController.php:58
+ * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/plan'
  */
@@ -158,7 +158,7 @@ update.url = (args: { locale?: string | number, user: number | { id: number } } 
 
 /**
 * @see \App\Http\Controllers\Admin\UserPlanController::update
- * @see app/Http/Controllers/Admin/UserPlanController.php:58
+ * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/plan'
  */
@@ -169,7 +169,7 @@ update.put = (args: { locale?: string | number, user: number | { id: number } } 
 
     /**
 * @see \App\Http\Controllers\Admin\UserPlanController::update
- * @see app/Http/Controllers/Admin/UserPlanController.php:58
+ * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/plan'
  */
@@ -185,7 +185,7 @@ update.put = (args: { locale?: string | number, user: number | { id: number } } 
 
             /**
 * @see \App\Http\Controllers\Admin\UserPlanController::update
- * @see app/Http/Controllers/Admin/UserPlanController.php:58
+ * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/users/{user}/plan'
  */

@@ -23,6 +23,7 @@ class UserPlanController extends Controller
                 'value' => $plan->value,
                 'label' => $plan->label(),
                 'description' => $plan->description(),
+                'isInternal' => $plan->isInternal(),
             ];
         })->values();
 

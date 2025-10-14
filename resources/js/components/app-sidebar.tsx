@@ -14,12 +14,14 @@ import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 import integrationsRoutes from '@/routes/settings/integrations';
 import planRoutes from '@/routes/settings/plan';
 import journalRoutes from '@/routes/journal';
+import achievementsRoutes from '@/routes/achievements';
+import analyticsRoutes from '@/routes/analytics';
 
 const footerNavItems: NavItem[] = [
     {
@@ -52,8 +54,28 @@ export function AppSidebar() {
             href: journalRoutes.index({ locale }),
             icon: BookText,
         },
+        {
+            title: t('Analytics'),
+            href: analyticsRoutes.index({ locale }),
+            icon: BarChart3,
+        },
+        {
+            title: t('Achievements'),
+            href: achievementsRoutes.index({ locale }),
+            icon: Trophy,
+        },
     ];
 
+    // Feedback access for managers and admins
+    if (permissions.includes('feedback.manage')) {
+        mainNavItems.push({
+            title: t('Feedback'),
+            href: `/${locale}/admin/feedback`,
+            icon: MessageSquare,
+        });
+    }
+
+    // Administration access (only for users with admin dashboard permission)
     const canAccessAdmin =
         permissions.includes('admin.dashboard') ||
         permissions.includes('providers.view') ||

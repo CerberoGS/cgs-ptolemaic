@@ -29,6 +29,7 @@ class RoleAndPermissionSeeder extends Seeder
             'users.manage',
             'roles.view',
             'roles.manage',
+            'feedback.manage',
         ];
 
         foreach ($permissions as $permission) {
@@ -41,11 +42,7 @@ class RoleAndPermissionSeeder extends Seeder
             'User' => ['dashboard.view'],
             'Manager' => [
                 'dashboard.view',
-                'admin.dashboard',
-                'providers.view',
-                'providers.manage',
-                'users.view',
-                'roles.view',
+                'feedback.manage',
             ],
             'Admin' => $permissions,
         ];

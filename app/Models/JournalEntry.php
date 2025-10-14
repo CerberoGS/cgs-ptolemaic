@@ -17,6 +17,11 @@ class JournalEntry extends Model
         'asset_type',
         'entry_price',
         'exit_price',
+        'stop_loss',
+        'take_profit',
+        'risk_reward_ratio',
+        'account_risk_percent',
+        'actual_risk_reward',
         'quantity',
         'pnl',
         'pnl_percentage',
@@ -28,6 +33,10 @@ class JournalEntry extends Model
         'trade_date',
         'entry_time',
         'exit_time',
+        'hold_time_minutes',
+        'followed_plan',
+        'mistakes',
+        'lessons_learned',
     ];
 
     protected function casts(): array
@@ -35,6 +44,11 @@ class JournalEntry extends Model
         return [
             'entry_price' => 'decimal:8',
             'exit_price' => 'decimal:8',
+            'stop_loss' => 'decimal:8',
+            'take_profit' => 'decimal:8',
+            'risk_reward_ratio' => 'decimal:2',
+            'account_risk_percent' => 'decimal:2',
+            'actual_risk_reward' => 'decimal:2',
             'quantity' => 'decimal:4',
             'pnl' => 'decimal:2',
             'pnl_percentage' => 'decimal:4',
@@ -44,6 +58,8 @@ class JournalEntry extends Model
             'trade_date' => 'datetime',
             'entry_time' => 'datetime',
             'exit_time' => 'datetime',
+            'hold_time_minutes' => 'integer',
+            'followed_plan' => 'boolean',
         ];
     }
 
@@ -173,5 +189,72 @@ class JournalEntry extends Model
     public function scopeDateRange($query, $startDate, $endDate)
     {
         return $query->whereBetween('trade_date', [$startDate, $endDate]);
+    }
+
+    /**
+     * Calculate actual Risk/Reward ratio based on exit.
+     */
+    public function calculateActualRiskReward(): void
+    {
+        if ($this->isClosed() && $this->stop_loss && $this->entry_price) {
+            $risk = abs($this->entry_price - $this->stop_loss);
+            $reward = abs($this->exit_price - $this->entry_price);
+
+            if ($risk > 0) {
+                $this->actual_risk_reward = round($reward / $risk, 2);
+            }
+        }
+    }
+
+    /**
+     * Calculate and update hold time in minutes.
+     */
+    public function calculateHoldTime(): void
+    {
+        if ($this->entry_time && $this->exit_time) {
+            $this->hold_time_minutes = $this->entry_time->diffInMinutes($this->exit_time);
+        }
+    }
+
+    /**
+     * Update all calculated fields.
+     */
+    public function updateCalculatedFields(): void
+    {
+        $this->calculatePnL();
+        $this->calculateActualRiskReward();
+        $this->calculateHoldTime();
+    }
+
+    /**
+     * Check if stop loss was hit.
+     */
+    public function wasStopLossHit(): bool
+    {
+        if (! $this->stop_loss || ! $this->exit_price) {
+            return false;
+        }
+
+        if ($this->direction === 'long') {
+            return $this->exit_price <= $this->stop_loss;
+        }
+
+        return $this->exit_price >= $this->stop_loss;
+    }
+
+    /**
+     * Check if take profit was hit.
+     */
+    public function wasTakeProfitHit(): bool
+    {
+        if (! $this->take_profit || ! $this->exit_price) {
+            return false;
+        }
+
+        if ($this->direction === 'long') {
+            return $this->exit_price >= $this->take_profit;
+        }
+
+        return $this->exit_price <= $this->take_profit;
     }
 }

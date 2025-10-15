@@ -113,6 +113,16 @@ Route::group([
                 Route::get('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'show'])->name('feedback.show');
                 Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
             });
+
+            // Invitations management (admin only)
+            Route::middleware('permission:invitations.manage')->group(function () {
+                Route::get('/invitations', [\App\Http\Controllers\Admin\InvitationController::class, 'index'])->name('invitations.index');
+                Route::get('/invitations/create', [\App\Http\Controllers\Admin\InvitationController::class, 'create'])->name('invitations.create');
+                Route::post('/invitations', [\App\Http\Controllers\Admin\InvitationController::class, 'store'])->name('invitations.store');
+                Route::get('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'show'])->name('invitations.show');
+                Route::put('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'update'])->name('invitations.update');
+                Route::delete('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'destroy'])->name('invitations.destroy');
+            });
         });
     });
 
@@ -198,4 +208,10 @@ if (Features::enabled(Features::twoFactorAuthentication())) {
     Route::post('user/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
         ->middleware($twoFactorMiddleware)
         ->name('two-factor.regenerate-recovery-codes');
+
+    // Public invitation routes (no locale prefix)
+    Route::get('invite/{code}', [\App\Http\Controllers\InvitationRedemptionController::class, 'show'])->name('invitation.show');
+    Route::post('invite/{code}/redeem', [\App\Http\Controllers\InvitationRedemptionController::class, 'redeem'])
+        ->middleware('auth')
+        ->name('invitation.redeem');
 }

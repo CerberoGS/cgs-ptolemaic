@@ -48,6 +48,9 @@ export interface PlanSummary {
         daily: number | null;
         monthly: number | null;
     };
+    emoji: string;
+    accentColor: string;
+    tagline: string;
 }
 
 export interface User {

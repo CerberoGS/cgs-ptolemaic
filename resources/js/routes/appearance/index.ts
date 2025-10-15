@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -15,7 +15,7 @@ edit.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -47,7 +47,7 @@ edit.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 }
 
 /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -56,7 +56,7 @@ edit.get = (args?: { locale?: string | number } | [locale: string | number ] | s
     method: 'get',
 })
 /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -66,7 +66,7 @@ edit.head = (args?: { locale?: string | number } | [locale: string | number ] | 
 })
 
     /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -76,7 +76,7 @@ edit.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     })
 
             /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */
@@ -85,7 +85,7 @@ edit.head = (args?: { locale?: string | number } | [locale: string | number ] | 
             method: 'get',
         })
             /**
- * @see routes/settings.php:27
+ * @see routes/settings.php:28
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/appearance'
  */

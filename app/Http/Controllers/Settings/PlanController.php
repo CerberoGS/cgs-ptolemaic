@@ -53,6 +53,9 @@ class PlanController extends Controller
                         ],
                         'isCurrent' => $plan === $currentPlan,
                         'isInternal' => $plan->isInternal(),
+                        'emoji' => $plan->emoji(),
+                        'accentColor' => $plan->accentColor(),
+                        'tagline' => $plan->tagline(),
                     ];
                 }
             )->values();
@@ -71,6 +74,9 @@ class PlanController extends Controller
                     'monthly' => $user?->managedMonthlyLimit(),
                 ],
                 'isInternal' => $currentPlan->isInternal(),
+                'emoji' => $currentPlan->emoji(),
+                'accentColor' => $currentPlan->accentColor(),
+                'tagline' => $currentPlan->tagline(),
             ],
             'plans' => $plans,
             'upgradeOrder' => config('plans.upgrade_order'),

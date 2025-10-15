@@ -6,9 +6,8 @@ enum PlanType: string
 {
     // Public plans
     case Free = 'free';
-    case Trial = 'trial';
-    case Managed = 'managed';
-    case Pro = 'pro';
+    case Managed = 'managed';  // Cosmógrafo
+    case Pro = 'pro';          // Astrónomo
     case Enterprise = 'enterprise';
 
     // Internal plans
@@ -48,6 +47,37 @@ enum PlanType: string
     public function description(): string
     {
         return __('plans.descriptions.'.$this->value);
+    }
+
+    public function emoji(): string
+    {
+        return match ($this) {
+            self::Free => '👁️',
+            self::Managed => '🧭',
+            self::Pro => '🔭',
+            self::Enterprise => '☀️',
+            self::Staff => '🛡️',
+            self::BetaTesting => '🧪',
+            self::Internal => '👑',
+        };
+    }
+
+    public function accentColor(): string
+    {
+        return match ($this) {
+            self::Free => 'zinc',
+            self::Managed => 'cyan',
+            self::Pro => 'violet',
+            self::Enterprise => 'amber',
+            self::Staff => 'blue',
+            self::BetaTesting => 'purple',
+            self::Internal => 'rose',
+        };
+    }
+
+    public function tagline(): string
+    {
+        return __('plans.taglines.'.$this->value);
     }
 
     public function price(): string
@@ -124,7 +154,7 @@ enum PlanType: string
             return false;
         }
 
-        return in_array($this, [self::Trial, self::Managed], true);
+        return $this === self::Managed;
     }
 
     public function hasUsageLimits(): bool
@@ -161,11 +191,6 @@ enum PlanType: string
         }
 
         return config('plans.limits.managed.monthly');
-    }
-
-    public function isTrial(): bool
-    {
-        return $this === self::Trial;
     }
 
     public function isPaid(): bool

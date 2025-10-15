@@ -40,14 +40,15 @@ export function UserMenuContent({ user, plan }: UserMenuContentProps) {
                 <div className="flex items-center justify-between px-1.5 pb-2 text-xs text-muted-foreground">
                     <span>{t('Current Plan')}</span>
                     <span
-                        className={`flex items-center gap-1 rounded-full px-2 py-0.5 ${
+                        className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 ${
                             plan.isInternal
                                 ? 'bg-primary/20 text-primary'
                                 : 'bg-primary/10 text-primary'
                         }`}
                     >
                         {plan.isInternal && <Shield className="size-3" />}
-                        {plan.label}
+                        {!plan.isInternal && plan.emoji && <span className="text-xs">{plan.emoji}</span>}
+                        <span className="font-medium">{plan.label}</span>
                     </span>
                 </div>
             )}

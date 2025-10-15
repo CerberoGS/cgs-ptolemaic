@@ -34,6 +34,7 @@ class User extends Authenticatable
         'plan_started_at',
         'plan_expires_at',
         'trial_ends_at',
+        'card_added_at',
         'plan_metadata',
     ];
 
@@ -61,6 +62,7 @@ class User extends Authenticatable
             'plan_started_at' => 'datetime',
             'plan_expires_at' => 'datetime',
             'trial_ends_at' => 'datetime',
+            'card_added_at' => 'datetime',
             'plan_metadata' => 'array',
         ];
     }
@@ -133,12 +135,14 @@ class User extends Authenticatable
 
     public function isOnTrial(): bool
     {
-        if (! $this->planOrDefault()->isTrial()) {
+        // Trial is active if trial_ends_at is set and not expired
+        if ($this->trial_ends_at === null) {
             return false;
         }
 
-        if ($this->trial_ends_at === null) {
-            return true;
+        // Only Managed and Pro plans can be on trial
+        if (! in_array($this->plan, [PlanType::Managed, PlanType::Pro], true)) {
+            return false;
         }
 
         return now()->lessThanOrEqualTo($this->trial_ends_at);
@@ -182,14 +186,21 @@ class User extends Authenticatable
         return $this->planOrDefault()->allowsFeature($feature);
     }
 
-    public function startTrial(): bool
+    /**
+     * Start trial for a specific plan (Managed or Pro)
+     */
+    public function startTrial(PlanType $plan): bool
     {
         if (! $this->hasPlan(PlanType::Free)) {
             return false;
         }
 
+        if (! in_array($plan, [PlanType::Managed, PlanType::Pro], true)) {
+            return false;
+        }
+
         $this->update([
-            'plan' => PlanType::Trial->value,
+            'plan' => $plan,
             'plan_started_at' => now(),
             'trial_ends_at' => now()->addDays(30),
         ]);
@@ -200,6 +211,75 @@ class User extends Authenticatable
     public function canStartTrial(): bool
     {
         return $this->hasPlan(PlanType::Free) && $this->trial_ends_at === null;
+    }
+
+    /**
+     * Add card and extend trial by 30 days (only for Pro trial users)
+     */
+    public function addCardAndExtendTrial(): bool
+    {
+        if ($this->plan !== PlanType::Pro || ! $this->isOnTrial()) {
+            return false;
+        }
+
+        if ($this->card_added_at !== null) {
+            return false;
+        }
+
+        $this->update([
+            'card_added_at' => now(),
+            'trial_ends_at' => $this->trial_ends_at?->addDays(30) ?? now()->addDays(30),
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Check if user can add card to extend trial
+     */
+    public function canAddCardToExtendTrial(): bool
+    {
+        return $this->plan === PlanType::Pro
+            && $this->isOnTrial()
+            && $this->card_added_at === null;
+    }
+
+    /**
+     * Check if trial has expired
+     */
+    public function hasTrialExpired(): bool
+    {
+        if ($this->trial_ends_at === null) {
+            return false;
+        }
+
+        return now()->greaterThan($this->trial_ends_at);
+    }
+
+    /**
+     * Get days remaining in trial
+     */
+    public function trialDaysRemaining(): int
+    {
+        if (! $this->isOnTrial() || $this->trial_ends_at === null) {
+            return 0;
+        }
+
+        $days = now()->diffInDays($this->trial_ends_at, false);
+
+        return max(0, (int) ceil($days));
+    }
+
+    /**
+     * Downgrade user to Free plan after trial expires
+     * Note: We keep trial_ends_at to track that they already used their trial
+     */
+    public function downgradeToFree(): void
+    {
+        $this->update([
+            'plan' => PlanType::Free,
+            'plan_started_at' => now(),
+        ]);
     }
 
     public function ensureDefaultRole(): void

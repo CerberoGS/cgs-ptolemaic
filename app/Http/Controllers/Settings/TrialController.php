@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Enums\PlanType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,9 +10,9 @@ use Illuminate\Http\Request;
 class TrialController extends Controller
 {
     /**
-     * Iniciar el período de prueba gratuito.
+     * Start trial for Cosmographer (Managed plan)
      */
-    public function store(Request $request): RedirectResponse
+    public function storeManaged(Request $request): RedirectResponse
     {
         $user = $request->user();
 
@@ -21,10 +22,30 @@ class TrialController extends Controller
                 ->with('error', __('You cannot start a trial at this time.'));
         }
 
-        $user->startTrial();
+        $user->startTrial(PlanType::Managed);
 
         return redirect()
             ->route('dashboard', ['locale' => app()->getLocale()])
-            ->with('success', __('Your 30-day trial has started! Enjoy all features.'));
+            ->with('success', __('Your Cosmographer trial has started! 30 days of AI-powered insights.'));
+    }
+
+    /**
+     * Start trial for Astronomer (Pro plan with 30+30 bonus)
+     */
+    public function storePro(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user->canStartTrial()) {
+            return redirect()
+                ->route('settings.plan.show', ['locale' => app()->getLocale()])
+                ->with('error', __('You cannot start a trial at this time.'));
+        }
+
+        $user->startTrial(PlanType::Pro);
+
+        return redirect()
+            ->route('dashboard', ['locale' => app()->getLocale()])
+            ->with('success', __('Your Astronomer trial has started! Add your card anytime to get +30 extra days.'));
     }
 }

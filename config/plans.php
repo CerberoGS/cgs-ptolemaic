@@ -18,7 +18,6 @@ return [
 
     'upgrade_order' => [
         PlanType::Free->value,
-        PlanType::Trial->value,
         PlanType::Managed->value,
         PlanType::Pro->value,
         PlanType::Enterprise->value,
@@ -34,32 +33,33 @@ return [
                 'plans.features.free.notifications',
             ],
         ],
-        PlanType::Trial->value => [
-            'price' => 'plans.price.trial',
-            'summary' => 'plans.summary.trial',
-            'features' => [
-                'plans.features.trial.keys_included',
-                'plans.features.trial.full_access',
-                'plans.features.trial.guided_onboarding',
-            ],
-        ],
         PlanType::Managed->value => [
             'price' => 'plans.price.managed',
             'summary' => 'plans.summary.managed',
             'features' => [
+                'plans.features.managed.everything_free',
+                'plans.features.managed.trial_30_days',
+                'plans.features.managed.ai_analytics',
+                'plans.features.managed.realtime_data',
                 'plans.features.managed.managed_keys',
                 'plans.features.managed.daily_limit',
                 'plans.features.managed.monthly_limit',
                 'plans.features.managed.email_support',
+                'plans.features.managed.cancel_anytime',
             ],
         ],
         PlanType::Pro->value => [
             'price' => 'plans.price.pro',
             'summary' => 'plans.summary.pro',
             'features' => [
+                'plans.features.pro.everything_managed',
+                'plans.features.pro.trial_60_days',
                 'plans.features.pro.own_keys',
+                'plans.features.pro.predictive_ai',
                 'plans.features.pro.automation',
+                'plans.features.pro.unlimited_requests',
                 'plans.features.pro.priority_support',
+                'plans.features.pro.cancel_anytime',
             ],
         ],
         PlanType::Enterprise->value => [
@@ -107,13 +107,6 @@ return [
             'logbook.create',
             'forum.view',
             'forum.participate',
-        ],
-        PlanType::Trial->value => [
-            'logbook.view',
-            'logbook.create',
-            'forum.view',
-            'forum.participate',
-            'integrations.view',
         ],
         PlanType::Managed->value => [
             'logbook.view',

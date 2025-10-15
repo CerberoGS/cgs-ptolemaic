@@ -14,7 +14,7 @@ import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare, Ticket } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 import integrationsRoutes from '@/routes/settings/integrations';
@@ -72,6 +72,15 @@ export function AppSidebar() {
             title: t('Feedback'),
             href: `/${locale}/admin/feedback`,
             icon: MessageSquare,
+        });
+    }
+
+    // Invitations access for admins
+    if (permissions.includes('invitations.manage')) {
+        mainNavItems.push({
+            title: t('Invitations'),
+            href: `/${locale}/admin/invitations`,
+            icon: Ticket,
         });
     }
 

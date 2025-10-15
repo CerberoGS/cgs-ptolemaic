@@ -4,6 +4,7 @@ use App\Http\Controllers\Settings\IntegrationsController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\PlanController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\TrialCardController;
 use App\Http\Controllers\Settings\TrialController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,11 @@ Route::middleware('auth')->prefix('settings')->group(function () {
 
     Route::get('/plan', PlanController::class)->name('settings.plan.show');
 
-    Route::post('/trial', [TrialController::class, 'store'])->name('settings.trial.store');
+    Route::post('/trial/managed', [TrialController::class, 'storeManaged'])->name('settings.trial.managed');
+
+    Route::post('/trial/pro', [TrialController::class, 'storePro'])->name('settings.trial.pro');
+
+    Route::post('/trial/add-card', [TrialCardController::class, 'store'])->name('settings.trial.add-card');
 
     Route::get('/integrations', [IntegrationsController::class, 'index'])
         ->middleware('plan.integrations')

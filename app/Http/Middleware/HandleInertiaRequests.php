@@ -53,6 +53,9 @@ class HandleInertiaRequests extends Middleware
                     'monthly' => $user->managedMonthlyLimit(),
                 ],
                 'features' => $plan->availableFeatures(),
+                'emoji' => $plan->emoji(),
+                'accentColor' => $plan->accentColor(),
+                'tagline' => $plan->tagline(),
             ];
         }
 

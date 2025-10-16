@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PlanType;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +15,7 @@ use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
@@ -29,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
         'google_id',
         'plan',
         'plan_started_at',
@@ -57,6 +58,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
             'plan' => PlanType::class,
             'plan_started_at' => 'datetime',
@@ -329,5 +331,42 @@ class User extends Authenticatable
             $stats->updateLevel();
             $stats->save();
         }
+    }
+
+    /**
+     * Check if the user's email is verified.
+     */
+    public function isEmailVerified(): bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
+    /**
+     * Check if the user's phone is verified.
+     */
+    public function isPhoneVerified(): bool
+    {
+        return $this->phone_verified_at !== null;
+    }
+
+    /**
+     * Check if the user has a phone number.
+     */
+    public function hasPhone(): bool
+    {
+        return ! empty($this->phone);
+    }
+
+    /**
+     * Get formatted phone number.
+     */
+    public function getFormattedPhone(): ?string
+    {
+        if (! $this->hasPhone()) {
+            return null;
+        }
+
+        // Simple formatting - you can enhance this based on your needs
+        return $this->phone;
     }
 }

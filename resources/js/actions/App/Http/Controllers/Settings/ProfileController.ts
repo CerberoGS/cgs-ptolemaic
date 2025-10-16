@@ -202,7 +202,7 @@ update.patch = (args?: { locale?: string | number } | [locale: string | number ]
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:53
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/profile'
  */
@@ -218,7 +218,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:53
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/profile'
  */
@@ -251,7 +251,7 @@ destroy.url = (args?: { locale?: string | number } | [locale: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:53
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/profile'
  */
@@ -262,7 +262,7 @@ destroy.delete = (args?: { locale?: string | number } | [locale: string | number
 
     /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:53
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/profile'
  */
@@ -278,7 +278,7 @@ destroy.delete = (args?: { locale?: string | number } | [locale: string | number
 
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:53
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings/profile'
  */

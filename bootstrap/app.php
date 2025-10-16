@@ -22,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function ($schedule) {
         // Downgrade expired trials daily at 3 AM
         $schedule->command('trials:downgrade')->dailyAt('03:00');
+
+        // Check offer expiration every minute
+        $schedule->job(\App\Jobs\CheckOfferExpirationJob::class)->everyMinute();
+
+        // Update scarcity count every 5 minutes
+        $schedule->job(\App\Jobs\UpdateScarcityCountJob::class)->everyFiveMinutes();
     })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);

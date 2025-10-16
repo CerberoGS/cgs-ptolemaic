@@ -5,10 +5,12 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\PricingController as AdminPricingController;
 use App\Http\Controllers\Admin\UserPlanController;
 use App\Http\Controllers\AnalyticsDashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -71,6 +73,10 @@ Route::group([
         // Feedback route (anyone can submit)
         Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
+        // Public pricing API
+        Route::get('/api/pricing', [PricingController::class, 'index'])->name('pricing.index');
+        Route::get('/api/pricing/{planType}', [PricingController::class, 'show'])->name('pricing.show');
+
         Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/', AdminDashboardController::class)
                 ->middleware('permission:admin.dashboard')
@@ -122,6 +128,17 @@ Route::group([
                 Route::get('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'show'])->name('invitations.show');
                 Route::put('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'update'])->name('invitations.update');
                 Route::delete('/invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'destroy'])->name('invitations.destroy');
+            });
+
+            // Pricing management (admin only)
+            Route::middleware('permission:pricing.manage')->group(function () {
+                Route::get('/pricing', [AdminPricingController::class, 'index'])->name('pricing.index');
+                Route::get('/pricing/{pricingPlan}/edit', [AdminPricingController::class, 'edit'])->name('pricing.edit');
+                Route::put('/pricing/{pricingPlan}', [AdminPricingController::class, 'update'])->name('pricing.update');
+                Route::post('/pricing/{pricingPlan}/toggle-offer', [AdminPricingController::class, 'toggleOffer'])->name('pricing.toggle-offer');
+                Route::post('/pricing/{pricingPlan}/toggle-scarcity', [AdminPricingController::class, 'toggleScarcity'])->name('pricing.toggle-scarcity');
+                Route::post('/pricing/{pricingPlan}/increment-scarcity', [AdminPricingController::class, 'incrementScarcity'])->name('pricing.increment-scarcity');
+                Route::post('/pricing/{pricingPlan}/reset-scarcity', [AdminPricingController::class, 'resetScarcity'])->name('pricing.reset-scarcity');
             });
         });
     });

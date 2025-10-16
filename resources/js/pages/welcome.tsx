@@ -266,90 +266,131 @@ export default function Welcome() {
                       </p>
                     </div>
                     
-                    <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-4">
                       {[
                         {
-                          name: t("Beginner"),
+                          name: t("Observer"),
                           price: t("Free"),
+                          description: t("Learn and connect with the community"),
                           features: [
-                            t("Basic market analysis"),
-                            t("Initial recommendations"),
-                            t("Educational support"),
-                            t("Up to $1,000 investment")
+                            t("Complete trading journal"),
+                            t("Community and Discord access"),
+                            t("Basic notifications")
                           ],
-                          gradient: "from-blue-500 to-cyan-500",
-                          icon: User
+                          gradient: "from-slate-500 to-slate-600",
+                          icon: User,
+                          emoji: "👁️",
+                          cta: t("Start Free Trial")
                         },
                         {
-                          name: t("Professional"),
-                          price: "$29" + t("per month"),
+                          name: t("Cosmographer"),
+                          price: "$49/mes",
+                          description: t("AI analysis, ready to explore"),
                           features: [
-                            t("Advanced AI analysis"),
-                            t("Personalized strategies"),
-                            t("Priority support"),
-                            t("Unlimited investment")
+                            t("Everything in Observer"),
+                            t("30 days free trial (no card)"),
+                            t("AI-powered analytics and insights"),
+                            t("Real-time market data"),
+                            t("Managed API keys by CGS"),
+                            t("Daily limit: 50 requests"),
+                            t("Email support"),
+                            t("Cancel anytime")
                           ],
-                          gradient: "from-purple-500 to-pink-500",
+                          gradient: "from-cyan-500 to-blue-500",
+                          icon: Target,
+                          emoji: "🧭",
+                          popular: true,
+                          cta: t("Try Cosmographer Free")
+                        },
+                        {
+                          name: t("Astronomer"),
+                          price: "$99/mes",
+                          description: t("Total control with advanced AI"),
+                          features: [
+                            t("Everything in Cosmographer"),
+                            t("30 days free + 30 bonus days with card"),
+                            t("Bring your own API keys (BYOK)"),
+                            t("Predictive AI and advanced models"),
+                            t("Advanced automation workflows"),
+                            t("No usage limits"),
+                            t("Priority support & roadmap input"),
+                            t("Cancel anytime")
+                          ],
+                          gradient: "from-violet-500 to-purple-500",
                           icon: Crown,
-                          popular: true
+                          emoji: "🔭",
+                          cta: t("Try Astronomer Free")
                         },
                         {
-                          name: t("Institutional"),
+                          name: t("Heliopolis"),
                           price: t("Custom"),
+                          description: t("Exclusive and personalized"),
                           features: [
-                            t("Advanced quantum AI"),
-                            t("Portfolio management"),
-                            t("Dedicated API"),
-                            t("24/7 support")
+                            t("Everything in Astronomer"),
+                            t("Custom integrations"),
+                            t("Dedicated success manager"),
+                            t("Custom SLAs & security reviews")
                           ],
-                          gradient: "from-emerald-500 to-teal-500",
-                          icon: Building2
+                          gradient: "from-amber-500 to-orange-500",
+                          icon: Building2,
+                          emoji: "☀️",
+                          cta: t("Contact for Enterprise")
                         }
                       ].map((plan, index) => (
                         <Card 
                           key={index}
                           className={`relative overflow-hidden border-2 transition-all hover:shadow-xl ${
                             plan.popular 
-                              ? 'border-purple-500 shadow-purple-100 dark:shadow-purple-900' 
+                              ? 'border-cyan-500 shadow-cyan-100 dark:shadow-cyan-900' 
                               : 'border-gray-200 dark:border-gray-700'
                           }`}
                         >
                           {plan.popular && (
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                        {t('welcome.hero.badge')}
-                      </Badge>
+                              <Badge className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+                                {t('welcome.hero.badge')}
+                              </Badge>
                             </div>
                           )}
                           
-                          <CardContent className="p-8">
-                            <div className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r ${plan.gradient}`}>
-                              <plan.icon className="h-6 w-6 text-white" />
+                          <CardContent className="p-6">
+                            <div className="mb-4 flex items-center gap-3">
+                              <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r ${plan.gradient}`}>
+                                <span className="text-lg">{plan.emoji}</span>
+                              </div>
+                              <div>
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                  {plan.name}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  {plan.description}
+                                </p>
+                              </div>
                             </div>
                             
-                            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-                              {plan.name}
-                            </h3>
                             <div className="mb-6">
-                              <span className={`text-3xl font-bold text-gray-900 dark:text-white`}>
+                              <span className="text-2xl font-bold text-gray-900 dark:text-white">
                                 {plan.price}
                               </span>
                             </div>
                             
-                            <ul className="mb-8 space-y-3">
+                            <ul className="mb-6 space-y-2">
                               {plan.features.map((feature, featureIndex) => (
-                                <li key={featureIndex} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                  <Check className="mr-3 h-4 w-4 text-green-500" />
-                                  {feature}
+                                <li key={featureIndex} className="flex items-start text-xs text-gray-600 dark:text-gray-300">
+                                  <Check className="mr-2 mt-0.5 h-3 w-3 shrink-0 text-green-500" />
+                                  <span>{feature}</span>
                                 </li>
                               ))}
                             </ul>
                             
                             <Button
-                              className={`w-full bg-gradient-to-r ${plan.gradient} hover:opacity-90`}
-                              size="lg"
+                              className={`w-full bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white`}
+                              size="sm"
+                              asChild
                             >
-                              {t('Start Now')}
+                              <Link href={register({ locale: currentLocale })}>
+                                {plan.cta}
+                              </Link>
                             </Button>
                           </CardContent>
                         </Card>

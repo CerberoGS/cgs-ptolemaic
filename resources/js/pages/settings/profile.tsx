@@ -10,10 +10,12 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
 import { useLocale, useTrans } from '@/hooks/useTrans';
+import { Mail, Phone, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function Profile({
     mustVerifyEmail,
@@ -76,16 +78,31 @@ export default function Profile({
                                         {t('Email address')}
                                     </Label>
 
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.email}
-                                        name="email"
-                                        required
-                                        autoComplete="username"
-                                        placeholder={t('Email address')}
-                                    />
+                                    <div className="relative">
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            className="mt-1 block w-full"
+                                            defaultValue={auth.user.email}
+                                            name="email"
+                                            required
+                                            autoComplete="username"
+                                            placeholder={t('Email address')}
+                                        />
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                            {auth.user.email_verified_at ? (
+                                                <Badge variant="default" className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                    <CheckCircle className="h-3 w-3" />
+                                                    {t('Verified')}
+                                                </Badge>
+                                            ) : (
+                                                <Badge variant="destructive" className="gap-1">
+                                                    <AlertCircle className="h-3 w-3" />
+                                                    {t('Unverified')}
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </div>
 
                                     <InputError
                                         className="mt-2"
@@ -93,32 +110,73 @@ export default function Profile({
                                     />
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="phone">
+                                        {t('Phone number')}
+                                    </Label>
+
+                                    <div className="relative">
+                                        <Input
+                                            id="phone"
+                                            type="tel"
+                                            className="mt-1 block w-full"
+                                            defaultValue={auth.user.phone || ''}
+                                            name="phone"
+                                            autoComplete="tel"
+                                            placeholder={t('Phone number')}
+                                        />
+                                        {auth.user.phone && (
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                {auth.user.phone_verified_at ? (
+                                                    <Badge variant="default" className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                        <CheckCircle className="h-3 w-3" />
+                                                        {t('Verified')}
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="secondary" className="gap-1">
+                                                        <Phone className="h-3 w-3" />
+                                                        {t('Not verified')}
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.phone}
+                                    />
+                                </div>
+
                                 {mustVerifyEmail &&
                                     auth.user.email_verified_at === null && (
-                                        <div>
-                                            <p className="-mt-4 text-sm text-muted-foreground">
-                                                {t(
-                                                    'Your email address is unverified.',
-                                                )}{' '}
-                                                <Link
-                                                    href={send()}
-                                                    as="button"
-                                                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                                                >
-                                                    {t(
-                                                        'Click here to resend the verification email.',
-                                                    )}
-                                                </Link>
-                                            </p>
-
-                                            {status ===
-                                                'verification-link-sent' && (
-                                                <div className="mt-2 text-sm font-medium text-green-600">
-                                                    {t(
-                                                        'A new verification link has been sent to your email address.',
+                                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+                                            <div className="flex items-start gap-3">
+                                                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+                                                <div className="flex-1">
+                                                    <h4 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                                                        {t('Email verification required')}
+                                                    </h4>
+                                                    <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
+                                                        {t('Your email address is unverified. Please verify your email to access all features.')}
+                                                    </p>
+                                                    <div className="mt-3">
+                                                        <Link
+                                                            href={send()}
+                                                            as="button"
+                                                            className="inline-flex items-center gap-2 rounded-md bg-amber-600 px-3 py-2 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                                                        >
+                                                            <Mail className="h-4 w-4" />
+                                                            {t('Send verification email')}
+                                                        </Link>
+                                                    </div>
+                                                    {status === 'verification-link-sent' && (
+                                                        <div className="mt-3 text-sm font-medium text-green-600 dark:text-green-400">
+                                                            {t('A new verification link has been sent to your email address.')}
+                                                        </div>
                                                     )}
                                                 </div>
-                                            )}
+                                            </div>
                                         </div>
                                     )}
 

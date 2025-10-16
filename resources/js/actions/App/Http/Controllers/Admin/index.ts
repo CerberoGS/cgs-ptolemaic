@@ -5,6 +5,7 @@ import UserPlanController from './UserPlanController'
 import AdminRoleController from './AdminRoleController'
 import FeedbackController from './FeedbackController'
 import InvitationController from './InvitationController'
+import PricingController from './PricingController'
 const Admin = {
     AdminDashboardController: Object.assign(AdminDashboardController, AdminDashboardController),
 AdminProviderController: Object.assign(AdminProviderController, AdminProviderController),
@@ -13,6 +14,7 @@ UserPlanController: Object.assign(UserPlanController, UserPlanController),
 AdminRoleController: Object.assign(AdminRoleController, AdminRoleController),
 FeedbackController: Object.assign(FeedbackController, FeedbackController),
 InvitationController: Object.assign(InvitationController, InvitationController),
+PricingController: Object.assign(PricingController, PricingController),
 }
 
 export default Admin

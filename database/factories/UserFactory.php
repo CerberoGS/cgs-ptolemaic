@@ -27,7 +27,9 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->optional(0.7)->phoneNumber(),
             'email_verified_at' => now(),
+            'phone_verified_at' => fake()->optional(0.6)->dateTimeBetween('-1 year', 'now'),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'plan' => PlanType::default()->value,

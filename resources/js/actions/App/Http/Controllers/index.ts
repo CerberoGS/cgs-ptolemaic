@@ -2,6 +2,7 @@ import JournalEntryController from './JournalEntryController'
 import AchievementController from './AchievementController'
 import AnalyticsDashboardController from './AnalyticsDashboardController'
 import FeedbackController from './FeedbackController'
+import PricingController from './PricingController'
 import Admin from './Admin'
 import Settings from './Settings'
 import Auth from './Auth'
@@ -11,6 +12,7 @@ const Controllers = {
 AchievementController: Object.assign(AchievementController, AchievementController),
 AnalyticsDashboardController: Object.assign(AnalyticsDashboardController, AnalyticsDashboardController),
 FeedbackController: Object.assign(FeedbackController, FeedbackController),
+PricingController: Object.assign(PricingController, PricingController),
 Admin: Object.assign(Admin, Admin),
 Settings: Object.assign(Settings, Settings),
 Auth: Object.assign(Auth, Auth),

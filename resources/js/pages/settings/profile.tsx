@@ -29,20 +29,20 @@ export default function Profile({
     const { auth } = usePage<SharedData>().props;
     const breadcrumbs = [
         {
-            title: t('Profile settings'),
+            title: t('settings.profile'),
             href: edit({ locale }).url,
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={t('Profile settings')} />
+            <Head title={t('settings.profile')} />
 
             <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall
-                        title={t('Profile information')}
-                        description={t('Update your name and email address')}
+                        title={t('settings.profile_information')}
+                        description={t('settings.profile_information_description')}
                     />
 
                     <Form
@@ -55,7 +55,7 @@ export default function Profile({
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">{t('Name')}</Label>
+                                    <Label htmlFor="name">{t('settings.name')}</Label>
 
                                     <Input
                                         id="name"
@@ -64,7 +64,7 @@ export default function Profile({
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder={t('Full name')}
+                                        placeholder={t('settings.name')}
                                     />
 
                                     <InputError
@@ -75,7 +75,7 @@ export default function Profile({
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">
-                                        {t('Email address')}
+                                        {t('settings.email_address')}
                                     </Label>
 
                                     <div className="relative">
@@ -87,18 +87,18 @@ export default function Profile({
                                             name="email"
                                             required
                                             autoComplete="username"
-                                            placeholder={t('Email address')}
+                                            placeholder={t('settings.email_address')}
                                         />
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
                                             {auth.user.email_verified_at ? (
                                                 <Badge variant="default" className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                                     <CheckCircle className="h-3 w-3" />
-                                                    {t('Verified')}
+                                                    {t('settings.verified')}
                                                 </Badge>
                                             ) : (
                                                 <Badge variant="destructive" className="gap-1">
                                                     <AlertCircle className="h-3 w-3" />
-                                                    {t('Unverified')}
+                                                    {t('settings.unverified')}
                                                 </Badge>
                                             )}
                                         </div>
@@ -112,7 +112,7 @@ export default function Profile({
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="phone">
-                                        {t('Phone number')}
+                                        {t('settings.phone_number')}
                                     </Label>
 
                                     <div className="relative">
@@ -123,19 +123,19 @@ export default function Profile({
                                             defaultValue={auth.user.phone || ''}
                                             name="phone"
                                             autoComplete="tel"
-                                            placeholder={t('Phone number')}
+                                            placeholder={t('settings.phone_number')}
                                         />
                                         {auth.user.phone && (
                                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
                                                 {auth.user.phone_verified_at ? (
                                                     <Badge variant="default" className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                                         <CheckCircle className="h-3 w-3" />
-                                                        {t('Verified')}
+                                                        {t('settings.verified')}
                                                     </Badge>
                                                 ) : (
                                                     <Badge variant="secondary" className="gap-1">
                                                         <Phone className="h-3 w-3" />
-                                                        {t('Not verified')}
+                                                        {t('settings.not_verified')}
                                                     </Badge>
                                                 )}
                                             </div>
@@ -155,10 +155,10 @@ export default function Profile({
                                                 <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
                                                 <div className="flex-1">
                                                     <h4 className="text-sm font-medium text-amber-800 dark:text-amber-200">
-                                                        {t('Email verification required')}
+                                                        {t('settings.email_verification_required')}
                                                     </h4>
                                                     <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
-                                                        {t('Your email address is unverified. Please verify your email to access all features.')}
+                                                        {t('settings.email_verification_description')}
                                                     </p>
                                                     <div className="mt-3">
                                                         <Link
@@ -167,12 +167,12 @@ export default function Profile({
                                                             className="inline-flex items-center gap-2 rounded-md bg-amber-600 px-3 py-2 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                                                         >
                                                             <Mail className="h-4 w-4" />
-                                                            {t('Send verification email')}
+                                                            {t('settings.send_verification_email')}
                                                         </Link>
                                                     </div>
                                                     {status === 'verification-link-sent' && (
                                                         <div className="mt-3 text-sm font-medium text-green-600 dark:text-green-400">
-                                                            {t('A new verification link has been sent to your email address.')}
+                                                            {t('settings.verification_link_sent')}
                                                         </div>
                                                     )}
                                                 </div>
@@ -185,7 +185,7 @@ export default function Profile({
                                         disabled={processing}
                                         data-test="update-profile-button"
                                     >
-                                        {t('Save')}
+                                        {t('general.save')}
                                     </Button>
 
                                     <Transition
@@ -196,7 +196,7 @@ export default function Profile({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-neutral-600">
-                                            {t('Saved')}
+                                            {t('general.saved')}
                                         </p>
                                     </Transition>
                                 </div>

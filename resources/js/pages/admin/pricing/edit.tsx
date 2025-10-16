@@ -64,18 +64,18 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
     return (
         <AppLayout
-            title={`${t('Edit Pricing')} - ${pricingPlan.plan_name}`}
+            title={`${t('pricing.edit_pricing')} - ${pricingPlan.plan_name}`}
             breadcrumbs={[
                 { label: t('Dashboard'), href: '/dashboard' },
-                { label: t('Pricing Management'), href: `/${window.location.pathname.split('/')[1]}/admin/pricing` },
-                { label: t('Edit Pricing'), href: null },
+                { label: t('pricing.title'), href: `/${window.location.pathname.split('/')[1]}/admin/pricing` },
+                { label: t('pricing.edit_pricing'), href: null },
             ]}
         >
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            {t('Edit Pricing')}
+                            {t('pricing.edit_pricing')}
                         </h1>
                         <p className="text-gray-600 dark:text-gray-400">
                             {pricingPlan.plan_name} ({pricingPlan.plan_type})
@@ -92,7 +92,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                         {/* Normal Pricing */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t('Monthly Price')}</CardTitle>
+                                <CardTitle>{t('pricing.fields.price_monthly')}</CardTitle>
                                 <CardDescription>
                                     Precios normales del plan
                                 </CardDescription>
@@ -100,7 +100,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                             <CardContent className="space-y-4">
                                 <div>
                                     <Label htmlFor="price_monthly">
-                                        {t('Monthly Price')}
+                                        {t('pricing.fields.price_monthly')}
                                     </Label>
                                     <Input
                                         id="price_monthly"
@@ -118,7 +118,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                 <div>
                                     <Label htmlFor="price_yearly">
-                                        {t('Yearly Price')}
+                                        {t('pricing.fields.price_yearly')}
                                     </Label>
                                     <Input
                                         id="price_yearly"
@@ -140,7 +140,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                                         checked={data.is_active}
                                         onCheckedChange={(checked) => setData('is_active', checked)}
                                     />
-                                    <Label htmlFor="is_active">{t('Active')}</Label>
+                                    <Label htmlFor="is_active">{t('pricing.fields.is_active')}</Label>
                                 </div>
                             </CardContent>
                         </Card>
@@ -148,7 +148,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                         {/* Offer Pricing */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t('Offer Name')}</CardTitle>
+                                <CardTitle>{t('pricing.fields.offer_name')}</CardTitle>
                                 <CardDescription>
                                     Configuración de ofertas especiales
                                 </CardDescription>
@@ -160,14 +160,14 @@ export default function PricingEdit({ pricingPlan }: Props) {
                                         checked={data.offer_active}
                                         onCheckedChange={(checked) => setData('offer_active', checked)}
                                     />
-                                    <Label htmlFor="offer_active">{t('Offer Active')}</Label>
+                                    <Label htmlFor="offer_active">{t('pricing.fields.offer_active')}</Label>
                                 </div>
 
                                 {data.offer_active && (
                                     <>
                                         <div>
                                             <Label htmlFor="offer_name">
-                                                {t('Offer Name')}
+                                                {t('pricing.fields.offer_name')}
                                             </Label>
                                             <Input
                                                 id="offer_name"
@@ -183,7 +183,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="offer_description">
-                                                {t('Offer Description')}
+                                                {t('pricing.fields.offer_description')}
                                             </Label>
                                             <Textarea
                                                 id="offer_description"
@@ -199,7 +199,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="offer_price_monthly">
-                                                {t('Offer Monthly Price')}
+                                                {t('pricing.fields.offer_price_monthly')}
                                             </Label>
                                             <Input
                                                 id="offer_price_monthly"
@@ -217,7 +217,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="offer_price_yearly">
-                                                {t('Offer Yearly Price')}
+                                                {t('pricing.fields.offer_price_yearly')}
                                             </Label>
                                             <Input
                                                 id="offer_price_yearly"
@@ -235,7 +235,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="offer_starts_at">
-                                                {t('Offer Starts At')}
+                                                {t('pricing.fields.offer_starts_at')}
                                             </Label>
                                             <Input
                                                 id="offer_starts_at"
@@ -251,7 +251,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="offer_ends_at">
-                                                {t('Offer Ends At')}
+                                                {t('pricing.fields.offer_ends_at')}
                                             </Label>
                                             <Input
                                                 id="offer_ends_at"
@@ -273,7 +273,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                     {/* Scarcity Settings */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('Scarcity Message')}</CardTitle>
+                            <CardTitle>{t('pricing.fields.scarcity_message')}</CardTitle>
                             <CardDescription>
                                 Configuración de escasez para crear urgencia
                             </CardDescription>
@@ -285,14 +285,14 @@ export default function PricingEdit({ pricingPlan }: Props) {
                                     checked={data.scarcity_active}
                                     onCheckedChange={(checked) => setData('scarcity_active', checked)}
                                 />
-                                <Label htmlFor="scarcity_active">{t('Scarcity Active')}</Label>
+                                <Label htmlFor="scarcity_active">{t('pricing.fields.scarcity_active')}</Label>
                             </div>
 
                             {data.scarcity_active && (
                                 <>
                                     <div>
                                         <Label htmlFor="scarcity_message">
-                                            {t('Scarcity Message')}
+                                            {t('pricing.fields.scarcity_message')}
                                         </Label>
                                         <Input
                                             id="scarcity_message"
@@ -309,7 +309,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <Label htmlFor="scarcity_limit">
-                                                {t('Scarcity Limit')}
+                                                {t('pricing.fields.scarcity_limit')}
                                             </Label>
                                             <Input
                                                 id="scarcity_limit"
@@ -326,7 +326,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
 
                                         <div>
                                             <Label htmlFor="scarcity_sold">
-                                                {t('Scarcity Sold')}
+                                                {t('pricing.fields.scarcity_sold')}
                                             </Label>
                                             <Input
                                                 id="scarcity_sold"
@@ -350,7 +350,7 @@ export default function PricingEdit({ pricingPlan }: Props) {
                     <div className="flex justify-end">
                         <Button type="submit" disabled={processing} className="gap-2">
                             <Save className="h-4 w-4" />
-                            {processing ? t('Saving...') : t('Save Changes')}
+                            {processing ? t('Saving...') : t('pricing.actions.save')}
                         </Button>
                     </div>
                 </form>

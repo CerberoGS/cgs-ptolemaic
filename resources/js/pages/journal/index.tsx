@@ -70,10 +70,10 @@ type JournalIndexProps = {
 export default function JournalIndex({ entries, stats, filters }: JournalIndexProps) {
     const t = useTrans();
     const locale = useLocale();
-    const pageTitle = t('Trading Journal');
+    const pageTitle = t('journal.trading_journal');
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t('Dashboard'),
+            title: t('general.dashboard'),
             href: dashboardRoute({ locale }).url,
         },
         {
@@ -130,26 +130,26 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">{pageTitle}</h1>
                         <p className="text-muted-foreground">
-                            {t('Track and analyze your trading performance')}
+                            {t('journal.track_analyze_performance')}
                         </p>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" asChild>
                             <a href={journalRoutes.export.csv({ locale, ...filters }).url}>
                                 <Download className="mr-2 h-4 w-4" />
-                                {t('Export CSV')}
+                                {t('journal.export_csv')}
                             </a>
                         </Button>
                         <Button variant="outline" asChild>
                             <a href={journalRoutes.export.pdf({ locale, ...filters }).url}>
                                 <FileText className="mr-2 h-4 w-4" />
-                                {t('Export PDF')}
+                                {t('journal.export_pdf')}
                             </a>
                         </Button>
                         <Button asChild>
                             <Link href={journalRoutes.create({ locale }).url}>
                                 <Plus className="mr-2 h-4 w-4" />
-                                {t('New Entry')}
+                                {t('journal.new_entry')}
                             </Link>
                         </Button>
                     </div>
@@ -160,7 +160,7 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                {t('Total Trades')}
+                                {t('journal.total_trades')}
                             </CardTitle>
                             <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -172,7 +172,7 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                {t('Win Rate')}
+                                {t('journal.win_rate')}
                             </CardTitle>
                             <TrendingUp className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -202,7 +202,7 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                {t('Avg Win')}
+                                {t('journal.avg_win')}
                             </CardTitle>
                             <TrendingUp className="h-4 w-4 text-green-600" />
                         </CardHeader>
@@ -216,7 +216,7 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                {t('Avg Loss')}
+                                {t('journal.avg_loss')}
                             </CardTitle>
                             <TrendingDown className="h-4 w-4 text-red-600" />
                         </CardHeader>
@@ -238,9 +238,9 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                 {/* Filters */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>{t('Filters')}</CardTitle>
+                        <CardTitle>{t('journal.filters')}</CardTitle>
                         <CardDescription>
-                            {t('Filter your trading journal entries')}
+                            {t('journal.filter_journal_entries')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -255,10 +255,10 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                                         }
                                     >
                                         <SelectTrigger id="asset_type">
-                                            <SelectValue placeholder={t('All')} />
+                                            <SelectValue placeholder={t('journal.all')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">{t('All')}</SelectItem>
+                                            <SelectItem value="all">{t('journal.all')}</SelectItem>
                                             <SelectItem value="stock">{t('Stock')}</SelectItem>
                                             <SelectItem value="forex">{t('Forex')}</SelectItem>
                                             <SelectItem value="crypto">{t('Crypto')}</SelectItem>
@@ -275,10 +275,10 @@ export default function JournalIndex({ entries, stats, filters }: JournalIndexPr
                                         onValueChange={(value) => handleFilterChange('status', value === 'all' ? '' : value)}
                                     >
                                         <SelectTrigger id="status">
-                                            <SelectValue placeholder={t('All')} />
+                                            <SelectValue placeholder={t('journal.all')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">{t('All')}</SelectItem>
+                                            <SelectItem value="all">{t('journal.all')}</SelectItem>
                                             <SelectItem value="open">{t('Open')}</SelectItem>
                                             <SelectItem value="closed">{t('Closed')}</SelectItem>
                                             <SelectItem value="profitable">

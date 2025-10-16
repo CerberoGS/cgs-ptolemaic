@@ -43,7 +43,7 @@ export default function Register() {
 
     return (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-4">
-            <Head title={t('Create an account')} />
+            <Head title={t('auth.register')} />
 
             <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
@@ -53,10 +53,10 @@ export default function Register() {
                         </Link>
                     </div>
                     <CardTitle className="text-2xl">
-                        {t('Create an account')}
+                        {t('auth.register')}
                     </CardTitle>
                     <CardDescription className="text-slate-400">
-                        {t('Enter your details below to get started.')}
+                        {t('auth.create_account_description')}
                     </CardDescription>
                 </CardHeader>
 
@@ -69,7 +69,7 @@ export default function Register() {
                         >
                             <a href="/login-google">
                                 <GoogleIcon className="mr-2 h-5 w-5" />
-                                {t('Continue with Google')}
+                                {t('auth.register_with_google')}
                             </a>
                         </Button>
 
@@ -79,7 +79,7 @@ export default function Register() {
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-slate-800/50 px-2 text-slate-400">
-                                    {t('Or continue with email')}
+                                    {t('auth.or_continue_with_email')}
                                 </span>
                             </div>
                         </div>
@@ -93,7 +93,7 @@ export default function Register() {
                             {({ processing, errors }) => (
                                 <>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">{t('Name')}</Label>
+                                        <Label htmlFor="name">{t('auth.name')}</Label>
                                         <Input
                                             id="name"
                                             type="text"
@@ -102,14 +102,14 @@ export default function Register() {
                                             tabIndex={1}
                                             autoComplete="name"
                                             name="name"
-                                            placeholder={t('Your full name')}
+                                            placeholder={t('auth.name_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">{t('Email')}</Label>
+                                        <Label htmlFor="email">{t('auth.email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
@@ -117,7 +117,7 @@ export default function Register() {
                                             tabIndex={2}
                                             autoComplete="email"
                                             name="email"
-                                            placeholder="email@example.com"
+                                            placeholder={t('auth.email_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.email} />
@@ -125,7 +125,7 @@ export default function Register() {
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password">
-                                            {t('Password')}
+                                            {t('auth.password')}
                                         </Label>
                                         <Input
                                             id="password"
@@ -134,7 +134,7 @@ export default function Register() {
                                             tabIndex={3}
                                             autoComplete="new-password"
                                             name="password"
-                                            placeholder="********"
+                                            placeholder={t('auth.password_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.password} />
@@ -142,7 +142,7 @@ export default function Register() {
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password_confirmation">
-                                            {t('Confirm Password')}
+                                            {t('auth.password_confirmation')}
                                         </Label>
                                         <Input
                                             id="password_confirmation"
@@ -151,7 +151,7 @@ export default function Register() {
                                             tabIndex={4}
                                             autoComplete="new-password"
                                             name="password_confirmation"
-                                            placeholder="********"
+                                            placeholder={t('auth.password_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.password_confirmation} />
@@ -167,20 +167,20 @@ export default function Register() {
                                         {processing && (
                                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                         )}
-                                        {t('Create Account')}
+                                        {t('auth.create_account')}
                                     </Button>
                                 </>
                             )}
                         </Form>
 
                         <div className="mt-4 text-center text-sm text-slate-400">
-                            {t('Already have an account?')}{' '}
+                            {t('auth.already_have_account')}{' '}
                             <TextLink
                                 href={login({ locale: currentLocale })}
                                 tabIndex={6}
                                 className="text-blue-400 hover:text-blue-300"
                             >
-                                {t('Log in')}
+                                {t('auth.sign_in')}
                             </TextLink>
                         </div>
                     </div>

@@ -42,7 +42,7 @@ export default function Dashboard({ recentTrades = [] }: DashboardProps) {
     const { auth } = usePage<SharedData>().props;
     const plan = auth.plan;
     const [startingTrial, setStartingTrial] = useState(false);
-    const pageTitle = t('Dashboard');
+    const pageTitle = t('general.dashboard');
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: pageTitle,
@@ -121,12 +121,12 @@ export default function Dashboard({ recentTrades = [] }: DashboardProps) {
                                     className="gap-2"
                                 >
                                     {startingTrial
-                                        ? t('Processing...')
-                                        : t('Start free trial')}
+                                        ? t('general.processing')
+                                        : t('general.start_free_trial')}
                                 </Button>
                                 <Button asChild variant="outline" className="gap-2">
                                     <Link href={upgradeUrl}>
-                                        {t('Compare plans')}
+                                        {t('general.compare_plans')}
                                     </Link>
                                 </Button>
                                 <p className="text-xs text-muted-foreground">

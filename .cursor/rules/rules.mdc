@@ -36,3 +36,11 @@ Managed: consejos de uso y recordatorio de límites.
 Notificaciones al 80 % de cuota mensual.
 Integrar métricas en CRM para detectar quién debe migrar a Pro (uso alto en Managed).
 Así tendrás una escalera clara: Free para captar, Trial para convencer, Managed como puente “llave en mano”, Pro para power users, Enterprise para organizaciones grandes, con soporte técnico y comercial en cada paso.
+
+ INSTRUCCIONES PARA FUTURAS TRADUCCIONES:
+Para agregar nuevas traducciones:
+Verificar si el archivo existe: lang/{locale}/{namespace}.php
+Si existe: Agregar la nueva clave al archivo existente
+Si no existe: Crear nuevo archivo con estructura Laravel:
+En frontend: Usar t('namespace.clave') en lugar de t('Clave')
+Compilar: Ejecutar npm run build para aplicar cambios

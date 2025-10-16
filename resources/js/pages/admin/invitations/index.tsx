@@ -109,21 +109,21 @@ export default function InvitationsIndex({ invitations, filters }: Props) {
 
     return (
         <AppSidebarLayout>
-            <Head title={t('Invitations')} />
+            <Head title={t('admin.invitations')} />
 
             <div className="space-y-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">{t('Invitations')}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">{t('admin.invitations')}</h1>
                         <p className="mt-2 text-muted-foreground">
-                            {t('Manage invitation codes and track redemptions')}
+                            {t('admin.manage_invitation_codes')}
                         </p>
                     </div>
                     <Button asChild>
                         <Link href={`/${locale}/admin/invitations/create`}>
                             <Plus className="mr-2 size-4" />
-                            {t('Create Invitation')}
+                            {t('admin.create_invitation')}
                         </Link>
                     </Button>
                 </div>

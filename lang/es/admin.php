@@ -1,0 +1,147 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    // Admin navigation and titles
+    'administration' => 'Administración',
+    'admin' => 'Admin',
+    'dashboard' => 'Panel de Control',
+    'users' => 'Usuarios',
+    'providers' => 'Proveedores',
+    'roles' => 'Roles',
+    'feedback' => 'Comentarios',
+    'invitations' => 'Invitaciones',
+    'pricing' => 'Precios',
+    
+    // User management
+    'user_information' => 'Información del Usuario',
+    'change_plan' => 'Cambiar Plan',
+    'current_plan' => 'Plan Actual',
+    'plan_change_history' => 'Historial de Cambios de Plan',
+    'recent_changes' => 'Cambios Recientes',
+    'no_recent_plan_changes' => 'No hay cambios de plan recientes',
+    'changed_by' => 'Cambiado por',
+    'trial_end_date' => 'Fecha de Fin de Prueba',
+    
+    // Plan management
+    'public_plans' => 'Planes Públicos',
+    'internal_plans' => 'Planes Internos',
+    'plan' => 'Plan',
+    'target_plan' => 'Plan Objetivo',
+    'price_monthly' => 'Precio Mensual',
+    'price_yearly' => 'Precio Anual',
+    
+    // Invitation management
+    'invitation_details' => 'Detalles de Invitación',
+    'create_invitation' => 'Crear Invitación',
+    'manage_invitation_codes' => 'Gestionar códigos de invitación y rastrear canjes',
+    'generate_invitation_code' => 'Generar un nuevo código de invitación con configuración personalizada',
+    'basic_information' => 'Información Básica',
+    'provide_name_description' => 'Proporciona un nombre y descripción para esta invitación',
+    'plan_configuration' => 'Configuración del Plan',
+    'configure_target_plan' => 'Configura el plan objetivo y precios',
+    'usage_limits' => 'Límites de Uso',
+    'set_limits_expiration' => 'Establece límites y expiración para esta invitación',
+    'recent_redemptions' => 'Canjes Recientes',
+    'no_redemptions_yet' => 'Aún no hay canjes',
+    
+    // Invitation fields
+    'code' => 'Código',
+    'link' => 'Enlace',
+    'name' => 'Nombre',
+    'description' => 'Descripción',
+    'optional_description' => 'Descripción opcional para uso interno',
+    'select_plan' => 'Seleccionar un plan',
+    'leave_empty_for_free' => 'Dejar vacío para gratis',
+    'trial_days' => 'Días de prueba',
+    'number_of_trial_days' => 'Número de días para el período de prueba',
+    'usage_limit' => 'Límite de Uso',
+    'unlimited' => 'Ilimitado',
+    'leave_empty_unlimited' => 'Dejar vacío para uso ilimitado',
+    'expires_at' => 'Expira el',
+    'leave_empty_no_expiration' => 'Dejar vacío para sin expiración',
+    'referred_by' => 'Referido por',
+    'partner_name_source' => 'Nombre del socio o fuente',
+    'optional_tracking' => 'Campo opcional para propósitos de seguimiento',
+    
+    // Feedback management
+    'feedback_management' => 'Gestión de Comentarios',
+    'view_manage_feedback' => 'Ver y gestionar comentarios de usuarios',
+    'message' => 'Mensaje',
+    'screenshot' => 'Captura de Pantalla',
+    'admin_notes' => 'Notas del Admin',
+    'notes' => 'Notas',
+    'user_information' => 'Información del Usuario',
+    'technical_information' => 'Información Técnica',
+    'page_url' => 'URL de la Página',
+    'open_page' => 'Abrir página',
+    'user_agent' => 'Agente de Usuario',
+    'created' => 'Creado',
+    'updated' => 'Actualizado',
+    
+    // Status and priority
+    'status' => 'Estado',
+    'priority' => 'Prioridad',
+    'type' => 'Tipo',
+    'redemptions' => 'Canjes',
+    'available' => 'Disponible',
+    'actions' => 'Acciones',
+    
+    // Filters and search
+    'filters' => 'Filtros',
+    'search' => 'Buscar',
+    'filter_by_name_code' => 'Filtrar invitaciones por nombre o código',
+    'apply_filters' => 'Aplicar Filtros',
+    'all_types' => 'Todos los Tipos',
+    'all_statuses' => 'Todos los Estados',
+    'all_priorities' => 'Todas las Prioridades',
+    
+    // Common actions
+    'view' => 'Ver',
+    'view_details' => 'Ver Detalles',
+    'view_page' => 'Ver Página',
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
+    'disable' => 'Deshabilitar',
+    'enable' => 'Habilitar',
+    'save_changes' => 'Guardar Cambios',
+    'cancel' => 'Cancelar',
+    'back' => 'Atrás',
+    'creating' => 'Creando...',
+    'updating' => 'Actualizando...',
+    
+    // Messages
+    'no_invitations_found' => 'No se encontraron invitaciones',
+    'no_feedback_found' => 'No se encontraron comentarios',
+    'invitation_created' => 'Invitación creada exitosamente',
+    'invitation_updated' => 'Invitación actualizada exitosamente',
+    'invitation_deleted' => 'Invitación eliminada exitosamente',
+    'feedback_updated' => 'Comentario actualizado exitosamente',
+    'plan_changed' => 'Plan cambiado exitosamente',
+    
+    // Error messages
+    'invitation_not_found' => 'Invitación no encontrada',
+    'feedback_not_found' => 'Comentario no encontrado',
+    'user_not_found' => 'Usuario no encontrado',
+    'invalid_plan' => 'Plan inválido',
+    'invitation_expired' => 'Invitación expirada',
+    'invitation_disabled' => 'Invitación deshabilitada',
+    'usage_limit_reached' => 'Límite de uso alcanzado',
+    
+    // Statistics
+    'total_users' => 'Total de Usuarios',
+    'registered_providers' => 'Proveedores Registrados',
+    'total_feedback' => 'Total de Comentarios',
+    'pending_feedback' => 'Comentarios Pendientes',
+    'total_invitations' => 'Total de Invitaciones',
+    'active_invitations' => 'Invitaciones Activas',
+    
+    // Management actions
+    'manage_providers' => 'Gestionar Proveedores',
+    'manage_roles' => 'Gestionar Roles',
+    'manage_users' => 'Gestionar Usuarios',
+    'manage_feedback' => 'Gestionar Comentarios',
+    'manage_invitations' => 'Gestionar Invitaciones',
+    'manage_pricing' => 'Gestionar Precios',
+];

@@ -27,10 +27,10 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
     const t = useTrans();
     const locale = useLocale();
 
-    const pageTitle = t('Administration');
+    const pageTitle = t('admin.administration');
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t('Dashboard'),
+            title: t('general.dashboard'),
             href: dashboardRoute({ locale }).url,
         },
         {
@@ -47,7 +47,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
             <section className="flex flex-1 flex-col gap-6 p-4">
                 <header className="flex flex-col gap-2">
                     <h1 className="text-2xl font-semibold tracking-tight">
-                        {t('Administration')}
+                        {t('admin.administration')}
                     </h1>
                     <p className="text-muted-foreground max-w-2xl text-sm">
                         {t(
@@ -59,7 +59,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     <article className="rounded-lg border border-sidebar-border/70 bg-card p-4 shadow-sm dark:border-sidebar-border">
                         <h2 className="text-sm font-semibold text-muted-foreground">
-                            {t('Usuarios')}
+                            {t('admin.users')}
                         </h2>
                         <div className="mt-2 flex items-end justify-between">
                             <span className="text-3xl font-semibold">
@@ -75,7 +75,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
 
                     <article className="rounded-lg border border-sidebar-border/70 bg-card p-4 shadow-sm dark:border-sidebar-border">
                         <h2 className="text-sm font-semibold text-muted-foreground">
-                            {t('Proveedores registrados')}
+                            {t('admin.registered_providers')}
                         </h2>
                         <div className="mt-3 space-y-2">
                             {providerTotals.length === 0 && (
@@ -128,22 +128,22 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     <div className="flex flex-wrap gap-2">
                         <Button asChild variant="outline" size="sm">
                             <Link href={adminRoutes.providers.index({ locale }).url}>
-                                {t('Manage providers')}
+                                {t('admin.manage_providers')}
                             </Link>
                         </Button>
                         <Button asChild variant="outline" size="sm">
                             <Link href={adminRoutes.roles.index({ locale }).url}>
-                                {t('Manage roles')}
+                                {t('admin.manage_roles')}
                             </Link>
                         </Button>
                         <Button asChild variant="outline" size="sm">
                             <Link href={adminRoutes.users.index({ locale }).url}>
-                                {t('Manage users')}
+                                {t('admin.manage_users')}
                             </Link>
                         </Button>
                         <Button asChild variant="outline" size="sm">
                             <Link href={`/${locale}/admin/feedback`}>
-                                {t('Manage feedback')}
+                                {t('admin.manage_feedback')}
                             </Link>
                         </Button>
                     </div>

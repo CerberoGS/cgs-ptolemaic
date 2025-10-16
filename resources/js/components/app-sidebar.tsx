@@ -45,22 +45,22 @@ export function AppSidebar() {
 
     const mainNavItems: NavItem[] = [
         {
-            title: t('Dashboard'),
+            title: t('components.dashboard'),
             href: dashboard({ locale }),
             icon: LayoutGrid,
         },
         {
-            title: t('Trading Journal'),
+            title: t('components.trading_journal'),
             href: journalRoutes.index({ locale }),
             icon: BookText,
         },
         {
-            title: t('Analytics'),
+            title: t('components.analytics'),
             href: analyticsRoutes.index({ locale }),
             icon: BarChart3,
         },
         {
-            title: t('Achievements'),
+            title: t('components.achievements'),
             href: achievementsRoutes.index({ locale }),
             icon: Trophy,
         },
@@ -69,7 +69,7 @@ export function AppSidebar() {
     // Feedback access for managers and admins
     if (permissions.includes('feedback.manage')) {
         mainNavItems.push({
-            title: t('Feedback'),
+            title: t('components.feedback'),
             href: `/${locale}/admin/feedback`,
             icon: MessageSquare,
         });
@@ -78,7 +78,7 @@ export function AppSidebar() {
     // Invitations access for admins
     if (permissions.includes('invitations.manage')) {
         mainNavItems.push({
-            title: t('Invitations'),
+            title: t('components.invitations'),
             href: `/${locale}/admin/invitations`,
             icon: Ticket,
         });
@@ -87,7 +87,7 @@ export function AppSidebar() {
     // Pricing access for admins
     if (permissions.includes('pricing.manage')) {
         mainNavItems.push({
-            title: t('Pricing Management'),
+            title: t('pricing.title'),
             href: `/${locale}/admin/pricing`,
             icon: DollarSign,
         });
@@ -105,7 +105,7 @@ export function AppSidebar() {
 
     if (canAccessAdmin) {
         mainNavItems.push({
-            title: t('Administration'),
+            title: t('components.administration'),
             href: adminRoutes.dashboard({ locale }),
             icon: ShieldCheck,
         });
@@ -113,7 +113,7 @@ export function AppSidebar() {
 
     if (plan?.canAccessIntegrations) {
         mainNavItems.push({
-            title: t('Integrations'),
+            title: t('components.integrations'),
             href: integrationsRoutes.index({ locale }),
             icon: Plug,
         });

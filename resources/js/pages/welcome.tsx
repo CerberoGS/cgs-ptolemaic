@@ -56,7 +56,7 @@ export default function Welcome() {
                                     href={dashboard({ locale: currentLocale })}
                                     className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                                 >
-                                    {t('Dashboard')}
+                                    {t('general.dashboard')}
                                 </Link>
                             ) : (
                                 <>
@@ -64,13 +64,13 @@ export default function Welcome() {
                                         href={login({ locale: currentLocale })}
                                         className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                                     >
-                                        {t('Sign In')}
+                                        {t('auth.sign_in')}
                                     </Link>
                                     <Link
                                         href={register({ locale: currentLocale })}
                                         className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                                     >
-                                        {t('Create Account')}
+                                        {t('auth.create_account')}
                                     </Link>
                                 </>
                             )}
@@ -94,9 +94,9 @@ export default function Welcome() {
                         {t('welcome.hero.badge')}
                       </Badge>
                       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                        {t('Invest with')}{' '}
+                        {t('general.invest_with')}{' '}
                         <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                          {t('Artificial Intelligence')}
+                          {t('general.artificial_intelligence')}
                         </span>
                       </h1>
                       <p className="mt-6 text-lg leading-8 text-gray-300">
@@ -104,10 +104,10 @@ export default function Welcome() {
                       </p>
                       <div className="mt-10 flex items-center justify-center gap-x-6">
                         <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                          {t('Get Started Now')}
+                          {t('general.get_started_now')}
                         </Button>
                         <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                          {t('Watch Demo')}
+                          {t('general.watch_demo')}
                         </Button>
                       </div>
                     </motion.div>

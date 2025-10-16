@@ -80,18 +80,43 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Obtiene las traducciones cargadas desde los archivos JSON.
+     * Obtiene las traducciones cargadas desde archivos JSON y PHP.
      */
     protected function getTranslations(): array
     {
         $locale = app()->getLocale();
+        $translations = [];
+        
+        // Cargar archivos JSON (mantener compatibilidad)
         $jsonPath = base_path("lang/{$locale}.json");
-
         if (file_exists($jsonPath)) {
-            return json_decode(file_get_contents($jsonPath), true) ?? [];
+            $jsonTranslations = json_decode(file_get_contents($jsonPath), true) ?? [];
+            $translations = array_merge($translations, $jsonTranslations);
         }
-
-        return [];
+        
+        // Cargar archivos PHP organizados por namespace
+        $phpPath = base_path("lang/{$locale}");
+        if (is_dir($phpPath)) {
+            foreach (glob($phpPath . '/*.php') as $file) {
+                $namespace = basename($file, '.php');
+                $fileTranslations = require $file;
+                
+                // Aplanar las traducciones con namespace
+                foreach ($fileTranslations as $key => $value) {
+                    if (is_array($value)) {
+                        // Para arrays anidados, crear claves con punto
+                        foreach ($value as $subKey => $subValue) {
+                            $translations["{$namespace}.{$subKey}"] = $subValue;
+                        }
+                    } else {
+                        // Para valores directos, usar namespace.key
+                        $translations["{$namespace}.{$key}"] = $value;
+                    }
+                }
+            }
+        }
+        
+        return $translations;
     }
 
     /**

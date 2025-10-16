@@ -38,7 +38,7 @@ export function UserMenuContent({ user, plan }: UserMenuContentProps) {
             </DropdownMenuLabel>
             {plan && (
                 <div className="flex items-center justify-between px-1.5 pb-2 text-xs text-muted-foreground">
-                    <span>{t('Current Plan')}</span>
+                    <span>{t('components.current_plan')}</span>
                     <span
                         className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 ${
                             plan.isInternal
@@ -63,7 +63,7 @@ export function UserMenuContent({ user, plan }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <Settings className="mr-2" />
-                        {t('Settings')}
+                        {t('components.settings')}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -90,7 +90,7 @@ export function UserMenuContent({ user, plan }: UserMenuContentProps) {
                     data-test="logout-button"
                 >
                     <LogOut className="mr-2" />
-                    {t('Log out')}
+                    {t('components.log_out')}
                 </Link>
             </DropdownMenuItem>
         </>

@@ -50,7 +50,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-4">
-            <Head title={t('Log in')} />
+            <Head title={t('auth.login')} />
 
             <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 text-white">
                 <CardHeader className="text-center">
@@ -60,10 +60,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         </Link>
                     </div>
                     <CardTitle className="text-2xl">
-                        {t('Log in to your account')}
+                        {t('auth.login')}
                     </CardTitle>
                     <CardDescription className="text-slate-400">
-                        {t('Welcome back! Please enter your details.')}
+                        {t('auth.welcome_back')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -75,7 +75,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         >
                             <a href="/login-google">
                                 <GoogleIcon className="mr-2 h-5 w-5" />
-                                {t('Continue with Google')}
+                                {t('auth.login_with_google')}
                             </a>
                         </Button>
 
@@ -85,7 +85,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-slate-800/50 px-2 text-slate-400">
-                                    {t('Or continue with')}
+                                    {t('auth.or_continue_with')}
                                 </span>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 <>
                                     <div className="grid gap-2">
                                         <Label htmlFor="email">
-                                            {t('Email')}
+                                            {t('auth.email')}
                                         </Label>
                                         <Input
                                             id="email"
@@ -109,7 +109,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                             autoFocus
                                             tabIndex={1}
                                             autoComplete="email"
-                                            placeholder="email@example.com"
+                                            placeholder={t('auth.email_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.email} />
@@ -118,7 +118,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     <div className="grid gap-2">
                                         <div className="flex items-center">
                                             <Label htmlFor="password">
-                                                {t('Password')}
+                                                {t('auth.password')}
                                             </Label>
                                             {canResetPassword && (
                                                 <TextLink
@@ -128,7 +128,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                                     className="ml-auto text-sm text-blue-400 hover:text-blue-300"
                                                     tabIndex={5}
                                                 >
-                                                    {t('Forgot password?')}
+                                                    {t('auth.forgot_password')}
                                                 </TextLink>
                                             )}
                                         </div>
@@ -139,7 +139,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                             required
                                             tabIndex={2}
                                             autoComplete="current-password"
-                                            placeholder="********"
+                                            placeholder={t('auth.password_placeholder')}
                                             className="border-slate-700 bg-slate-900/50 focus:ring-blue-500"
                                         />
                                         <InputError message={errors.password} />
@@ -153,7 +153,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                             className="border-slate-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
                                         />
                                         <Label htmlFor="remember">
-                                            {t('Remember me')}
+                                            {t('auth.remember_me')}
                                         </Label>
                                     </div>
 
@@ -173,20 +173,20 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                         {processing && (
                                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                         )}
-                                        {t('Log In')}
+                                        {t('auth.sign_in')}
                                     </Button>
                                 </>
                             )}
                         </Form>
 
                         <div className="mt-4 text-center text-sm text-slate-400">
-                            {t("Don't have an account?")}{' '}
+                            {t('auth.dont_have_account')}{' '}
                             <TextLink
                                 href={register({ locale: currentLocale })}
                                 tabIndex={5}
                                 className="text-blue-400 hover:text-blue-300"
                             >
-                                {t('Sign up')}
+                                {t('auth.sign_up')}
                             </TextLink>
                         </div>
                     </div>

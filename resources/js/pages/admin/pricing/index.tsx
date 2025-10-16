@@ -66,20 +66,20 @@ export default function PricingIndex({ pricingPlans }: Props) {
 
     return (
         <AppLayout
-            title={t('Pricing Management')}
+            title={t('pricing.title')}
             breadcrumbs={[
                 { label: t('Dashboard'), href: '/dashboard' },
-                { label: t('Pricing Management'), href: null },
+                { label: t('pricing.title'), href: null },
             ]}
         >
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            {t('Pricing Management')}
+                            {t('pricing.title')}
                         </h1>
                         <p className="text-gray-600 dark:text-gray-400">
-                            {t('Pricing Plans')}
+                            {t('pricing.pricing_plans')}
                         </p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                             {plan.plan_name}
                                         </CardTitle>
                                         <CardDescription>
-                                            {t('Plan Type')}: {plan.plan_type}
+                                            {t('pricing.fields.plan_type')}: {plan.plan_type}
                                         </CardDescription>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -111,7 +111,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                             </Badge>
                                         )}
                                         <Badge variant={plan.is_active ? 'default' : 'secondary'}>
-                                            {plan.is_active ? t('Active') : t('Inactive')}
+                                            {plan.is_active ? t('pricing.status.active') : t('pricing.status.inactive')}
                                         </Badge>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                     {/* Pricing Info */}
                                     <div>
                                         <h4 className="font-medium text-sm text-gray-900 dark:text-white mb-2">
-                                            {t('Monthly Price')}
+                                            {t('pricing.fields.price_monthly')}
                                         </h4>
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                                 )}
                                             </div>
                                             <div className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Yearly Price')}: {formatPrice(plan.price_yearly)}
+                                                {t('pricing.fields.price_yearly')}: {formatPrice(plan.price_yearly)}
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                     {/* Offer Info */}
                                     <div>
                                         <h4 className="font-medium text-sm text-gray-900 dark:text-white mb-2">
-                                            {t('Offer Name')}
+                                            {t('pricing.fields.offer_name')}
                                         </h4>
                                         <div className="space-y-1">
                                             {plan.offer_active ? (
@@ -161,7 +161,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                                 </>
                                             ) : (
                                                 <div className="text-sm text-gray-500">
-                                                    {t('Offer Inactive')}
+                                                    {t('pricing.status.offer_inactive')}
                                                 </div>
                                             )}
                                         </div>
@@ -170,7 +170,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                     {/* Scarcity Info */}
                                     <div>
                                         <h4 className="font-medium text-sm text-gray-900 dark:text-white mb-2">
-                                            {t('Scarcity Message')}
+                                            {t('pricing.fields.scarcity_message')}
                                         </h4>
                                         <div className="space-y-1">
                                             {plan.scarcity_active ? (
@@ -184,7 +184,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                                 </>
                                             ) : (
                                                 <div className="text-sm text-gray-500">
-                                                    {t('Scarcity Inactive')}
+                                                    {t('pricing.status.scarcity_inactive')}
                                                 </div>
                                             )}
                                         </div>
@@ -201,7 +201,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                             className="gap-2"
                                         >
                                             <Edit className="h-4 w-4" />
-                                            {t('Edit')}
+                                            {t('pricing.actions.edit')}
                                         </Button>
 
                                         <Button
@@ -215,7 +215,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                             ) : (
                                                 <ToggleLeft className="h-4 w-4" />
                                             )}
-                                            {t('Toggle Offer')}
+                                            {t('pricing.actions.toggle_offer')}
                                         </Button>
 
                                         <Button
@@ -229,7 +229,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                             ) : (
                                                 <ToggleLeft className="h-4 w-4" />
                                             )}
-                                            {t('Toggle Scarcity')}
+                                            {t('pricing.actions.toggle_scarcity')}
                                         </Button>
 
                                         {plan.scarcity_active && (
@@ -241,7 +241,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                                     className="gap-2"
                                                 >
                                                     <Plus className="h-4 w-4" />
-                                                    {t('Increment Scarcity')}
+                                                    {t('pricing.actions.increment_scarcity')}
                                                 </Button>
 
                                                 <Button
@@ -251,7 +251,7 @@ export default function PricingIndex({ pricingPlans }: Props) {
                                                     className="gap-2"
                                                 >
                                                     <RotateCcw className="h-4 w-4" />
-                                                    {t('Reset Scarcity')}
+                                                    {t('pricing.actions.reset_scarcity')}
                                                 </Button>
                                             </>
                                         )}

@@ -5,6 +5,9 @@ import roles from './roles'
 import feedback from './feedback'
 import invitations from './invitations'
 import pricing from './pricing'
+import languages from './languages'
+import affiliate from './affiliate'
+import waitlist from './waitlist'
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
@@ -121,6 +124,9 @@ roles: Object.assign(roles, roles),
 feedback: Object.assign(feedback, feedback),
 invitations: Object.assign(invitations, invitations),
 pricing: Object.assign(pricing, pricing),
+languages: Object.assign(languages, languages),
+affiliate: Object.assign(affiliate, affiliate),
+waitlist: Object.assign(waitlist, waitlist),
 }
 
 export default admin

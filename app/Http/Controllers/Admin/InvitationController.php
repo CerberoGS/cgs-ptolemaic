@@ -130,8 +130,13 @@ class InvitationController extends Controller
     /**
      * Display the specified invitation
      */
-    public function show(Invitation $invitation): Response
+    public function show(string $locale, $invitation): Response
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($invitation) || is_numeric($invitation)) {
+            $invitation = Invitation::findOrFail($invitation);
+        }
+        
         $invitation->load(['creator:id,name,email', 'redemptions.user:id,name,email']);
 
         return Inertia::render('admin/invitations/show', [
@@ -180,8 +185,13 @@ class InvitationController extends Controller
     /**
      * Update the specified invitation
      */
-    public function update(Request $request, Invitation $invitation): RedirectResponse
+    public function update(Request $request, string $locale, $invitation): RedirectResponse
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($invitation) || is_numeric($invitation)) {
+            $invitation = Invitation::findOrFail($invitation);
+        }
+        
         $validated = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -198,8 +208,13 @@ class InvitationController extends Controller
     /**
      * Remove the specified invitation
      */
-    public function destroy(Invitation $invitation): RedirectResponse
+    public function destroy(string $locale, $invitation): RedirectResponse
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($invitation) || is_numeric($invitation)) {
+            $invitation = Invitation::findOrFail($invitation);
+        }
+        
         $invitation->delete();
 
         return redirect()

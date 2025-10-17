@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PlanType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -37,6 +38,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'trial_ends_at',
         'card_added_at',
         'plan_metadata',
+        'affiliate_code',
+        'referred_by_code',
+        'monthly_analysis_bonus',
+        'affiliate_discount_percentage',
+        'affiliate_discount_expires_at',
     ];
 
     /**
@@ -123,6 +129,54 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Achievement::class, 'user_achievements')
             ->withTimestamps()
             ->withPivot('unlocked_at');
+    }
+
+    // Affiliate System Relations
+    public function affiliateCode(): HasOne
+    {
+        return $this->hasOne(AffiliateCode::class);
+    }
+
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'affiliate_user_id');
+    }
+
+    public function activeReferrals(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'affiliate_user_id')
+            ->where('status', 'active');
+    }
+
+    public function referredBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referred_by_code', 'affiliate_code');
+    }
+
+    public function affiliateRewards(): HasMany
+    {
+        return $this->hasMany(AffiliateReward::class);
+    }
+
+    public function activeAffiliateRewards(): HasMany
+    {
+        return $this->hasMany(AffiliateReward::class)
+            ->where('status', 'active')
+            ->where(function($query) {
+                $query->whereNull('expires_at')
+                      ->orWhere('expires_at', '>', now());
+            });
+    }
+
+    public function waitlistEntries(): HasMany
+    {
+        return $this->hasMany(WaitlistEntry::class);
+    }
+
+    public function activeWaitlistEntries(): HasMany
+    {
+        return $this->hasMany(WaitlistEntry::class)
+            ->where('status', 'active');
     }
 
     public function hasPlan(PlanType $plan): bool
@@ -368,5 +422,87 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Simple formatting - you can enhance this based on your needs
         return $this->phone;
+    }
+
+    // Affiliate System Methods
+    public function generateAffiliateCode(): string
+    {
+        if ($this->affiliate_code) {
+            return $this->affiliate_code;
+        }
+
+        $code = strtoupper(substr($this->name, 0, 3) . substr($this->id, -3));
+        
+        // Ensure uniqueness
+        $counter = 1;
+        $originalCode = $code;
+        while (User::where('affiliate_code', $code)->exists()) {
+            $code = $originalCode . $counter;
+            $counter++;
+        }
+
+        $this->update(['affiliate_code' => $code]);
+
+        // Create AffiliateCode record only if it doesn't exist
+        if (!$this->affiliateCode) {
+            AffiliateCode::create([
+                'user_id' => $this->id,
+                'code' => $code,
+            ]);
+        }
+
+        return $code;
+    }
+
+    public function getAffiliateLink(): string
+    {
+        $code = $this->affiliate_code ?? $this->generateAffiliateCode();
+        return url("/ref/{$code}");
+    }
+
+    public function getTotalAnalysisBonus(): int
+    {
+        $referralBonus = $this->activeReferrals()->sum('monthly_analysis_bonus');
+        $rewardBonus = $this->activeAffiliateRewards()
+            ->where('reward_type', 'analysis_bonus')
+            ->sum('analysis_bonus');
+        
+        return $referralBonus + $rewardBonus + $this->monthly_analysis_bonus;
+    }
+
+    public function getTotalDiscountPercentage(): float
+    {
+        $rewardDiscount = $this->activeAffiliateRewards()
+            ->where('reward_type', 'discount_percentage')
+            ->max('discount_percentage') ?? 0;
+        
+        return max($rewardDiscount, $this->affiliate_discount_percentage);
+    }
+
+    public function canRedeemDiscount(): bool
+    {
+        return $this->activeReferrals()->count() >= 10 && 
+               $this->getTotalDiscountPercentage() === 0;
+    }
+
+    public function redeemDiscount(): bool
+    {
+        if (!$this->canRedeemDiscount()) {
+            return false;
+        }
+
+        $referralsCount = $this->activeReferrals()->count();
+        $discountPercentage = min(($referralsCount / 10) * 10, 50); // Max 50%
+
+        AffiliateReward::create([
+            'user_id' => $this->id,
+            'reward_type' => 'discount_percentage',
+            'discount_percentage' => $discountPercentage,
+            'referrals_count' => $referralsCount,
+            'status' => 'active',
+            'notes' => "Canjeado por {$referralsCount} referidos activos",
+        ]);
+
+        return true;
     }
 }

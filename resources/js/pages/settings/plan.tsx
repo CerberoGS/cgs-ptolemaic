@@ -15,12 +15,14 @@ import integrationsRoutes from '@/routes/settings/integrations';
 import { cn } from '@/lib/utils';
 import { Head, router } from '@inertiajs/react';
 import { ArrowRight, CheckCircle2, CreditCard, Lock, Mail } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useAjax } from '@/hooks/use-ajax';
 import { PlanHeader } from '@/components/plans/plan-header';
 import { FeatureItem } from '@/components/plans/feature-item';
 import { TrialBanner } from '@/components/plans/trial-banner';
 import { UpgradeCTA } from '@/components/plans/upgrade-cta';
 import { PlanCTA } from '@/components/plans/plan-cta';
-import { useState } from 'react';
 
 type PlanFeature = string;
 
@@ -94,6 +96,52 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
     const t = useTrans();
     const locale = useLocale();
     const [processing, setProcessing] = useState(false);
+    const [waitlistStatus, setWaitlistStatus] = useState<{
+        is_on_waitlist: boolean;
+        current_plan: string | null;
+        current_plan_label: string | null;
+    }>({
+        is_on_waitlist: false,
+        current_plan: null,
+        current_plan_label: null,
+    });
+    const [showModal, setShowModal] = useState(false);
+    const [modalData, setModalData] = useState<{
+        planType: string;
+        planLabel: string;
+        action: 'add' | 'switch' | 'remove';
+        currentPlan?: string;
+    } | null>(null);
+
+    // Load waitlist status on component mount
+    useEffect(() => {
+        // Get waitlist status from the current page props if available
+        if (window.waitlistStatus) {
+            setWaitlistStatus(window.waitlistStatus);
+        } else {
+            // Load waitlist status from server
+            const loadWaitlistStatus = async () => {
+                try {
+                    const response = await fetch(`/${locale}/settings/waitlist/status`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setWaitlistStatus(data.waitlistStatus);
+                    }
+                } catch (error) {
+                    console.error('Error loading waitlist status:', error);
+                }
+            };
+
+            loadWaitlistStatus();
+        }
+    }, [locale]);
 
     const breadcrumbs = [
         {
@@ -119,14 +167,146 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
         setTimeout(() => setProcessing(false), 2000);
     };
 
+    const handleWaitlistAction = (planType: string, planLabel: string) => {
+        const isOnThisPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === planType;
+        const isOnOtherPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan !== planType;
+
+        if (isOnThisPlan) {
+            // User is already on this plan's waitlist - offer to remove
+            setModalData({
+                planType,
+                planLabel,
+                action: 'remove',
+            });
+        } else if (isOnOtherPlan) {
+            // User is on another plan's waitlist - offer to switch
+            setModalData({
+                planType,
+                planLabel,
+                action: 'switch',
+                currentPlan: waitlistStatus.current_plan_label || '',
+            });
+        } else {
+            // User is not on any waitlist - offer to add
+            setModalData({
+                planType,
+                planLabel,
+                action: 'add',
+            });
+        }
+        setShowModal(true);
+    };
+
+    const confirmWaitlistAction = async () => {
+        if (!modalData) {
+            console.error('No modal data available');
+            return;
+        }
+
+        console.log('Starting waitlist action:', modalData);
+        setProcessing(true);
+        
+        try {
+            // Make the real request to the server
+            const formData = new FormData();
+            formData.append('plan_type', modalData.planType);
+            formData.append('action', modalData.action);
+            
+            const response = await fetch(`/${locale}/settings/waitlist`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Waitlist action completed:', data);
+            
+            // Close modal and update status
+            setShowModal(false);
+            setModalData(null);
+            
+            // Reload waitlist status from server to ensure consistency
+            try {
+                const statusResponse = await fetch(`/${locale}/settings/waitlist/status`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                    },
+                });
+
+                if (statusResponse.ok) {
+                    const statusData = await statusResponse.json();
+                    setWaitlistStatus(statusData.waitlistStatus);
+                }
+            } catch (statusError) {
+                console.error('Error reloading waitlist status:', statusError);
+                // Fallback to optimistic update
+                setWaitlistStatus({
+                    is_on_waitlist: true,
+                    current_plan: modalData.planType,
+                    current_plan_label: modalData.planLabel,
+                });
+            }
+            
+            // Show success message
+            alert(data.message || 'Successfully added to waitlist!');
+            
+        } catch (error) {
+            console.error('Error in waitlist action:', error);
+            alert('Error: ' + error.message);
+        } finally {
+            setProcessing(false);
+        }
+    };
+
     const getPlanCardCTA = (planType: string, isCurrent: boolean) => {
-        // PLANES INTERNOS
+        // PLANES INTERNOS - Mostrar CTAs específicos para cada plan
         if (currentPlan.isInternal) {
-            return {
-                text: t('Contact support'),
-                variant: 'outline' as const,
-                action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com',
-            };
+            switch (planType) {
+                case 'free':
+                    return {
+                        text: t('View Observer Plan'),
+                        variant: 'outline' as const,
+                        action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Observer Plan Information',
+                    };
+                case 'managed':
+                    const isOnManaged = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'managed';
+                    console.log('Managed plan check:', { isOnManaged, waitlistStatus }); // Debug log
+                    return {
+                        text: isOnManaged ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                        variant: isOnManaged ? 'secondary' as const : 'default' as const,
+                        action: () => handleWaitlistAction('managed', 'Cosmógrafo'),
+                    };
+                case 'pro':
+                    const isOnPro = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'pro';
+                    return {
+                        text: isOnPro ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                        variant: isOnPro ? 'secondary' as const : 'default' as const,
+                        action: () => handleWaitlistAction('pro', 'Astrónomo'),
+                    };
+                case 'enterprise':
+                    const isOnEnterprise = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'enterprise';
+                    return {
+                        text: isOnEnterprise ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                        variant: isOnEnterprise ? 'secondary' as const : 'default' as const,
+                        action: () => handleWaitlistAction('enterprise', 'Heliópolis'),
+                    };
+                default:
+                    return {
+                        text: t('Learn more'),
+                        variant: 'outline' as const,
+                        action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com',
+                    };
+            }
         }
 
         // PLAN ACTUAL
@@ -186,49 +366,31 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                     disabled: true,
                 };
             case 'managed':
-                if (currentPlan.type === 'free') {
-                    return {
-                        text: t('Upgrade to Cosmographer'),
-                        variant: 'default' as const,
-                        action: () => router.post(`/${locale}/settings/trial/managed`),
-                    };
-                }
+                const isOnManagedUpgrade = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'managed';
                 return {
-                    text: t('Switch to Cosmographer'),
-                    variant: 'default' as const,
-                    action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Switch to Cosmographer',
+                    text: isOnManagedUpgrade ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                    variant: isOnManagedUpgrade ? 'secondary' as const : 'default' as const,
+                    action: () => handleWaitlistAction('managed', 'Cosmógrafo'),
                 };
             case 'pro':
-                if (currentPlan.type === 'free') {
-                    return {
-                        text: t('Upgrade to Astronomer'),
-                        variant: 'default' as const,
-                        action: () => router.post(`/${locale}/settings/trial/pro`),
-                    };
-                }
-                if (currentPlan.type === 'managed') {
-                    return {
-                        text: t('Upgrade to Astronomer'),
-                        variant: 'default' as const,
-                        action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Upgrade to Astronomer',
-                    };
-                }
+                const isOnProUpgrade = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'pro';
                 return {
-                    text: t('Switch to Astronomer'),
-                    variant: 'default' as const,
-                    action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Switch to Astronomer',
+                    text: isOnProUpgrade ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                    variant: isOnProUpgrade ? 'secondary' as const : 'default' as const,
+                    action: () => handleWaitlistAction('pro', 'Astrónomo'),
                 };
             case 'enterprise':
+                const isOnEnterpriseUpgrade = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === 'enterprise';
                 return {
-                    text: t('Contact for Enterprise'),
-                    variant: 'default' as const,
-                    action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Enterprise Plan',
+                    text: isOnEnterpriseUpgrade ? t('In Waitlist') : t('Coming Soon - Join Waitlist'),
+                    variant: isOnEnterpriseUpgrade ? 'secondary' as const : 'default' as const,
+                    action: () => handleWaitlistAction('enterprise', 'Heliópolis'),
                 };
             default:
                 return {
-                    text: t('Request upgrade'),
+                    text: t('Coming Soon - Join Waitlist'),
                     variant: 'default' as const,
-                    action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com',
+                    action: () => window.location.href = 'mailto:support@cerberogrowthsolutions.com?subject=Plan Upgrade - Join Waitlist',
                 };
         }
     };
@@ -628,6 +790,43 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                     )}
                 </section>
             </div>
+
+            {/* Modal de confirmación para lista de espera */}
+            <Dialog open={showModal} onOpenChange={setShowModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {modalData?.action === 'add' && t('Add to :plan waitlist?', { plan: modalData.planLabel })}
+                            {modalData?.action === 'switch' && t('You are already on the :currentPlan waitlist. Do you want to switch to :newPlan?', { 
+                                currentPlan: modalData.currentPlan, 
+                                newPlan: modalData.planLabel 
+                            })}
+                            {modalData?.action === 'remove' && t('You are already on the :plan waitlist. Do you want to remove yourself from the list?', { 
+                                plan: modalData.planLabel 
+                            })}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowModal(false)}
+                            disabled={processing}
+                        >
+                            {t('Cancel')}
+                        </Button>
+                        <Button
+                            onClick={confirmWaitlistAction}
+                            disabled={processing}
+                        >
+                            {processing ? t('Processing...') : (
+                                modalData?.action === 'add' ? t('Confirm') :
+                                modalData?.action === 'switch' ? t('Switch to :plan', { plan: modalData.planLabel }) :
+                                t('Remove from list')
+                            )}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </AppSidebarLayout>
     );
 }

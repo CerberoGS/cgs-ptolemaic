@@ -6,6 +6,9 @@ import AdminRoleController from './AdminRoleController'
 import FeedbackController from './FeedbackController'
 import InvitationController from './InvitationController'
 import PricingController from './PricingController'
+import LanguageController from './LanguageController'
+import AffiliateController from './AffiliateController'
+import WaitlistController from './WaitlistController'
 const Admin = {
     AdminDashboardController: Object.assign(AdminDashboardController, AdminDashboardController),
 AdminProviderController: Object.assign(AdminProviderController, AdminProviderController),
@@ -15,6 +18,9 @@ AdminRoleController: Object.assign(AdminRoleController, AdminRoleController),
 FeedbackController: Object.assign(FeedbackController, FeedbackController),
 InvitationController: Object.assign(InvitationController, InvitationController),
 PricingController: Object.assign(PricingController, PricingController),
+LanguageController: Object.assign(LanguageController, LanguageController),
+AffiliateController: Object.assign(AffiliateController, AffiliateController),
+WaitlistController: Object.assign(WaitlistController, WaitlistController),
 }
 
 export default Admin

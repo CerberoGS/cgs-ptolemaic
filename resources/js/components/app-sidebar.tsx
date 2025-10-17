@@ -14,11 +14,12 @@ import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare, Ticket, DollarSign } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare, Ticket, DollarSign, Globe, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 import integrationsRoutes from '@/routes/settings/integrations';
 import planRoutes from '@/routes/settings/plan';
+import affiliateRoutes from '@/routes/settings/affiliate';
 import journalRoutes from '@/routes/journal';
 import achievementsRoutes from '@/routes/achievements';
 import analyticsRoutes from '@/routes/analytics';
@@ -93,6 +94,24 @@ export function AppSidebar() {
         });
     }
 
+    // Languages access for admins
+    if (permissions.includes('languages.manage')) {
+        mainNavItems.push({
+            title: t('admin.languages'),
+            href: `/${locale}/admin/languages`,
+            icon: Globe,
+        });
+    }
+
+        // Waitlist access for admins
+        if (permissions.includes('admin.dashboard')) {
+            mainNavItems.push({
+                title: t('Waitlist Management'),
+                href: `/${locale}/admin/waitlist`,
+                icon: Users,
+            });
+        }
+
     // Administration access (only for users with admin dashboard permission)
     const canAccessAdmin =
         permissions.includes('admin.dashboard') ||
@@ -124,6 +143,15 @@ export function AppSidebar() {
         href: planRoutes.show({ locale }),
         icon: CreditCard,
     });
+
+    // Affiliate program for non-internal users
+    if (!plan?.isInternal) {
+        mainNavItems.push({
+            title: t('Affiliate Program'),
+            href: affiliateRoutes.index({ locale }),
+            icon: Users,
+        });
+    }
 
     const localizedFooter = footerNavItems.map((item) => ({
         ...item,

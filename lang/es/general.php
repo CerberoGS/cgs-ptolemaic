@@ -126,4 +126,51 @@ return [
     'watch_demo' => 'Ver Demo',
     'save' => 'Guardar',
     'saved' => 'Guardado',
+    
+    // Welcome page - Features section
+    'advanced_ai' => 'IA Avanzada',
+    'machine_learning_description' => 'Los algoritmos de aprendizaje automático analizan patrones complejos del mercado que los humanos no pueden detectar',
+    'optimized_returns' => 'Retornos Optimizados',
+    'personalized_strategies_description' => 'Estrategias personalizadas que maximizan las ganancias y minimizan los riesgos automáticamente',
+    'elite_community' => 'Comunidad Élite',
+    'exclusive_community_description' => 'Únete a una comunidad exclusiva de inversores que comparten estrategias y conocimientos',
+    
+    // Welcome page - Success path section
+    'your_path_to_financial_success' => 'Tu camino hacia el éxito financiero',
+    'simple_yet_powerful_process' => 'Un proceso simple pero poderoso',
+    
+    // Welcome page - Plans section
+    'plans_designed_for_every_profile' => 'Planes diseñados para cada perfil',
+    
+    // Welcome page - Testimonials section
+    'investors_who_trust_us' => 'Inversores que ya confían en nosotros',
+    
+    // Welcome page - CTA section
+    'join_thousands_investors' => 'Únete a miles de inversores que ya están obteniendo mejores retornos con el poder de la inteligencia artificial',
+    'create_free_account' => 'Crear Cuenta Gratuita',
+    'schedule_demo' => 'Programar Demo',
+    
+    // Footer
+    'terms' => 'Términos',
+    'privacy' => 'Privacidad',
+    'support' => 'Soporte',
+    
+    // Welcome page - Hero section
+    'recommended' => 'Recomendado',
+    
+    // Success path steps
+    'connect_your_accounts' => 'Conecta tus cuentas',
+    'securely_link_brokers' => 'Vincula de forma segura tus brokers y exchanges',
+    'ai_analyzes_profile' => 'La IA analiza tu perfil',
+    'evaluate_risk_tolerance' => 'Evaluamos tu tolerancia al riesgo y objetivos',
+    'receive_recommendations' => 'Recibe recomendaciones',
+    'personalized_analysis' => 'Obtén análisis personalizado y oportunidades',
+    'grow_your_wealth' => 'Haz crecer tu patrimonio',
+    'investment_optimize' => 'Observa cómo tu inversión se optimiza automáticamente',
+    
+    // Waitlist messages
+    'switched_waitlist' => 'Te has cambiado de :oldPlan a :newPlan lista de espera. ¡Te notificaremos cuando esté disponible!',
+    'added_waitlist' => 'Te has agregado a la lista de espera de :plan. ¡Te notificaremos cuando esté disponible!',
+    'removed_waitlist' => 'Te has eliminado de la lista de espera de :plan.',
+    'already_on_waitlist' => 'Ya estás en la lista de espera para este plan.',
 ];

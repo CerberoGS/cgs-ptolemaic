@@ -113,7 +113,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-export const edit = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -129,7 +129,7 @@ edit.definition = {
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-edit.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+edit.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -145,9 +145,7 @@ edit.url = (args: { locale?: string | number, pricingPlan: number | { id: number
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return edit.definition.url
@@ -162,7 +160,7 @@ edit.url = (args: { locale?: string | number, pricingPlan: number | { id: number
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-edit.get = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -172,7 +170,7 @@ edit.get = (args: { locale?: string | number, pricingPlan: number | { id: number
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-edit.head = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -183,7 +181,7 @@ edit.head = (args: { locale?: string | number, pricingPlan: number | { id: numbe
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-    const editForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const editForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: edit.url(args, options),
         method: 'get',
     })
@@ -194,7 +192,7 @@ edit.head = (args: { locale?: string | number, pricingPlan: number | { id: numbe
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-        editForm.get = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.get = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, options),
             method: 'get',
         })
@@ -204,7 +202,7 @@ edit.head = (args: { locale?: string | number, pricingPlan: number | { id: numbe
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/edit'
  */
-        editForm.head = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.head = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -217,11 +215,11 @@ edit.head = (args: { locale?: string | number, pricingPlan: number | { id: numbe
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\PricingController::update
- * @see app/Http/Controllers/Admin/PricingController.php:81
+ * @see app/Http/Controllers/Admin/PricingController.php:85
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}'
  */
-export const update = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -233,11 +231,11 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::update
- * @see app/Http/Controllers/Admin/PricingController.php:81
+ * @see app/Http/Controllers/Admin/PricingController.php:85
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}'
  */
-update.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+update.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -253,9 +251,7 @@ update.url = (args: { locale?: string | number, pricingPlan: number | { id: numb
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return update.definition.url
@@ -266,22 +262,22 @@ update.url = (args: { locale?: string | number, pricingPlan: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::update
- * @see app/Http/Controllers/Admin/PricingController.php:81
+ * @see app/Http/Controllers/Admin/PricingController.php:85
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}'
  */
-update.put = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\PricingController::update
- * @see app/Http/Controllers/Admin/PricingController.php:81
+ * @see app/Http/Controllers/Admin/PricingController.php:85
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}'
  */
-    const updateForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -293,11 +289,11 @@ update.put = (args: { locale?: string | number, pricingPlan: number | { id: numb
 
             /**
 * @see \App\Http\Controllers\Admin\PricingController::update
- * @see app/Http/Controllers/Admin/PricingController.php:81
+ * @see app/Http/Controllers/Admin/PricingController.php:85
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}'
  */
-        updateForm.put = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -310,11 +306,11 @@ update.put = (args: { locale?: string | number, pricingPlan: number | { id: numb
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleOffer
- * @see app/Http/Controllers/Admin/PricingController.php:102
+ * @see app/Http/Controllers/Admin/PricingController.php:110
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-offer'
  */
-export const toggleOffer = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const toggleOffer = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: toggleOffer.url(args, options),
     method: 'post',
 })
@@ -326,11 +322,11 @@ toggleOffer.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleOffer
- * @see app/Http/Controllers/Admin/PricingController.php:102
+ * @see app/Http/Controllers/Admin/PricingController.php:110
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-offer'
  */
-toggleOffer.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+toggleOffer.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -346,9 +342,7 @@ toggleOffer.url = (args: { locale?: string | number, pricingPlan: number | { id:
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return toggleOffer.definition.url
@@ -359,33 +353,33 @@ toggleOffer.url = (args: { locale?: string | number, pricingPlan: number | { id:
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleOffer
- * @see app/Http/Controllers/Admin/PricingController.php:102
+ * @see app/Http/Controllers/Admin/PricingController.php:110
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-offer'
  */
-toggleOffer.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+toggleOffer.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: toggleOffer.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleOffer
- * @see app/Http/Controllers/Admin/PricingController.php:102
+ * @see app/Http/Controllers/Admin/PricingController.php:110
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-offer'
  */
-    const toggleOfferForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const toggleOfferForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: toggleOffer.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleOffer
- * @see app/Http/Controllers/Admin/PricingController.php:102
+ * @see app/Http/Controllers/Admin/PricingController.php:110
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-offer'
  */
-        toggleOfferForm.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        toggleOfferForm.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: toggleOffer.url(args, options),
             method: 'post',
         })
@@ -393,11 +387,11 @@ toggleOffer.post = (args: { locale?: string | number, pricingPlan: number | { id
     toggleOffer.form = toggleOfferForm
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:117
+ * @see app/Http/Controllers/Admin/PricingController.php:129
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-scarcity'
  */
-export const toggleScarcity = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const toggleScarcity = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: toggleScarcity.url(args, options),
     method: 'post',
 })
@@ -409,11 +403,11 @@ toggleScarcity.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:117
+ * @see app/Http/Controllers/Admin/PricingController.php:129
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-scarcity'
  */
-toggleScarcity.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+toggleScarcity.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -429,9 +423,7 @@ toggleScarcity.url = (args: { locale?: string | number, pricingPlan: number | { 
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return toggleScarcity.definition.url
@@ -442,33 +434,33 @@ toggleScarcity.url = (args: { locale?: string | number, pricingPlan: number | { 
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:117
+ * @see app/Http/Controllers/Admin/PricingController.php:129
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-scarcity'
  */
-toggleScarcity.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+toggleScarcity.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: toggleScarcity.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:117
+ * @see app/Http/Controllers/Admin/PricingController.php:129
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-scarcity'
  */
-    const toggleScarcityForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const toggleScarcityForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: toggleScarcity.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Admin\PricingController::toggleScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:117
+ * @see app/Http/Controllers/Admin/PricingController.php:129
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/toggle-scarcity'
  */
-        toggleScarcityForm.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        toggleScarcityForm.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: toggleScarcity.url(args, options),
             method: 'post',
         })
@@ -476,11 +468,11 @@ toggleScarcity.post = (args: { locale?: string | number, pricingPlan: number | {
     toggleScarcity.form = toggleScarcityForm
 /**
 * @see \App\Http\Controllers\Admin\PricingController::incrementScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:132
+ * @see app/Http/Controllers/Admin/PricingController.php:148
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/increment-scarcity'
  */
-export const incrementScarcity = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const incrementScarcity = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: incrementScarcity.url(args, options),
     method: 'post',
 })
@@ -492,11 +484,11 @@ incrementScarcity.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::incrementScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:132
+ * @see app/Http/Controllers/Admin/PricingController.php:148
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/increment-scarcity'
  */
-incrementScarcity.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+incrementScarcity.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -512,9 +504,7 @@ incrementScarcity.url = (args: { locale?: string | number, pricingPlan: number |
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return incrementScarcity.definition.url
@@ -525,33 +515,33 @@ incrementScarcity.url = (args: { locale?: string | number, pricingPlan: number |
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::incrementScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:132
+ * @see app/Http/Controllers/Admin/PricingController.php:148
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/increment-scarcity'
  */
-incrementScarcity.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+incrementScarcity.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: incrementScarcity.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\PricingController::incrementScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:132
+ * @see app/Http/Controllers/Admin/PricingController.php:148
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/increment-scarcity'
  */
-    const incrementScarcityForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const incrementScarcityForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: incrementScarcity.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Admin\PricingController::incrementScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:132
+ * @see app/Http/Controllers/Admin/PricingController.php:148
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/increment-scarcity'
  */
-        incrementScarcityForm.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        incrementScarcityForm.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: incrementScarcity.url(args, options),
             method: 'post',
         })
@@ -559,11 +549,11 @@ incrementScarcity.post = (args: { locale?: string | number, pricingPlan: number 
     incrementScarcity.form = incrementScarcityForm
 /**
 * @see \App\Http\Controllers\Admin\PricingController::resetScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:145
+ * @see app/Http/Controllers/Admin/PricingController.php:165
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/reset-scarcity'
  */
-export const resetScarcity = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const resetScarcity = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: resetScarcity.url(args, options),
     method: 'post',
 })
@@ -575,11 +565,11 @@ resetScarcity.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::resetScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:145
+ * @see app/Http/Controllers/Admin/PricingController.php:165
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/reset-scarcity'
  */
-resetScarcity.url = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions) => {
+resetScarcity.url = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -595,9 +585,7 @@ resetScarcity.url = (args: { locale?: string | number, pricingPlan: number | { i
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                pricingPlan: typeof args.pricingPlan === 'object'
-                ? args.pricingPlan.id
-                : args.pricingPlan,
+                                pricingPlan: args.pricingPlan,
                 }
 
     return resetScarcity.definition.url
@@ -608,33 +596,33 @@ resetScarcity.url = (args: { locale?: string | number, pricingPlan: number | { i
 
 /**
 * @see \App\Http\Controllers\Admin\PricingController::resetScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:145
+ * @see app/Http/Controllers/Admin/PricingController.php:165
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/reset-scarcity'
  */
-resetScarcity.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+resetScarcity.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: resetScarcity.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\PricingController::resetScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:145
+ * @see app/Http/Controllers/Admin/PricingController.php:165
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/reset-scarcity'
  */
-    const resetScarcityForm = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const resetScarcityForm = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: resetScarcity.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Admin\PricingController::resetScarcity
- * @see app/Http/Controllers/Admin/PricingController.php:145
+ * @see app/Http/Controllers/Admin/PricingController.php:165
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/pricing/{pricingPlan}/reset-scarcity'
  */
-        resetScarcityForm.post = (args: { locale?: string | number, pricingPlan: number | { id: number } } | [locale: string | number, pricingPlan: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        resetScarcityForm.post = (args: { locale?: string | number, pricingPlan: string | number } | [locale: string | number, pricingPlan: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: resetScarcity.url(args, options),
             method: 'post',
         })

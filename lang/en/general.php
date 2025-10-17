@@ -126,4 +126,51 @@ return [
     'watch_demo' => 'Watch Demo',
     'save' => 'Save',
     'saved' => 'Saved',
+    
+    // Welcome page - Features section
+    'advanced_ai' => 'Advanced AI',
+    'machine_learning_description' => 'Machine learning algorithms analyze complex market patterns that humans cannot detect',
+    'optimized_returns' => 'Optimized Returns',
+    'personalized_strategies_description' => 'Personalized strategies that maximize profits and minimize risks automatically',
+    'elite_community' => 'Elite Community',
+    'exclusive_community_description' => 'Join an exclusive community of investors who share strategies and knowledge',
+    
+    // Welcome page - Success path section
+    'your_path_to_financial_success' => 'Your path to financial success',
+    'simple_yet_powerful_process' => 'A simple yet powerful process',
+    
+    // Welcome page - Plans section
+    'plans_designed_for_every_profile' => 'Plans designed for every profile',
+    
+    // Welcome page - Testimonials section
+    'investors_who_trust_us' => 'Investors who already trust us',
+    
+    // Welcome page - CTA section
+    'join_thousands_investors' => 'Join thousands of investors who are already getting better returns with the power of artificial intelligence',
+    'create_free_account' => 'Create Free Account',
+    'schedule_demo' => 'Schedule Demo',
+    
+    // Footer
+    'terms' => 'Terms',
+    'privacy' => 'Privacy',
+    'support' => 'Support',
+    
+    // Welcome page - Hero section
+    'recommended' => 'Recommended',
+    
+    // Success path steps
+    'connect_your_accounts' => 'Connect your accounts',
+    'securely_link_brokers' => 'Securely link your brokers and exchanges',
+    'ai_analyzes_profile' => 'AI analyzes your profile',
+    'evaluate_risk_tolerance' => 'We evaluate your risk tolerance and goals',
+    'receive_recommendations' => 'Receive recommendations',
+    'personalized_analysis' => 'Get personalized analysis and opportunities',
+    'grow_your_wealth' => 'Grow your wealth',
+    'investment_optimize' => 'Watch your investment optimize automatically',
+    
+    // Waitlist messages
+    'switched_waitlist' => 'You have been switched from :oldPlan to :newPlan waitlist. We\'ll notify you when it\'s available!',
+    'added_waitlist' => 'You have been added to the waitlist for :plan. We\'ll notify you when it\'s available!',
+    'removed_waitlist' => 'You have been removed from the :plan waitlist.',
+    'already_on_waitlist' => 'You are already on the waitlist for this plan.',
 ];

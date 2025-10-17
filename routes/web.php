@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\Admin\AffiliateController as AdminAffiliateController;
+use App\Http\Controllers\Admin\WaitlistController as AdminWaitlistController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
@@ -140,6 +142,32 @@ Route::group([
                 Route::post('/pricing/{pricingPlan}/increment-scarcity', [AdminPricingController::class, 'incrementScarcity'])->name('pricing.increment-scarcity');
                 Route::post('/pricing/{pricingPlan}/reset-scarcity', [AdminPricingController::class, 'resetScarcity'])->name('pricing.reset-scarcity');
             });
+
+            // Language management (admin only)
+            Route::middleware('permission:languages.manage')->group(function () {
+                Route::resource('languages', \App\Http\Controllers\Admin\LanguageController::class);
+                Route::post('/languages/{language}/toggle-active', [\App\Http\Controllers\Admin\LanguageController::class, 'toggleActive'])->name('languages.toggle-active');
+                Route::post('/languages/{language}/set-default', [\App\Http\Controllers\Admin\LanguageController::class, 'setDefault'])->name('languages.set-default');
+            });
+
+                // Affiliate management (admin only)
+                Route::middleware('permission:affiliate.manage')->group(function () {
+                    Route::get('/affiliate', [AdminAffiliateController::class, 'index'])->name('affiliate.index');
+                    Route::get('/affiliate/codes', [AdminAffiliateController::class, 'codes'])->name('affiliate.codes');
+                    Route::get('/affiliate/referrals', [AdminAffiliateController::class, 'referrals'])->name('affiliate.referrals');
+                    Route::get('/affiliate/rewards', [AdminAffiliateController::class, 'rewards'])->name('affiliate.rewards');
+                    Route::post('/affiliate/reward-config', [AdminAffiliateController::class, 'updateRewardConfig'])->name('affiliate.reward-config');
+                    Route::post('/affiliate/codes/{affiliateCode}/toggle', [AdminAffiliateController::class, 'toggleCodeStatus'])->name('affiliate.codes.toggle');
+                    Route::put('/affiliate/referrals/{referral}/status', [AdminAffiliateController::class, 'updateReferralStatus'])->name('affiliate.referrals.status');
+                    Route::put('/affiliate/rewards/{reward}/status', [AdminAffiliateController::class, 'updateRewardStatus'])->name('affiliate.rewards.status');
+                });
+
+                // Waitlist management (admin only)
+                Route::middleware('permission:admin.dashboard')->group(function () {
+                    Route::get('/waitlist', [AdminWaitlistController::class, 'index'])->name('waitlist.index');
+                    Route::put('/waitlist/{waitlistEntry}/status', [AdminWaitlistController::class, 'updateStatus'])->name('waitlist.status');
+                    Route::delete('/waitlist/{waitlistEntry}', [AdminWaitlistController::class, 'destroy'])->name('waitlist.destroy');
+                });
         });
     });
 

@@ -32,6 +32,8 @@ class RoleAndPermissionSeeder extends Seeder
             'feedback.manage',
             'invitations.manage',
             'pricing.manage',
+            'languages.manage',
+            'affiliate.manage',
         ];
 
         foreach ($permissions as $permission) {

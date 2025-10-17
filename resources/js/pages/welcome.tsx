@@ -1,10 +1,12 @@
-﻿import { home, login, register, dashboard } from '@/routes';
+import { home, login, register, dashboard } from '@/routes';
 import { type SharedData } from '@/types';
 import logo from '@/assets/logo1.svg?url';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useState, useEffect } from 'react';
 import { Brain, TrendingUp, Users, Check, Star, Crown, Building2, User, Target, Link2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LanguageSelector from '@/components/layout/LanguageSelector';
@@ -15,6 +17,164 @@ export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
     const t = useTrans();
     const currentLocale = useLocale();
+    const [waitlistStatus, setWaitlistStatus] = useState<{
+        is_on_waitlist: boolean;
+        current_plan: string | null;
+        current_plan_label: string | null;
+    }>({
+        is_on_waitlist: false,
+        current_plan: null,
+        current_plan_label: null,
+    });
+    const [processing, setProcessing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [modalData, setModalData] = useState<{
+        planType: string;
+        planLabel: string;
+        action: 'add' | 'switch' | 'remove';
+        currentPlan?: string;
+    } | null>(null);
+
+    // Load waitlist status on component mount (only if user is authenticated)
+    useEffect(() => {
+        if (auth.user) {
+            // Get waitlist status from the current page props if available
+            if (window.waitlistStatus) {
+                setWaitlistStatus(window.waitlistStatus);
+            } else {
+                // Load waitlist status from server
+                const loadWaitlistStatus = async () => {
+                    try {
+                        const response = await fetch(`/${currentLocale}/settings/waitlist/status`, {
+                            method: 'GET',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json',
+                            },
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            setWaitlistStatus(data.waitlistStatus);
+                        }
+                    } catch (error) {
+                        console.error('Error loading waitlist status:', error);
+                    }
+                };
+
+                loadWaitlistStatus();
+            }
+        }
+    }, [currentLocale, auth.user]);
+
+    const handleWaitlistAction = (planType: string, planLabel: string) => {
+        // Si el usuario no está autenticado, redirigir al login inmediatamente
+        if (!auth.user) {
+            window.location.href = login({ locale: currentLocale }).url;
+            return;
+        }
+
+        const isOnThisPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === planType;
+        const isOnOtherPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan !== planType;
+
+        if (isOnThisPlan) {
+            // User is already on this plan's waitlist - offer to remove
+            setModalData({
+                planType,
+                planLabel,
+                action: 'remove',
+            });
+        } else if (isOnOtherPlan) {
+            // User is on another plan's waitlist - offer to switch
+            setModalData({
+                planType,
+                planLabel,
+                action: 'switch',
+                currentPlan: waitlistStatus.current_plan_label || '',
+            });
+        } else {
+            // User is not on any waitlist - offer to add
+            setModalData({
+                planType,
+                planLabel,
+                action: 'add',
+            });
+        }
+        setShowModal(true);
+    };
+
+    const getPlanCTA = (planType: string, planLabel: string, defaultCTA: string) => {
+        const isOnThisPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan === planType;
+        const isOnOtherPlan = waitlistStatus.is_on_waitlist && waitlistStatus.current_plan !== planType;
+        
+        if (isOnThisPlan) {
+            return "✓ En Lista";
+        } else if (isOnOtherPlan) {
+            return "🔄 Cambiar Plan";
+        } else {
+            return "🔔 Notificarme";
+        }
+    };
+
+    const confirmWaitlistAction = async () => {
+        if (!modalData) {
+            console.error('No modal data available');
+            return;
+        }
+
+        // Si el usuario no está autenticado, redirigir al login
+        if (!auth.user) {
+            window.location.href = login({ locale: currentLocale }).url;
+            return;
+        }
+
+        console.log('Starting waitlist action:', modalData);
+        setProcessing(true);
+        
+        try {
+            // Make the real request to the server
+            const formData = new FormData();
+            formData.append('plan_type', modalData.planType);
+            formData.append('action', modalData.action);
+            
+            const response = await fetch(`/${currentLocale}/settings/waitlist`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Waitlist action completed:', data);
+            
+            // Close modal and update status
+            setShowModal(false);
+            setModalData(null);
+            
+            // Update waitlist status optimistically
+            setWaitlistStatus({
+                is_on_waitlist: true,
+                current_plan: modalData.planType,
+                current_plan_label: modalData.planLabel,
+            });
+            
+            // Show success message
+            alert(data.message || 'Successfully added to waitlist!');
+            
+        } catch (error) {
+            console.error('Error in waitlist action:', error);
+            alert('Error: ' + error.message);
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     return (
         <>
@@ -137,10 +297,10 @@ export default function Welcome() {
                               <Brain className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              {t('Advanced AI')}
+                              {t('general.advanced_ai')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              {t('Machine learning algorithms analyze complex market patterns that humans cannot detect')}
+                              {t('general.machine_learning_description')}
                             </p>
                           </CardContent>
                         </Card>
@@ -152,10 +312,10 @@ export default function Welcome() {
                               <TrendingUp className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              {t('Optimized Returns')}
+                              {t('general.optimized_returns')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              {t('Personalized strategies that maximize profits and minimize risks automatically')}
+                              {t('general.personalized_strategies_description')}
                             </p>
                           </CardContent>
                         </Card>
@@ -167,10 +327,10 @@ export default function Welcome() {
                               <Users className="h-6 w-6 text-white" />
                             </div>
                             <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                              {t('Elite Community')}
+                              {t('general.elite_community')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                              {t('Join an exclusive community of investors who share strategies and knowledge')}
+                              {t('general.exclusive_community_description')}
                             </p>
                           </CardContent>
                         </Card>
@@ -184,10 +344,10 @@ export default function Welcome() {
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        {t('Your path to financial success')}
+                        {t('general.your_path_to_financial_success')}
                       </h2>
                       <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        {t('A simple yet powerful process')}
+                        {t('general.simple_yet_powerful_process')}
                       </p>
                     </div>
                     
@@ -196,29 +356,29 @@ export default function Welcome() {
                         {[
                           {
                             step: "01",
-                            title: t("Connect your accounts"),
-                            description: t("Securely link your brokers and exchanges"),
+                            title: t("general.connect_your_accounts"),
+                            description: t("general.securely_link_brokers"),
                             icon: Link2,
                             color: "from-blue-500 to-blue-600"
                           },
                           {
                             step: "02",
-                            title: t("AI analyzes your profile"),
-                            description: t("We evaluate your risk tolerance and goals"),
+                            title: t("general.ai_analyzes_profile"),
+                            description: t("general.evaluate_risk_tolerance"),
                             icon: Brain,
                             color: "from-purple-500 to-purple-600"
                           },
                           {
                             step: "03",
-                            title: t("Receive recommendations"),
-                            description: t("Get personalized analysis and opportunities"),
+                            title: t("general.receive_recommendations"),
+                            description: t("general.personalized_analysis"),
                             icon: Target,
                             color: "from-emerald-500 to-emerald-600"
                           },
                           {
                             step: "04",
-                            title: t("Grow your wealth"),
-                            description: t("Watch your investment optimize automatically"),
+                            title: t("general.grow_your_wealth"),
+                            description: t("general.investment_optimize"),
                             icon: TrendingUp,
                             color: "from-orange-500 to-orange-600"
                           }
@@ -230,19 +390,30 @@ export default function Welcome() {
                             transition={{ delay: index * 0.1 }}
                             className="relative"
                           >
-                            <div className={`mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${item.color}`}>
-                              <item.icon className="h-8 w-8 text-white" />
-                            </div>
-                            <div className="text-center">
-                              <div className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
-                                {item.step}
+                            <div className="flex flex-col items-center">
+                              {/* Step number and icon container */}
+                              <div className="relative mb-4">
+                                {/* Step number badge */}
+                                <div className="absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
+                                  <span className="text-xs font-bold text-gray-600 dark:text-gray-300">
+                                    {item.step}
+                                  </span>
+                                </div>
+                                {/* Icon container */}
+                                <div className={`inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${item.color}`}>
+                                  <item.icon className="h-8 w-8 text-white" />
+                                </div>
                               </div>
-                              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                {item.title}
-                              </h3>
-                              <p className="text-sm text-gray-600 dark:text-gray-300">
-                                {item.description}
-                              </p>
+                              
+                              {/* Content */}
+                              <div className="text-center">
+                                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                                  {item.title}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                  {item.description}
+                                </p>
+                              </div>
                             </div>
                             {index < 3 && (
                               <div className="absolute -right-4 top-8 hidden h-0.5 w-8 bg-gradient-to-r from-gray-300 to-gray-300 dark:from-gray-600 dark:to-gray-600 md:block" />
@@ -259,7 +430,7 @@ export default function Welcome() {
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        {t('Plans designed for every profile')}
+                        {t('general.plans_designed_for_every_profile')}
                       </h2>
                       <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
                         {t('From beginner to expert, we have the perfect solution')}
@@ -300,7 +471,7 @@ export default function Welcome() {
                           icon: Target,
                           emoji: "🧭",
                           popular: true,
-                          cta: t("Try Cosmographer Free")
+                          cta: t("Coming Soon - Join Waitlist")
                         },
                         {
                           name: t("Astronomer"),
@@ -319,7 +490,7 @@ export default function Welcome() {
                           gradient: "from-violet-500 to-purple-500",
                           icon: Crown,
                           emoji: "🔭",
-                          cta: t("Try Astronomer Free")
+                          cta: t("Coming Soon - Join Waitlist")
                         },
                         {
                           name: t("Heliopolis"),
@@ -334,7 +505,7 @@ export default function Welcome() {
                           gradient: "from-amber-500 to-orange-500",
                           icon: Building2,
                           emoji: "☀️",
-                          cta: t("Contact for Enterprise")
+                          cta: t("Coming Soon - Join Waitlist")
                         }
                       ].map((plan, index) => (
                         <Card 
@@ -346,14 +517,14 @@ export default function Welcome() {
                           }`}
                         >
                           {plan.popular && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                              <Badge className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
-                                {t('welcome.hero.badge')}
+                            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
+                              <Badge className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 text-sm font-semibold shadow-lg border-2 border-white dark:border-gray-800">
+                                {t('general.recommended')}
                               </Badge>
                             </div>
                           )}
                           
-                          <CardContent className="p-6">
+                          <CardContent className="pt-6 pb-6 px-6">
                             <div className="mb-4 flex items-center gap-3">
                               <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r ${plan.gradient}`}>
                                 <span className="text-lg">{plan.emoji}</span>
@@ -386,11 +557,23 @@ export default function Welcome() {
                             <Button
                               className={`w-full bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white`}
                               size="sm"
-                              asChild
+                              onClick={() => {
+                                if (index === 0) {
+                                  // Observador - ir al registro
+                                  window.location.href = register({ locale: currentLocale }).url;
+                                } else {
+                                  // Planes de pago - manejar lista de espera
+                                  const planTypes = ['managed', 'pro', 'enterprise'];
+                                  const planLabels = ['Cosmógrafo', 'Astrónomo', 'Heliópolis'];
+                                  handleWaitlistAction(planTypes[index - 1], planLabels[index - 1]);
+                                }
+                              }}
                             >
-                              <Link href={register({ locale: currentLocale })}>
-                                {plan.cta}
-                              </Link>
+                              {index === 0 ? plan.cta : getPlanCTA(
+                                ['managed', 'pro', 'enterprise'][index - 1], 
+                                ['Cosmógrafo', 'Astrónomo', 'Heliópolis'][index - 1], 
+                                plan.cta
+                              )}
                             </Button>
                           </CardContent>
                         </Card>
@@ -404,14 +587,14 @@ export default function Welcome() {
                   <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        {t('Investors who already trust us')}
+                        {t('general.investors_who_trust_us')}
                       </h2>
                     </div>
                     
                     <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 lg:grid-cols-3">
                       {[
                         {
-                          name: "MarÃ­a GonzÃ¡lez",
+                          name: "María González",
                           role: t("Private Investor"),
                           content: t("In 6 months, my portfolio grew 47%. The AI really identifies opportunities I didn't see."),
                           avatar: "MG",
@@ -475,15 +658,15 @@ export default function Welcome() {
                         {t('Ready to revolutionize your investments?')}
                       </h2>
                       <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-300">
-                        {t('Join thousands of investors who are already getting better returns with the power of artificial intelligence')}
+                        {t('general.join_thousands_investors')}
                       </p>
 
                       <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                          {t('Create Free Account')}
+                          {t('general.create_free_account')}
                         </Button>
                         <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                          {t('Schedule Demo')}
+                          {t('general.schedule_demo')}
                         </Button>
                       </div>
 
@@ -515,9 +698,9 @@ export default function Welcome() {
                         </Link>
 
                         <div className="flex space-x-6 text-sm text-gray-400">
-                            <a href="#" className="hover:text-white">{t('Terms')}</a>
-                            <a href="#" className="hover:text-white">{t('Privacy')}</a>
-                            <a href="#" className="hover:text-white">{t('Support')}</a>
+                            <a href="#" className="hover:text-white">{t('general.terms')}</a>
+                            <a href="#" className="hover:text-white">{t('general.privacy')}</a>
+                            <a href="#" className="hover:text-white">{t('general.support')}</a>
                         </div>
                     </div>
 
@@ -526,19 +709,43 @@ export default function Welcome() {
                     </div>
                 </div>
             </footer>
+
+            {/* Modal de confirmación para lista de espera */}
+            <Dialog open={showModal} onOpenChange={setShowModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {modalData?.action === 'add' && t('Add to :plan waitlist?', { plan: modalData.planLabel })}
+                            {modalData?.action === 'switch' && t('You are already on the :currentPlan waitlist. Do you want to switch to :newPlan?', { 
+                                currentPlan: modalData.currentPlan, 
+                                newPlan: modalData.planLabel 
+                            })}
+                            {modalData?.action === 'remove' && t('You are already on the :plan waitlist. Do you want to remove yourself from the list?', { 
+                                plan: modalData.planLabel 
+                            })}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowModal(false)}
+                            disabled={processing}
+                        >
+                            {t('Cancel')}
+                        </Button>
+                        <Button
+                            onClick={confirmWaitlistAction}
+                            disabled={processing}
+                        >
+                            {processing ? t('Processing...') : (
+                                modalData?.action === 'add' ? t('Confirm') :
+                                modalData?.action === 'switch' ? t('Switch to :plan', { plan: modalData.planLabel }) :
+                                t('Remove from list')
+                            )}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -304,7 +304,7 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-export const show = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -320,7 +320,7 @@ show.definition = {
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-show.url = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions) => {
+show.url = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -336,9 +336,7 @@ show.url = (args: { locale?: string | number, invitation: number | { id: number 
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                invitation: typeof args.invitation === 'object'
-                ? args.invitation.id
-                : args.invitation,
+                                invitation: args.invitation,
                 }
 
     return show.definition.url
@@ -353,7 +351,7 @@ show.url = (args: { locale?: string | number, invitation: number | { id: number 
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-show.get = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -363,7 +361,7 @@ show.get = (args: { locale?: string | number, invitation: number | { id: number 
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-show.head = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -374,7 +372,7 @@ show.head = (args: { locale?: string | number, invitation: number | { id: number
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-    const showForm = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -385,7 +383,7 @@ show.head = (args: { locale?: string | number, invitation: number | { id: number
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-        showForm.get = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
@@ -395,7 +393,7 @@ show.head = (args: { locale?: string | number, invitation: number | { id: number
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-        showForm.head = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -408,11 +406,11 @@ show.head = (args: { locale?: string | number, invitation: number | { id: number
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::update
- * @see app/Http/Controllers/Admin/InvitationController.php:183
+ * @see app/Http/Controllers/Admin/InvitationController.php:188
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-export const update = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -424,11 +422,11 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::update
- * @see app/Http/Controllers/Admin/InvitationController.php:183
+ * @see app/Http/Controllers/Admin/InvitationController.php:188
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-update.url = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions) => {
+update.url = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -444,9 +442,7 @@ update.url = (args: { locale?: string | number, invitation: number | { id: numbe
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                invitation: typeof args.invitation === 'object'
-                ? args.invitation.id
-                : args.invitation,
+                                invitation: args.invitation,
                 }
 
     return update.definition.url
@@ -457,22 +453,22 @@ update.url = (args: { locale?: string | number, invitation: number | { id: numbe
 
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::update
- * @see app/Http/Controllers/Admin/InvitationController.php:183
+ * @see app/Http/Controllers/Admin/InvitationController.php:188
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-update.put = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\InvitationController::update
- * @see app/Http/Controllers/Admin/InvitationController.php:183
+ * @see app/Http/Controllers/Admin/InvitationController.php:188
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-    const updateForm = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -484,11 +480,11 @@ update.put = (args: { locale?: string | number, invitation: number | { id: numbe
 
             /**
 * @see \App\Http\Controllers\Admin\InvitationController::update
- * @see app/Http/Controllers/Admin/InvitationController.php:183
+ * @see app/Http/Controllers/Admin/InvitationController.php:188
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-        updateForm.put = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -501,11 +497,11 @@ update.put = (args: { locale?: string | number, invitation: number | { id: numbe
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::destroy
- * @see app/Http/Controllers/Admin/InvitationController.php:201
+ * @see app/Http/Controllers/Admin/InvitationController.php:211
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-export const destroy = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -517,11 +513,11 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::destroy
- * @see app/Http/Controllers/Admin/InvitationController.php:201
+ * @see app/Http/Controllers/Admin/InvitationController.php:211
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-destroy.url = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions) => {
+destroy.url = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -537,9 +533,7 @@ destroy.url = (args: { locale?: string | number, invitation: number | { id: numb
 
     const parsedArgs = {
                         locale: args.locale ?? 'es',
-                                invitation: typeof args.invitation === 'object'
-                ? args.invitation.id
-                : args.invitation,
+                                invitation: args.invitation,
                 }
 
     return destroy.definition.url
@@ -550,22 +544,22 @@ destroy.url = (args: { locale?: string | number, invitation: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Admin\InvitationController::destroy
- * @see app/Http/Controllers/Admin/InvitationController.php:201
+ * @see app/Http/Controllers/Admin/InvitationController.php:211
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-destroy.delete = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\InvitationController::destroy
- * @see app/Http/Controllers/Admin/InvitationController.php:201
+ * @see app/Http/Controllers/Admin/InvitationController.php:211
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-    const destroyForm = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -577,11 +571,11 @@ destroy.delete = (args: { locale?: string | number, invitation: number | { id: n
 
             /**
 * @see \App\Http\Controllers\Admin\InvitationController::destroy
- * @see app/Http/Controllers/Admin/InvitationController.php:201
+ * @see app/Http/Controllers/Admin/InvitationController.php:211
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/invitations/{invitation}'
  */
-        destroyForm.delete = (args: { locale?: string | number, invitation: number | { id: number } } | [locale: string | number, invitation: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { locale?: string | number, invitation: string | number } | [locale: string | number, invitation: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

@@ -50,8 +50,12 @@ class PricingController extends Controller
     /**
      * Show the form for editing a pricing plan
      */
-    public function edit(PricingPlan $pricingPlan)
+    public function edit(string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         return Inertia::render('admin/pricing/edit', [
             'pricingPlan' => [
                 'id' => $pricingPlan->id,
@@ -78,8 +82,12 @@ class PricingController extends Controller
     /**
      * Update the specified pricing plan
      */
-    public function update(UpdatePricingPlanRequest $request, PricingPlan $pricingPlan)
+    public function update(UpdatePricingPlanRequest $request, string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         $data = $request->validated();
 
         // Convert datetime strings to Carbon instances
@@ -99,8 +107,12 @@ class PricingController extends Controller
     /**
      * Toggle offer status
      */
-    public function toggleOffer(PricingPlan $pricingPlan)
+    public function toggleOffer(string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         $pricingPlan->update([
             'offer_active' => ! $pricingPlan->offer_active,
         ]);
@@ -114,8 +126,12 @@ class PricingController extends Controller
     /**
      * Toggle scarcity status
      */
-    public function toggleScarcity(PricingPlan $pricingPlan)
+    public function toggleScarcity(string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         $pricingPlan->update([
             'scarcity_active' => ! $pricingPlan->scarcity_active,
         ]);
@@ -129,8 +145,12 @@ class PricingController extends Controller
     /**
      * Increment scarcity sold count
      */
-    public function incrementScarcity(PricingPlan $pricingPlan)
+    public function incrementScarcity(string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         if ($pricingPlan->scarcity_active && $pricingPlan->scarcity_sold < $pricingPlan->scarcity_limit) {
             $pricingPlan->increment('scarcity_sold');
         }
@@ -142,8 +162,12 @@ class PricingController extends Controller
     /**
      * Reset scarcity sold count
      */
-    public function resetScarcity(PricingPlan $pricingPlan)
+    public function resetScarcity(string $locale, $pricingPlan)
     {
+        // Handle both model binding and manual ID resolution
+        if (is_string($pricingPlan) || is_numeric($pricingPlan)) {
+            $pricingPlan = PricingPlan::findOrFail($pricingPlan);
+        }
         $pricingPlan->update(['scarcity_sold' => 0]);
 
         return redirect()->back()

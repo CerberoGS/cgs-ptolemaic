@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ProviderCategoriesSeeder::class,
+            LanguageSeeder::class,
         ]);
 
         $user = User::firstOrCreate(

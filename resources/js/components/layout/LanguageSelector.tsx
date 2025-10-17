@@ -7,6 +7,7 @@ interface AvailableLocale {
     code: string;
     name: string;
     native: string;
+    flag: string;
 }
 
 export default function LanguageSelector() {
@@ -20,8 +21,8 @@ export default function LanguageSelector() {
         availableLocales.length > 0
             ? availableLocales
             : [
-                  { code: 'es', name: 'Spanish', native: 'Español' },
-                  { code: 'en', name: 'English', native: 'English' },
+                  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
+                  { code: 'en', name: 'English', native: 'English', flag: '🇺🇸' },
               ];
 
     const changeLanguage = (localeCode: string) => {
@@ -49,6 +50,7 @@ export default function LanguageSelector() {
                 aria-label="Select language"
             >
                 <Globe className="h-4 w-4" />
+                <span className="text-lg">{currentLanguage.flag}</span>
                 <span>{currentLanguage.native}</span>
             </button>
 
@@ -64,13 +66,17 @@ export default function LanguageSelector() {
                                 <li key={lang.code}>
                                     <button
                                         onClick={() => changeLanguage(lang.code)}
-                                        className={`block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                                        className={`flex items-center space-x-3 w-full px-4 py-2 text-left text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
                                             currentLocale === lang.code
                                                 ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
                                                 : 'text-gray-700 dark:text-gray-300'
                                         }`}
                                     >
-                                        {lang.native}
+                                        <span className="text-lg">{lang.flag}</span>
+                                        <div>
+                                            <div className="font-medium">{lang.native}</div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">{lang.name}</div>
+                                        </div>
                                     </button>
                                 </li>
                             ))}

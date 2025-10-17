@@ -2,8 +2,10 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 import plan from './plan'
 import trial from './trial'
 import integrations from './integrations'
+import affiliate from './affiliate'
+import waitlist from './waitlist'
 /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -18,7 +20,7 @@ index.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -50,7 +52,7 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 }
 
 /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -59,7 +61,7 @@ index.get = (args?: { locale?: string | number } | [locale: string | number ] | 
     method: 'get',
 })
 /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -69,7 +71,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 })
 
     /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -79,7 +81,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     })
 
             /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -88,7 +90,7 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             method: 'get',
         })
             /**
- * @see routes/settings.php:14
+ * @see routes/settings.php:16
  * @param locale - Default: 'es'
  * @route '/{locale?}/settings'
  */
@@ -108,6 +110,8 @@ const settings = {
 plan: Object.assign(plan, plan),
 trial: Object.assign(trial, trial),
 integrations: Object.assign(integrations, integrations),
+affiliate: Object.assign(affiliate, affiliate),
+waitlist: Object.assign(waitlist, waitlist),
 }
 
 export default settings

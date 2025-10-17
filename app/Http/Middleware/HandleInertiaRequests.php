@@ -106,7 +106,15 @@ class HandleInertiaRequests extends Middleware
                     if (is_array($value)) {
                         // Para arrays anidados, crear claves con punto
                         foreach ($value as $subKey => $subValue) {
-                            $translations["{$namespace}.{$subKey}"] = $subValue;
+                            if (is_array($subValue)) {
+                                // Si hay un tercer nivel, también aplanarlo
+                                foreach ($subValue as $subSubKey => $subSubValue) {
+                                    $translations["{$namespace}.{$subKey}.{$subSubKey}"] = $subSubValue;
+                                }
+                            } else {
+                                // Segundo nivel: namespace.key.subKey
+                                $translations["{$namespace}.{$key}.{$subKey}"] = $subValue;
+                            }
                         }
                     } else {
                         // Para valores directos, usar namespace.key
@@ -120,31 +128,47 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Construye la lista de locales disponibles con metadatos legibles.
+     * Obtiene los idiomas disponibles desde la base de datos.
      *
      * @return array<int, array<string, string>>
      */
     protected function getAvailableLocales(): array
     {
-        $meta = [
-            'es' => ['code' => 'es', 'name' => 'Spanish', 'native' => 'Espanol'],
-            'en' => ['code' => 'en', 'name' => 'English', 'native' => 'English'],
-        ];
-
-        return collect(config('app.supported_locales', ['es', 'en']))
-            ->map(function ($locale) use ($meta) {
-                if (isset($meta[$locale])) {
-                    return $meta[$locale];
-                }
-
+        try {
+            // Intentar obtener idiomas desde la base de datos
+            $languages = \App\Models\Language::getActiveLanguages();
+            
+            return $languages->map(function ($language) {
                 return [
-                    'code' => $locale,
-                    'name' => Str::upper($locale),
-                    'native' => Str::upper($locale),
+                    'code' => $language->code,
+                    'name' => $language->name,
+                    'native' => $language->native_name,
+                    'flag' => $language->flag,
                 ];
-            })
-            ->values()
-            ->all();
+            })->toArray();
+        } catch (\Exception $e) {
+            // Fallback a configuración estática si hay error de BD
+            $meta = [
+                'es' => ['code' => 'es', 'name' => 'Spanish', 'native' => 'Español', 'flag' => '🇪🇸'],
+                'en' => ['code' => 'en', 'name' => 'English', 'native' => 'English', 'flag' => '🇺🇸'],
+            ];
+
+            return collect(config('app.supported_locales', ['es', 'en']))
+                ->map(function ($locale) use ($meta) {
+                    if (isset($meta[$locale])) {
+                        return $meta[$locale];
+                    }
+
+                    return [
+                        'code' => $locale,
+                        'name' => Str::upper($locale),
+                        'native' => Str::upper($locale),
+                        'flag' => '🌐',
+                    ];
+                })
+                ->values()
+                ->all();
+        }
     }
 
     public function rootView(Request $request): string

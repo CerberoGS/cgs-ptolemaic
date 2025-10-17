@@ -112,6 +112,15 @@ export function AppSidebar() {
             });
         }
 
+        // Affiliate management access for admins
+        if (permissions.includes('affiliate.manage')) {
+            mainNavItems.push({
+                title: t('Affiliate Management'),
+                href: `/${locale}/admin/affiliate`,
+                icon: Users,
+            });
+        }
+
     // Administration access (only for users with admin dashboard permission)
     const canAccessAdmin =
         permissions.includes('admin.dashboard') ||

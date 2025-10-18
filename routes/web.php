@@ -1,14 +1,14 @@
 <?php
 
 use App\Http\Controllers\AchievementController;
-use App\Http\Controllers\Admin\AffiliateController as AdminAffiliateController;
-use App\Http\Controllers\Admin\WaitlistController as AdminWaitlistController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProviderController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AffiliateController as AdminAffiliateController;
 use App\Http\Controllers\Admin\PricingController as AdminPricingController;
 use App\Http\Controllers\Admin\UserPlanController;
+use App\Http\Controllers\Admin\WaitlistController as AdminWaitlistController;
 use App\Http\Controllers\AnalyticsDashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\JournalEntryController;
@@ -64,13 +64,24 @@ Route::group([
         })->name('dashboard');
 
         // Journal routes
-        Route::get('/journal/export/csv', [JournalEntryController::class, 'exportCsv'])->name('journal.export.csv');
-        Route::get('/journal/export/pdf', [JournalEntryController::class, 'exportPdf'])->name('journal.export.pdf');
+        // Exportaciones - Solo Pro+ (automatización avanzada)
+        Route::middleware('feature:use-advanced-automation')->group(function () {
+            Route::get('/journal/export/csv', [JournalEntryController::class, 'exportCsv'])->name('journal.export.csv');
+            Route::get('/journal/export/pdf', [JournalEntryController::class, 'exportPdf'])->name('journal.export.pdf');
+        });
+
         Route::get('/journal', [JournalEntryController::class, 'index'])->name('journal.index');
         Route::resource('journal', JournalEntryController::class)->except(['index']);
 
-        Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
-        Route::get('/analytics', [AnalyticsDashboardController::class, 'index'])->name('analytics.index');
+        // Achievements - Solo planes pagados (Managed+)
+        Route::middleware('feature:is-paid-plan')->group(function () {
+            Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+        });
+
+        // Analytics avanzadas - Solo Pro+
+        Route::middleware('feature:use-advanced-analytics')->group(function () {
+            Route::get('/analytics', [AnalyticsDashboardController::class, 'index'])->name('analytics.index');
+        });
 
         // Feedback route (anyone can submit)
         Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
@@ -150,24 +161,24 @@ Route::group([
                 Route::post('/languages/{language}/set-default', [\App\Http\Controllers\Admin\LanguageController::class, 'setDefault'])->name('languages.set-default');
             });
 
-                // Affiliate management (admin only)
-                Route::middleware('permission:affiliate.manage')->group(function () {
-                    Route::get('/affiliate', [AdminAffiliateController::class, 'index'])->name('affiliate.index');
-                    Route::get('/affiliate/codes', [AdminAffiliateController::class, 'codes'])->name('affiliate.codes');
-                    Route::get('/affiliate/referrals', [AdminAffiliateController::class, 'referrals'])->name('affiliate.referrals');
-                    Route::get('/affiliate/rewards', [AdminAffiliateController::class, 'rewards'])->name('affiliate.rewards');
-                    Route::post('/affiliate/reward-config', [AdminAffiliateController::class, 'updateRewardConfig'])->name('affiliate.reward-config');
-                    Route::post('/affiliate/codes/{affiliateCode}/toggle', [AdminAffiliateController::class, 'toggleCodeStatus'])->name('affiliate.codes.toggle');
-                    Route::put('/affiliate/referrals/{referral}/status', [AdminAffiliateController::class, 'updateReferralStatus'])->name('affiliate.referrals.status');
-                    Route::put('/affiliate/rewards/{reward}/status', [AdminAffiliateController::class, 'updateRewardStatus'])->name('affiliate.rewards.status');
-                });
+            // Affiliate management (admin only)
+            Route::middleware('permission:affiliate.manage')->group(function () {
+                Route::get('/affiliate', [AdminAffiliateController::class, 'index'])->name('affiliate.index');
+                Route::get('/affiliate/codes', [AdminAffiliateController::class, 'codes'])->name('affiliate.codes');
+                Route::get('/affiliate/referrals', [AdminAffiliateController::class, 'referrals'])->name('affiliate.referrals');
+                Route::get('/affiliate/rewards', [AdminAffiliateController::class, 'rewards'])->name('affiliate.rewards');
+                Route::post('/affiliate/reward-config', [AdminAffiliateController::class, 'updateRewardConfig'])->name('affiliate.reward-config');
+                Route::post('/affiliate/codes/{affiliateCode}/toggle', [AdminAffiliateController::class, 'toggleCodeStatus'])->name('affiliate.codes.toggle');
+                Route::put('/affiliate/referrals/{referral}/status', [AdminAffiliateController::class, 'updateReferralStatus'])->name('affiliate.referrals.status');
+                Route::put('/affiliate/rewards/{reward}/status', [AdminAffiliateController::class, 'updateRewardStatus'])->name('affiliate.rewards.status');
+            });
 
-                // Waitlist management (admin only)
-                Route::middleware('permission:admin.dashboard')->group(function () {
-                    Route::get('/waitlist', [AdminWaitlistController::class, 'index'])->name('waitlist.index');
-                    Route::put('/waitlist/{waitlistEntry}/status', [AdminWaitlistController::class, 'updateStatus'])->name('waitlist.status');
-                    Route::delete('/waitlist/{waitlistEntry}', [AdminWaitlistController::class, 'destroy'])->name('waitlist.destroy');
-                });
+            // Waitlist management (admin only)
+            Route::middleware('permission:admin.dashboard')->group(function () {
+                Route::get('/waitlist', [AdminWaitlistController::class, 'index'])->name('waitlist.index');
+                Route::put('/waitlist/{waitlistEntry}/status', [AdminWaitlistController::class, 'updateStatus'])->name('waitlist.status');
+                Route::delete('/waitlist/{waitlistEntry}', [AdminWaitlistController::class, 'destroy'])->name('waitlist.destroy');
+            });
         });
     });
 
@@ -269,4 +280,10 @@ if (Features::enabled(Features::twoFactorAuthentication())) {
     Route::post('invite/{code}/redeem', [\App\Http\Controllers\InvitationRedemptionController::class, 'redeem'])
         ->middleware('auth')
         ->name('invitation.redeem');
+
+    // Public affiliate referral routes (no locale prefix)
+    Route::get('ref/{code}', [\App\Http\Controllers\AffiliateReferralController::class, 'show'])->name('affiliate.show');
+    Route::post('ref/{code}/process', [\App\Http\Controllers\AffiliateReferralController::class, 'process'])
+        ->middleware('auth')
+        ->name('affiliate.process');
 }

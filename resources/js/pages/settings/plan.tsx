@@ -66,9 +66,18 @@ type CurrentPlan = {
     tagline: string;
 };
 
+interface UpgradePrompt {
+    message: string;
+    feature: string;
+    required_gate: string;
+    current_plan: string;
+    suggested_plan: string;
+}
+
 interface PlanPageProps {
     currentPlan: CurrentPlan;
     plans: PlanCard[];
+    upgrade_prompt?: UpgradePrompt;
 }
 
 const formatLimit = (value: number | null) => {
@@ -92,7 +101,7 @@ const calculateDaysLeft = (trialEndsAt: string | null): number => {
     return Math.max(0, diffDays);
 };
 
-export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
+export default function PlanPage({ currentPlan, plans, upgrade_prompt }: PlanPageProps) {
     const t = useTrans();
     const locale = useLocale();
     const [processing, setProcessing] = useState(false);
@@ -555,6 +564,69 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
             <Head title={t('Plan & Billing')} />
 
             <div className="space-y-8">
+                {/* Upgrade Prompt - Marketing focused */}
+                {upgrade_prompt && (
+                    <Card className="border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/5 via-orange-500/5 to-amber-500/5 shadow-xl">
+                        <CardContent className="p-6 md:p-8">
+                            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                                <div className="flex-1 space-y-3">
+                                    <div className="flex items-center gap-2">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-xl shadow-lg">
+                                            ✨
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-foreground">
+                                                {upgrade_prompt.feature}
+                                            </h3>
+                                            <Badge variant="outline" className="mt-1">
+                                                {t('Requires :plan plan', {
+                                                    plan: plans.find((p) => p.type === upgrade_prompt.suggested_plan)?.label || upgrade_prompt.suggested_plan
+                                                })}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                    <p className="text-base text-muted-foreground md:ml-12">
+                                        {upgrade_prompt.message}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col gap-2 md:flex-row">
+                                    <Button
+                                        size="lg"
+                                        className="gap-2"
+                                        onClick={() => {
+                                            const planCard = document.querySelector(`[data-plan="${upgrade_prompt.suggested_plan}"]`);
+                                            if (planCard) {
+                                                planCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                                // Highlight effect
+                                                planCard.classList.add('ring-4', 'ring-primary', 'ring-offset-4');
+                                                setTimeout(() => {
+                                                    planCard.classList.remove('ring-4', 'ring-primary', 'ring-offset-4');
+                                                }, 3000);
+                                            }
+                                        }}
+                                    >
+                                        {t('View :plan', {
+                                            plan: plans.find((p) => p.type === upgrade_prompt.suggested_plan)?.label || upgrade_prompt.suggested_plan
+                                        })}
+                                        <ArrowRight className="size-4" />
+                                    </Button>
+                                    <Button
+                                        size="lg"
+                                        variant="outline"
+                                        onClick={() => {
+                                            document.querySelector('[data-plan-comparison]')?.scrollIntoView({
+                                                behavior: 'smooth'
+                                            });
+                                        }}
+                                    >
+                                        {t('Compare plans')}
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+
                 {/* Current Plan Header */}
                 <section className="rounded-2xl border bg-gradient-to-br from-background via-background to-muted/30 p-8 shadow-lg">
                     <PlanHeader
@@ -646,7 +718,7 @@ export default function PlanPage({ currentPlan, plans }: PlanPageProps) {
                 )}
 
                 {/* Public Plans */}
-                <section className="space-y-6">
+                <section className="space-y-6" data-plan-comparison>
                     <div>
                         <h2 className="text-xl font-semibold">{t('Public Plans')}</h2>
                         <p className="mt-1 text-sm text-muted-foreground">

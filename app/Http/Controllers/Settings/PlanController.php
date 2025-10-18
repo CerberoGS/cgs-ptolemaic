@@ -19,6 +19,9 @@ class PlanController extends Controller
         $currentPlan = $user?->planOrDefault() ?? PlanType::default();
         $isAdmin = $user?->hasRole('Admin') ?? false;
 
+        // Get upgrade prompt from flash session (set by RequiresFeature middleware)
+        $upgradePrompt = session('upgrade_prompt');
+
         $plans = collect(PlanType::cases())
             // Filter: Only show internal plans to Admins
             ->filter(fn (PlanType $plan) => ! $plan->isInternal() || $isAdmin)
@@ -80,6 +83,7 @@ class PlanController extends Controller
             ],
             'plans' => $plans,
             'upgradeOrder' => config('plans.upgrade_order'),
+            'upgrade_prompt' => $upgradePrompt,
         ]);
     }
 }

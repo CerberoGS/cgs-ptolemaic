@@ -4,7 +4,8 @@
       "Bash(curl:*)",
       "Bash(php:*)",
       "Bash(npm run build)",
-      "Bash(cat config/plans.php)"
+      "Bash(cat config/plans.php)",
+      "Bash(vendor/bin/pint --dirty)"
     ],
     "deny": [],
     "ask": []

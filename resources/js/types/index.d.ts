@@ -7,6 +7,28 @@ export interface Auth {
     permissions: string[];
     hasPassword?: boolean;
     plan: PlanSummary | null;
+    gates: AuthGates | null;
+}
+
+export interface AuthGates {
+    // Plan-based features
+    canAccessIntegrations: boolean;
+    canManageOwnApiKeys: boolean;
+    canUseManagedKeys: boolean;
+
+    // AI Features
+    canUseAiAnalysis: boolean;
+    canUseAdvancedAutomation: boolean;
+    canUseAdvancedAnalytics: boolean;
+
+    // Plan checks
+    isPaidPlan: boolean;
+    hasActiveTrial: boolean;
+    withinDailyLimit: boolean;
+
+    // Combined checks
+    canAccessAdminFeatures: boolean;
+    canManageFeedback: boolean;
 }
 
 export interface BreadcrumbItem {

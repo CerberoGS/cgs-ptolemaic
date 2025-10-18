@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
 
@@ -69,6 +70,7 @@ class HandleInertiaRequests extends Middleware
                 'permissions' => $user?->getAllPermissions()?->pluck('name')->toArray() ?? [],
                 'hasPassword' => ! empty($user?->password),
                 'plan' => $planSummary,
+                'gates' => $this->getComputedGates($user),
             ],
             'csrfToken' => csrf_token(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
@@ -80,27 +82,60 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
+     * Calcula los resultados de todos los Gates de autorización.
+     *
+     * @return array<string, bool>|null
+     */
+    protected function getComputedGates(?\App\Models\User $user): ?array
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return [
+            // Plan-based features
+            'canAccessIntegrations' => Gate::forUser($user)->allows('access-integrations'),
+            'canManageOwnApiKeys' => Gate::forUser($user)->allows('manage-own-api-keys'),
+            'canUseManagedKeys' => Gate::forUser($user)->allows('use-managed-keys'),
+
+            // AI Features
+            'canUseAiAnalysis' => Gate::forUser($user)->allows('use-ai-analysis'),
+            'canUseAdvancedAutomation' => Gate::forUser($user)->allows('use-advanced-automation'),
+            'canUseAdvancedAnalytics' => Gate::forUser($user)->allows('use-advanced-analytics'),
+
+            // Plan checks
+            'isPaidPlan' => Gate::forUser($user)->allows('is-paid-plan'),
+            'hasActiveTrial' => Gate::forUser($user)->allows('has-active-trial'),
+            'withinDailyLimit' => Gate::forUser($user)->allows('within-daily-limit'),
+
+            // Combined checks
+            'canAccessAdminFeatures' => Gate::forUser($user)->allows('access-admin-features'),
+            'canManageFeedback' => Gate::forUser($user)->allows('manage-feedback'),
+        ];
+    }
+
+    /**
      * Obtiene las traducciones cargadas desde archivos JSON y PHP.
      */
     protected function getTranslations(): array
     {
         $locale = app()->getLocale();
         $translations = [];
-        
+
         // Cargar archivos JSON (mantener compatibilidad)
         $jsonPath = base_path("lang/{$locale}.json");
         if (file_exists($jsonPath)) {
             $jsonTranslations = json_decode(file_get_contents($jsonPath), true) ?? [];
             $translations = array_merge($translations, $jsonTranslations);
         }
-        
+
         // Cargar archivos PHP organizados por namespace
         $phpPath = base_path("lang/{$locale}");
         if (is_dir($phpPath)) {
-            foreach (glob($phpPath . '/*.php') as $file) {
+            foreach (glob($phpPath.'/*.php') as $file) {
                 $namespace = basename($file, '.php');
                 $fileTranslations = require $file;
-                
+
                 // Aplanar las traducciones con namespace
                 foreach ($fileTranslations as $key => $value) {
                     if (is_array($value)) {
@@ -123,7 +158,7 @@ class HandleInertiaRequests extends Middleware
                 }
             }
         }
-        
+
         return $translations;
     }
 
@@ -137,7 +172,7 @@ class HandleInertiaRequests extends Middleware
         try {
             // Intentar obtener idiomas desde la base de datos
             $languages = \App\Models\Language::getActiveLanguages();
-            
+
             return $languages->map(function ($language) {
                 return [
                     'code' => $language->code,

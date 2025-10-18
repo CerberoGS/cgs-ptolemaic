@@ -38,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'plan.integrations' => EnsurePlanAllowsIntegrations::class,
+            'feature' => \App\Http\Middleware\RequiresFeature::class,
             'single.session' => \App\Http\Middleware\EnsureSingleSession::class,
             'security.logging' => \App\Http\Middleware\SecurityLogging::class,
             'session.expiration' => \App\Http\Middleware\CheckSessionExpiration::class,

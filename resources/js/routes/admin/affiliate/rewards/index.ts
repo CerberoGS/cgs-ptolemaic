@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -17,7 +17,7 @@ status.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -48,7 +48,7 @@ status.url = (args: { locale?: string | number, reward: string | number } | [loc
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -59,7 +59,7 @@ status.put = (args: { locale?: string | number, reward: string | number } | [loc
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -75,7 +75,7 @@ status.put = (args: { locale?: string | number, reward: string | number } | [loc
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */

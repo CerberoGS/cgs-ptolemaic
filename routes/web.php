@@ -200,10 +200,20 @@ Route::group([
 
     require __DIR__.'/settings.php';
     require __DIR__.'/auth.php';
+
+    // Telegram configuration (Admin only)
+    Route::middleware(['auth', 'permission:admin.manage'])->group(function () {
+        Route::get('/admin/telegram-config', [App\Http\Controllers\Admin\TelegramConfigController::class, 'index'])->name('admin.telegram-config');
+        Route::post('/admin/telegram-config', [App\Http\Controllers\Admin\TelegramConfigController::class, 'update'])->name('admin.telegram-config.update');
+        Route::post('/admin/telegram-config/test', [App\Http\Controllers\Admin\TelegramConfigController::class, 'test'])->name('admin.telegram-config.test');
+    });
+
+    // Telegram webhook (public)
+    Route::post('/telegram/webhook', [App\Http\Controllers\Admin\TelegramConfigController::class, 'webhook'])->name('telegram.webhook');
 });
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('Welcome');
 });
 
 Route::get('/login-google', function () {

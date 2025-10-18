@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggle
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -17,7 +17,7 @@ toggle.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggle
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -48,7 +48,7 @@ toggle.url = (args: { locale?: string | number, affiliateCode: string | number }
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggle
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -59,7 +59,7 @@ toggle.post = (args: { locale?: string | number, affiliateCode: string | number 
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggle
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -70,7 +70,7 @@ toggle.post = (args: { locale?: string | number, affiliateCode: string | number 
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggle
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */

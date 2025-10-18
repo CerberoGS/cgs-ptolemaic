@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Users, TrendingUp, Gift, Star, Settings, Eye, UserCheck } from 'lucide-react';
 import { useTrans } from '@/hooks/useTrans';
 import AppLayout from '@/layouts/app-layout';
+import { StatHelp } from '@/components/help-tooltip';
 
 interface AffiliateStats {
     total_affiliates: number;
@@ -87,12 +88,12 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
 
     return (
         <AppLayout>
-            <Head title={t('Affiliate Management')} />
+            <Head title={t('affiliate.affiliate_management')} />
 
             <div className="space-y-6">
                 {/* Header */}
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">{t('Affiliate Management')}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">{t('affiliate.affiliate_management')}</h1>
                     <p className="text-muted-foreground">
                         {t('Manage affiliate system, rewards, and track performance')}
                     </p>
@@ -106,7 +107,11 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
                                 <Users className="size-5 text-blue-500" />
                                 <div>
                                     <p className="text-2xl font-bold">{stats.total_affiliates}</p>
-                                    <p className="text-sm text-muted-foreground">{t('Total Affiliates')}</p>
+                                    <StatHelp 
+                                        title={t('affiliate.total_affiliates')}
+                                        description={t('affiliate.help_total_affiliates')}
+                                        detailedContent={t('affiliate.help_total_affiliates_detailed')}
+                                    />
                                 </div>
                             </div>
                         </CardContent>
@@ -117,7 +122,11 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
                                 <TrendingUp className="size-5 text-green-500" />
                                 <div>
                                     <p className="text-2xl font-bold">{stats.total_referrals}</p>
-                                    <p className="text-sm text-muted-foreground">{t('Total Referrals')}</p>
+                                    <StatHelp 
+                                        title={t('affiliate.total_referrals')}
+                                        description={t('affiliate.help_total_referrals')}
+                                        detailedContent={t('affiliate.help_total_referrals_detailed')}
+                                    />
                                 </div>
                             </div>
                         </CardContent>
@@ -128,7 +137,11 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
                                 <UserCheck className="size-5 text-purple-500" />
                                 <div>
                                     <p className="text-2xl font-bold">{stats.active_referrals}</p>
-                                    <p className="text-sm text-muted-foreground">{t('Active Referrals')}</p>
+                                    <StatHelp 
+                                        title={t('affiliate.active_referrals')}
+                                        description={t('affiliate.help_active_referrals')}
+                                        detailedContent={t('affiliate.help_active_referrals_detailed')}
+                                    />
                                 </div>
                             </div>
                         </CardContent>
@@ -139,7 +152,11 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
                                 <Gift className="size-5 text-yellow-500" />
                                 <div>
                                     <p className="text-2xl font-bold">{stats.total_rewards_given}</p>
-                                    <p className="text-sm text-muted-foreground">{t('Total Rewards')}</p>
+                                    <StatHelp 
+                                        title={t('affiliate.total_rewards')}
+                                        description={t('affiliate.help_total_rewards')}
+                                        detailedContent={t('affiliate.help_total_rewards_detailed')}
+                                    />
                                 </div>
                             </div>
                         </CardContent>
@@ -150,7 +167,11 @@ export default function AdminAffiliateIndex({ stats, recentReferrals, topAffilia
                                 <Star className="size-5 text-orange-500" />
                                 <div>
                                     <p className="text-2xl font-bold">{stats.active_rewards}</p>
-                                    <p className="text-sm text-muted-foreground">{t('Active Rewards')}</p>
+                                    <StatHelp 
+                                        title={t('affiliate.active_rewards')}
+                                        description={t('affiliate.help_active_rewards')}
+                                        detailedContent={t('affiliate.help_active_rewards_detailed')}
+                                    />
                                 </div>
                             </div>
                         </CardContent>

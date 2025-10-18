@@ -14,7 +14,7 @@ import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare, Ticket, DollarSign, Globe, Users } from 'lucide-react';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Plug, ShieldCheck, BookText, Trophy, BarChart3, MessageSquare, Ticket, DollarSign, Globe, Users, Bot } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useLocale, useTrans } from '@/hooks/useTrans';
 import integrationsRoutes from '@/routes/settings/integrations';
@@ -43,6 +43,15 @@ export function AppSidebar() {
     const page = usePage<SharedData>();
     const permissions = page.props.auth?.permissions ?? [];
     const plan = page.props.auth?.plan;
+
+    // DEBUG: Log permissions and user info
+    console.log('🔍 DEBUG SIDEBAR:', {
+        user: page.props.auth?.user?.email,
+        permissions: permissions,
+        hasAdminManage: permissions.includes('admin.manage'),
+        hasAdminDashboard: permissions.includes('admin.dashboard'),
+        hasAffiliateManage: permissions.includes('affiliate.manage'),
+    });
 
     const mainNavItems: NavItem[] = [
         {
@@ -103,23 +112,32 @@ export function AppSidebar() {
         });
     }
 
-        // Waitlist access for admins
-        if (permissions.includes('admin.dashboard')) {
-            mainNavItems.push({
-                title: t('Waitlist Management'),
-                href: `/${locale}/admin/waitlist`,
-                icon: Users,
-            });
-        }
+    // Waitlist access for admins
+    if (permissions.includes('admin.dashboard')) {
+        mainNavItems.push({
+            title: t('Waitlist Management'),
+            href: `/${locale}/admin/waitlist`,
+            icon: Users,
+        });
+    }
 
-        // Affiliate management access for admins
-        if (permissions.includes('affiliate.manage')) {
-            mainNavItems.push({
-                title: t('Affiliate Management'),
-                href: `/${locale}/admin/affiliate`,
-                icon: Users,
-            });
-        }
+    // Affiliate management access for admins
+    if (permissions.includes('affiliate.manage')) {
+        mainNavItems.push({
+            title: t('Affiliate Management'),
+            href: `/${locale}/admin/affiliate`,
+            icon: Users,
+        });
+    }
+
+    // Telegram configuration access for admins
+    if (permissions.includes('admin.manage')) {
+        mainNavItems.push({
+            title: t('admin.telegram_config.title'),
+            href: adminRoutes.telegramConfig({ locale }),
+            icon: Bot,
+        });
+    }
 
     // Administration access (only for users with admin dashboard permission)
     const canAccessAdmin =
@@ -166,6 +184,13 @@ export function AppSidebar() {
         ...item,
         title: t(item.title),
     }));
+
+    // DEBUG: Log final menu items
+    console.log('📋 FINAL MENU ITEMS:', mainNavItems.map(item => ({
+        title: item.title,
+        href: item.href,
+        hasIcon: !!item.icon
+    })));
 
     return (
         <Sidebar collapsible="icon" variant="inset">

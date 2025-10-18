@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(curl:*)",
-      "Bash(php:*)"
+      "Bash(php:*)",
+      "Bash(npm run build)",
+      "Bash(cat config/plans.php)"
     ],
     "deny": [],
     "ask": []

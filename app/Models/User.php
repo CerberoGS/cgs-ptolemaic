@@ -43,6 +43,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'monthly_analysis_bonus',
         'affiliate_discount_percentage',
         'affiliate_discount_expires_at',
+        'google2fa_secret',
+        'google2fa_enabled',
+        'telegram_chat_id',
+        'telegram_enabled',
     ];
 
     /**

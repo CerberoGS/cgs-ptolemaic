@@ -217,7 +217,7 @@ codes.head = (args?: { locale?: string | number } | [locale: string | number ] |
     codes.form = codesForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -233,7 +233,7 @@ referrals.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -266,7 +266,7 @@ referrals.url = (args?: { locale?: string | number } | [locale: string | number 
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -276,7 +276,7 @@ referrals.get = (args?: { locale?: string | number } | [locale: string | number 
 })
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -287,7 +287,7 @@ referrals.head = (args?: { locale?: string | number } | [locale: string | number
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -298,7 +298,7 @@ referrals.head = (args?: { locale?: string | number } | [locale: string | number
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -308,7 +308,7 @@ referrals.head = (args?: { locale?: string | number } | [locale: string | number
         })
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::referrals
- * @see app/Http/Controllers/Admin/AffiliateController.php:108
+ * @see app/Http/Controllers/Admin/AffiliateController.php:117
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals'
  */
@@ -325,7 +325,7 @@ referrals.head = (args?: { locale?: string | number } | [locale: string | number
     referrals.form = referralsForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -341,7 +341,7 @@ rewards.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -374,7 +374,7 @@ rewards.url = (args?: { locale?: string | number } | [locale: string | number ] 
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -384,7 +384,7 @@ rewards.get = (args?: { locale?: string | number } | [locale: string | number ] 
 })
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -395,7 +395,7 @@ rewards.head = (args?: { locale?: string | number } | [locale: string | number ]
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -406,7 +406,7 @@ rewards.head = (args?: { locale?: string | number } | [locale: string | number ]
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -416,7 +416,7 @@ rewards.head = (args?: { locale?: string | number } | [locale: string | number ]
         })
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::rewards
- * @see app/Http/Controllers/Admin/AffiliateController.php:137
+ * @see app/Http/Controllers/Admin/AffiliateController.php:146
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards'
  */
@@ -433,7 +433,7 @@ rewards.head = (args?: { locale?: string | number } | [locale: string | number ]
     rewards.form = rewardsForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardConfig
- * @see app/Http/Controllers/Admin/AffiliateController.php:166
+ * @see app/Http/Controllers/Admin/AffiliateController.php:175
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/reward-config'
  */
@@ -449,7 +449,7 @@ updateRewardConfig.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardConfig
- * @see app/Http/Controllers/Admin/AffiliateController.php:166
+ * @see app/Http/Controllers/Admin/AffiliateController.php:175
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/reward-config'
  */
@@ -482,7 +482,7 @@ updateRewardConfig.url = (args?: { locale?: string | number } | [locale: string 
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardConfig
- * @see app/Http/Controllers/Admin/AffiliateController.php:166
+ * @see app/Http/Controllers/Admin/AffiliateController.php:175
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/reward-config'
  */
@@ -493,7 +493,7 @@ updateRewardConfig.post = (args?: { locale?: string | number } | [locale: string
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardConfig
- * @see app/Http/Controllers/Admin/AffiliateController.php:166
+ * @see app/Http/Controllers/Admin/AffiliateController.php:175
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/reward-config'
  */
@@ -504,7 +504,7 @@ updateRewardConfig.post = (args?: { locale?: string | number } | [locale: string
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardConfig
- * @see app/Http/Controllers/Admin/AffiliateController.php:166
+ * @see app/Http/Controllers/Admin/AffiliateController.php:175
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/reward-config'
  */
@@ -516,7 +516,7 @@ updateRewardConfig.post = (args?: { locale?: string | number } | [locale: string
     updateRewardConfig.form = updateRewardConfigForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggleCodeStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -532,7 +532,7 @@ toggleCodeStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggleCodeStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -563,7 +563,7 @@ toggleCodeStatus.url = (args: { locale?: string | number, affiliateCode: string 
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggleCodeStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -574,7 +574,7 @@ toggleCodeStatus.post = (args: { locale?: string | number, affiliateCode: string
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggleCodeStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -585,7 +585,7 @@ toggleCodeStatus.post = (args: { locale?: string | number, affiliateCode: string
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::toggleCodeStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:183
+ * @see app/Http/Controllers/Admin/AffiliateController.php:192
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/codes/{affiliateCode}/toggle'
  */
@@ -597,7 +597,7 @@ toggleCodeStatus.post = (args: { locale?: string | number, affiliateCode: string
     toggleCodeStatus.form = toggleCodeStatusForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateReferralStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -613,7 +613,7 @@ updateReferralStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateReferralStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -644,7 +644,7 @@ updateReferralStatus.url = (args: { locale?: string | number, referral: string |
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateReferralStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -655,7 +655,7 @@ updateReferralStatus.put = (args: { locale?: string | number, referral: string |
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateReferralStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -671,7 +671,7 @@ updateReferralStatus.put = (args: { locale?: string | number, referral: string |
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateReferralStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -688,7 +688,7 @@ updateReferralStatus.put = (args: { locale?: string | number, referral: string |
     updateReferralStatus.form = updateReferralStatusForm
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -704,7 +704,7 @@ updateRewardStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -735,7 +735,7 @@ updateRewardStatus.url = (args: { locale?: string | number, reward: string | num
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -746,7 +746,7 @@ updateRewardStatus.put = (args: { locale?: string | number, reward: string | num
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */
@@ -762,7 +762,7 @@ updateRewardStatus.put = (args: { locale?: string | number, reward: string | num
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::updateRewardStatus
- * @see app/Http/Controllers/Admin/AffiliateController.php:218
+ * @see app/Http/Controllers/Admin/AffiliateController.php:228
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/rewards/{reward}/status'
  */

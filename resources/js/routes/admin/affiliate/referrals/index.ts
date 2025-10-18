@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -17,7 +17,7 @@ status.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -48,7 +48,7 @@ status.url = (args: { locale?: string | number, referral: string | number } | [l
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -59,7 +59,7 @@ status.put = (args: { locale?: string | number, referral: string | number } | [l
 
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */
@@ -75,7 +75,7 @@ status.put = (args: { locale?: string | number, referral: string | number } | [l
 
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
- * @see app/Http/Controllers/Admin/AffiliateController.php:199
+ * @see app/Http/Controllers/Admin/AffiliateController.php:209
  * @param locale - Default: 'es'
  * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
  */

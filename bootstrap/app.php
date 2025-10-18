@@ -38,6 +38,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'plan.integrations' => EnsurePlanAllowsIntegrations::class,
+            'single.session' => \App\Http\Middleware\EnsureSingleSession::class,
+            'security.logging' => \App\Http\Middleware\SecurityLogging::class,
+            'session.expiration' => \App\Http\Middleware\CheckSessionExpiration::class,
         ]);
 
         $middleware->web(append: [
@@ -46,6 +49,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\EnsureSingleSession::class,
+            \App\Http\Middleware\SecurityLogging::class,
+            \App\Http\Middleware\CheckSessionExpiration::class,
         ]);
 
         $middleware->api(prepend: [

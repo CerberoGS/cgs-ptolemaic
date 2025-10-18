@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Listeners\HandleSuccessfulLogin;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register observers
         User::observe(UserObserver::class);
+
+        // Event listeners disabled temporarily for debugging
+        // Event::listen(Login::class, HandleSuccessfulLogin::class);
 
         if ($this->app->environment('production')) {
             URL::forceScheme('https');

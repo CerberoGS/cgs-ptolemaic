@@ -97,8 +97,17 @@ class AffiliateController extends Controller
                 ];
             });
 
+        // Calculate stats
+        $stats = [
+            'total_codes' => AffiliateCode::count(),
+            'active_codes' => AffiliateCode::where('is_active', true)->count(),
+            'inactive_codes' => AffiliateCode::where('is_active', false)->count(),
+            'total_earnings' => AffiliateCode::sum('total_earnings') ?? 0,
+        ];
+
         return Inertia::render('admin/affiliate/codes', [
             'codes' => $codes,
+            'stats' => $stats,
         ]);
     }
 
@@ -187,9 +196,10 @@ class AffiliateController extends Controller
             $affiliateCode = AffiliateCode::findOrFail($affiliateCode);
         }
 
-        $affiliateCode->update(['is_active' => !$affiliateCode->is_active]);
+        $affiliateCode->update(['is_active' => ! $affiliateCode->is_active]);
 
         $status = $affiliateCode->is_active ? 'activated' : 'deactivated';
+
         return back()->with('success', __("Affiliate code {$status} successfully!"));
     }
 

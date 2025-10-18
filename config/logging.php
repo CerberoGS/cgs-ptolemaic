@@ -65,11 +65,11 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'daily' => [
+        'security' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/security.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => env('LOG_DAILY_DAYS', 14),
+            'days' => 30,
             'replace_placeholders' => true,
         ],
 

@@ -9,6 +9,7 @@ import PricingController from './PricingController'
 import LanguageController from './LanguageController'
 import AffiliateController from './AffiliateController'
 import WaitlistController from './WaitlistController'
+import TelegramConfigController from './TelegramConfigController'
 const Admin = {
     AdminDashboardController: Object.assign(AdminDashboardController, AdminDashboardController),
 AdminProviderController: Object.assign(AdminProviderController, AdminProviderController),
@@ -21,6 +22,7 @@ PricingController: Object.assign(PricingController, PricingController),
 LanguageController: Object.assign(LanguageController, LanguageController),
 AffiliateController: Object.assign(AffiliateController, AffiliateController),
 WaitlistController: Object.assign(WaitlistController, WaitlistController),
+TelegramConfigController: Object.assign(TelegramConfigController, TelegramConfigController),
 }
 
 export default Admin

@@ -1,25 +1,23 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-export const callback = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const callback = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: callback.url(args, options),
     method: 'get',
 })
 
 callback.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/google-callback',
+    url: '/{locale}/google-callback',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-callback.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+callback.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,63 +31,54 @@ callback.url = (args?: { locale?: string | number } | [locale: string | number ]
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return callback.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-callback.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+callback.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: callback.url(args, options),
     method: 'get',
 })
 /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-callback.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+callback.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: callback.url(args, options),
     method: 'head',
 })
 
     /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-    const callbackForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const callbackForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: callback.url(args, options),
         method: 'get',
     })
 
             /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-        callbackForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        callbackForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: callback.url(args, options),
             method: 'get',
         })
             /**
- * @see routes/web.php:189
- * @param locale - Default: 'es'
- * @route '/{locale?}/google-callback'
+ * @see routes/web.php:199
+ * @route '/{locale}/google-callback'
  */
-        callbackForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        callbackForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: callback.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

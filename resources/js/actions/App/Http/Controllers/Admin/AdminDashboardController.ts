@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-const AdminDashboardController = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+const AdminDashboardController = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: AdminDashboardController.url(args, options),
     method: 'get',
 })
 
 AdminDashboardController.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin',
+    url: '/{locale}/admin',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-AdminDashboardController.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+AdminDashboardController.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ AdminDashboardController.url = (args?: { locale?: string | number } | [locale: s
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return AdminDashboardController.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-AdminDashboardController.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+AdminDashboardController.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: AdminDashboardController.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-AdminDashboardController.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+AdminDashboardController.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: AdminDashboardController.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ AdminDashboardController.head = (args?: { locale?: string | number } | [locale: 
     /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-    const AdminDashboardControllerForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const AdminDashboardControllerForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: AdminDashboardController.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ AdminDashboardController.head = (args?: { locale?: string | number } | [locale: 
             /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-        AdminDashboardControllerForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        AdminDashboardControllerForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: AdminDashboardController.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-        AdminDashboardControllerForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        AdminDashboardControllerForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: AdminDashboardController.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

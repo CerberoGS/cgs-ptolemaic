@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\HandleSuccessfulLogin;
 use App\Models\User;
 use App\Observers\UserObserver;
-use App\Listeners\HandleSuccessfulLogin;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
@@ -39,9 +39,6 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        // Define un locale por defecto para la generación de rutas fuera del ciclo HTTP
-        URL::defaults([
-            'locale' => config('app.locale'),
-        ]);
+        // Locale is now required in all routes - no defaults needed
     }
 }

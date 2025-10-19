@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-export const exportCsv = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const exportCsv = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: exportCsv.url(args, options),
     method: 'get',
 })
 
 exportCsv.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal/export/csv',
+    url: '/{locale}/journal/export/csv',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-exportCsv.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+exportCsv.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ exportCsv.url = (args?: { locale?: string | number } | [locale: string | number 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return exportCsv.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-exportCsv.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+exportCsv.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: exportCsv.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-exportCsv.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+exportCsv.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: exportCsv.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ exportCsv.head = (args?: { locale?: string | number } | [locale: string | number
     /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-    const exportCsvForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const exportCsvForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: exportCsv.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ exportCsv.head = (args?: { locale?: string | number } | [locale: string | number
             /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-        exportCsvForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        exportCsvForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: exportCsv.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::exportCsv
  * @see app/Http/Controllers/JournalEntryController.php:376
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/csv'
+ * @route '/{locale}/journal/export/csv'
  */
-        exportCsvForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        exportCsvForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: exportCsv.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -110,26 +99,24 @@ exportCsv.head = (args?: { locale?: string | number } | [locale: string | number
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-export const exportPdf = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const exportPdf = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: exportPdf.url(args, options),
     method: 'get',
 })
 
 exportPdf.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal/export/pdf',
+    url: '/{locale}/journal/export/pdf',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-exportPdf.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+exportPdf.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -143,36 +130,30 @@ exportPdf.url = (args?: { locale?: string | number } | [locale: string | number 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return exportPdf.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-exportPdf.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+exportPdf.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: exportPdf.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-exportPdf.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+exportPdf.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: exportPdf.url(args, options),
     method: 'head',
 })
@@ -180,10 +161,9 @@ exportPdf.head = (args?: { locale?: string | number } | [locale: string | number
     /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-    const exportPdfForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const exportPdfForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: exportPdf.url(args, options),
         method: 'get',
     })
@@ -191,20 +171,18 @@ exportPdf.head = (args?: { locale?: string | number } | [locale: string | number
             /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-        exportPdfForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        exportPdfForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: exportPdf.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::exportPdf
  * @see app/Http/Controllers/JournalEntryController.php:463
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/export/pdf'
+ * @route '/{locale}/journal/export/pdf'
  */
-        exportPdfForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        exportPdfForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: exportPdf.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -218,26 +196,24 @@ exportPdf.head = (args?: { locale?: string | number } | [locale: string | number
 /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal',
+    url: '/{locale}/journal',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -251,36 +227,30 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return index.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -288,10 +258,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -299,20 +268,18 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::index
  * @see app/Http/Controllers/JournalEntryController.php:22
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -326,26 +293,24 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-export const create = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const create = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 
 create.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal/create',
+    url: '/{locale}/journal/create',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-create.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+create.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -359,36 +324,30 @@ create.url = (args?: { locale?: string | number } | [locale: string | number ] |
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return create.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-create.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+create.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-create.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+create.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(args, options),
     method: 'head',
 })
@@ -396,10 +355,9 @@ create.head = (args?: { locale?: string | number } | [locale: string | number ] 
     /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-    const createForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const createForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: create.url(args, options),
         method: 'get',
     })
@@ -407,20 +365,18 @@ create.head = (args?: { locale?: string | number } | [locale: string | number ] 
             /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-        createForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::create
  * @see app/Http/Controllers/JournalEntryController.php:70
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/create'
+ * @route '/{locale}/journal/create'
  */
-        createForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -434,26 +390,24 @@ create.head = (args?: { locale?: string | number } | [locale: string | number ] 
 /**
 * @see \App\Http\Controllers\JournalEntryController::store
  * @see app/Http/Controllers/JournalEntryController.php:78
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale?}/journal',
+    url: '/{locale}/journal',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::store
  * @see app/Http/Controllers/JournalEntryController.php:78
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -467,26 +421,21 @@ store.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return store.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::store
  * @see app/Http/Controllers/JournalEntryController.php:78
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -494,10 +443,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\JournalEntryController::store
  * @see app/Http/Controllers/JournalEntryController.php:78
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -505,10 +453,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\JournalEntryController::store
  * @see app/Http/Controllers/JournalEntryController.php:78
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal'
+ * @route '/{locale}/journal'
  */
-        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })
@@ -517,26 +464,24 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
 /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-export const show = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 show.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal/{journal}',
+    url: '/{locale}/journal/{journal}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-show.url = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
+show.url = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -546,19 +491,15 @@ show.url = (args: { locale?: string | number, journal: number | { id: number } }
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 journal: typeof args.journal === 'object'
                 ? args.journal.id
                 : args.journal,
                 }
 
     return show.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{journal}', parsedArgs.journal.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -566,20 +507,18 @@ show.url = (args: { locale?: string | number, journal: number | { id: number } }
 /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-show.get = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-show.head = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -587,10 +526,9 @@ show.head = (args: { locale?: string | number, journal: number | { id: number } 
     /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-    const showForm = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -598,20 +536,18 @@ show.head = (args: { locale?: string | number, journal: number | { id: number } 
             /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-        showForm.get = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::show
  * @see app/Http/Controllers/JournalEntryController.php:147
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-        showForm.head = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -625,26 +561,24 @@ show.head = (args: { locale?: string | number, journal: number | { id: number } 
 /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-export const edit = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/journal/{journal}/edit',
+    url: '/{locale}/journal/{journal}/edit',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-edit.url = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
+edit.url = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -654,19 +588,15 @@ edit.url = (args: { locale?: string | number, journal: number | { id: number } }
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 journal: typeof args.journal === 'object'
                 ? args.journal.id
                 : args.journal,
                 }
 
     return edit.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{journal}', parsedArgs.journal.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -674,20 +604,18 @@ edit.url = (args: { locale?: string | number, journal: number | { id: number } }
 /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-edit.get = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-edit.head = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -695,10 +623,9 @@ edit.head = (args: { locale?: string | number, journal: number | { id: number } 
     /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-    const editForm = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const editForm = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: edit.url(args, options),
         method: 'get',
     })
@@ -706,20 +633,18 @@ edit.head = (args: { locale?: string | number, journal: number | { id: number } 
             /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-        editForm.get = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.get = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\JournalEntryController::edit
  * @see app/Http/Controllers/JournalEntryController.php:184
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}/edit'
+ * @route '/{locale}/journal/{journal}/edit'
  */
-        editForm.head = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.head = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -733,26 +658,24 @@ edit.head = (args: { locale?: string | number, journal: number | { id: number } 
 /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-export const update = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 
 update.definition = {
     methods: ["put","patch"],
-    url: '/{locale?}/journal/{journal}',
+    url: '/{locale}/journal/{journal}',
 } satisfies RouteDefinition<["put","patch"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-update.url = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
+update.url = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -762,19 +685,15 @@ update.url = (args: { locale?: string | number, journal: number | { id: number }
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 journal: typeof args.journal === 'object'
                 ? args.journal.id
                 : args.journal,
                 }
 
     return update.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{journal}', parsedArgs.journal.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -782,20 +701,18 @@ update.url = (args: { locale?: string | number, journal: number | { id: number }
 /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-update.put = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-update.patch = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -803,10 +720,9 @@ update.patch = (args: { locale?: string | number, journal: number | { id: number
     /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-    const updateForm = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -819,10 +735,9 @@ update.patch = (args: { locale?: string | number, journal: number | { id: number
             /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-        updateForm.put = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -834,10 +749,9 @@ update.patch = (args: { locale?: string | number, journal: number | { id: number
             /**
 * @see \App\Http\Controllers\JournalEntryController::update
  * @see app/Http/Controllers/JournalEntryController.php:213
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-        updateForm.patch = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -851,26 +765,24 @@ update.patch = (args: { locale?: string | number, journal: number | { id: number
 /**
 * @see \App\Http\Controllers\JournalEntryController::destroy
  * @see app/Http/Controllers/JournalEntryController.php:285
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-export const destroy = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/{locale?}/journal/{journal}',
+    url: '/{locale}/journal/{journal}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\JournalEntryController::destroy
  * @see app/Http/Controllers/JournalEntryController.php:285
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-destroy.url = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
+destroy.url = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -880,19 +792,15 @@ destroy.url = (args: { locale?: string | number, journal: number | { id: number 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 journal: typeof args.journal === 'object'
                 ? args.journal.id
                 : args.journal,
                 }
 
     return destroy.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{journal}', parsedArgs.journal.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -900,10 +808,9 @@ destroy.url = (args: { locale?: string | number, journal: number | { id: number 
 /**
 * @see \App\Http\Controllers\JournalEntryController::destroy
  * @see app/Http/Controllers/JournalEntryController.php:285
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-destroy.delete = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -911,10 +818,9 @@ destroy.delete = (args: { locale?: string | number, journal: number | { id: numb
     /**
 * @see \App\Http\Controllers\JournalEntryController::destroy
  * @see app/Http/Controllers/JournalEntryController.php:285
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-    const destroyForm = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -927,10 +833,9 @@ destroy.delete = (args: { locale?: string | number, journal: number | { id: numb
             /**
 * @see \App\Http\Controllers\JournalEntryController::destroy
  * @see app/Http/Controllers/JournalEntryController.php:285
- * @param locale - Default: 'es'
- * @route '/{locale?}/journal/{journal}'
+ * @route '/{locale}/journal/{journal}'
  */
-        destroyForm.delete = (args: { locale?: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { locale: string | number, journal: number | { id: number } } | [locale: string | number, journal: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

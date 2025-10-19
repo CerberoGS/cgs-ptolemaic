@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/api/pricing',
+    url: '/{locale}/api/pricing',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return index.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\PricingController::index
  * @see app/Http/Controllers/PricingController.php:12
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing'
+ * @route '/{locale}/api/pricing'
  */
-        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -110,26 +99,24 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-export const show = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 show.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/api/pricing/{planType}',
+    url: '/{locale}/api/pricing/{planType}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-show.url = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions) => {
+show.url = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -139,17 +126,13 @@ show.url = (args: { locale?: string | number, planType: string | number } | [loc
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 planType: args.planType,
                 }
 
     return show.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{planType}', parsedArgs.planType.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -157,20 +140,18 @@ show.url = (args: { locale?: string | number, planType: string | number } | [loc
 /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-show.get = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-show.head = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -178,10 +159,9 @@ show.head = (args: { locale?: string | number, planType: string | number } | [lo
     /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-    const showForm = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -189,20 +169,18 @@ show.head = (args: { locale?: string | number, planType: string | number } | [lo
             /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-        showForm.get = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\PricingController::show
  * @see app/Http/Controllers/PricingController.php:49
- * @param locale - Default: 'es'
- * @route '/{locale?}/api/pricing/{planType}'
+ * @route '/{locale}/api/pricing/{planType}'
  */
-        showForm.head = (args: { locale?: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { locale: string | number, planType: string | number } | [locale: string | number, planType: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

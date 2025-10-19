@@ -28,9 +28,12 @@ export default function LanguageSelector() {
     const changeLanguage = (localeCode: string) => {
         const { pathname, search, hash } = window.location;
         const segments = pathname.split('/').filter(Boolean);
+
+        // Replace locale (first segment)
         segments[0] = localeCode;
 
-        const nextPath = `/${segments.join('/') || localeCode}`;
+        // Build path
+        const nextPath = `/${segments.join('/')}`;
 
         router.visit(`${nextPath}${search}${hash}`, {
             preserveState: true,

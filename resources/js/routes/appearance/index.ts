@@ -1,25 +1,23 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-export const edit = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
 
 edit.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/settings/appearance',
+    url: '/{locale}/settings/appearance',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-edit.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+edit.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,63 +31,54 @@ edit.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return edit.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-edit.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
 /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-edit.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
 
     /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-    const editForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const editForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: edit.url(args, options),
         method: 'get',
     })
 
             /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-        editForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, options),
             method: 'get',
         })
             /**
  * @see routes/settings.php:30
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/appearance'
+ * @route '/{locale}/settings/appearance'
  */
-        editForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

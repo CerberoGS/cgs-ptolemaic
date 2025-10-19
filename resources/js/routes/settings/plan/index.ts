@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-export const show = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 show.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/settings/plan',
+    url: '/{locale}/settings/plan',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-show.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+show.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ show.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return show.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-show.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-show.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
     /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-    const showForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ show.head = (args?: { locale?: string | number } | [locale: string | number ] | 
             /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-        showForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Settings\PlanController::__invoke
  * @see app/Http/Controllers/Settings/PlanController.php:16
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/plan'
+ * @route '/{locale}/settings/plan'
  */
-        showForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/settings/affiliate',
+    url: '/{locale}/settings/affiliate',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return index.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Settings\AffiliateController::index
  * @see app/Http/Controllers/Settings/AffiliateController.php:24
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate'
+ * @route '/{locale}/settings/affiliate'
  */
-        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -110,26 +99,24 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::redeemDiscount
  * @see app/Http/Controllers/Settings/AffiliateController.php:46
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/redeem-discount'
+ * @route '/{locale}/settings/affiliate/redeem-discount'
  */
-export const redeemDiscount = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const redeemDiscount = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: redeemDiscount.url(args, options),
     method: 'post',
 })
 
 redeemDiscount.definition = {
     methods: ["post"],
-    url: '/{locale?}/settings/affiliate/redeem-discount',
+    url: '/{locale}/settings/affiliate/redeem-discount',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::redeemDiscount
  * @see app/Http/Controllers/Settings/AffiliateController.php:46
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/redeem-discount'
+ * @route '/{locale}/settings/affiliate/redeem-discount'
  */
-redeemDiscount.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+redeemDiscount.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -143,26 +130,21 @@ redeemDiscount.url = (args?: { locale?: string | number } | [locale: string | nu
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return redeemDiscount.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::redeemDiscount
  * @see app/Http/Controllers/Settings/AffiliateController.php:46
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/redeem-discount'
+ * @route '/{locale}/settings/affiliate/redeem-discount'
  */
-redeemDiscount.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+redeemDiscount.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: redeemDiscount.url(args, options),
     method: 'post',
 })
@@ -170,10 +152,9 @@ redeemDiscount.post = (args?: { locale?: string | number } | [locale: string | n
     /**
 * @see \App\Http\Controllers\Settings\AffiliateController::redeemDiscount
  * @see app/Http/Controllers/Settings/AffiliateController.php:46
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/redeem-discount'
+ * @route '/{locale}/settings/affiliate/redeem-discount'
  */
-    const redeemDiscountForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const redeemDiscountForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: redeemDiscount.url(args, options),
         method: 'post',
     })
@@ -181,10 +162,9 @@ redeemDiscount.post = (args?: { locale?: string | number } | [locale: string | n
             /**
 * @see \App\Http\Controllers\Settings\AffiliateController::redeemDiscount
  * @see app/Http/Controllers/Settings/AffiliateController.php:46
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/redeem-discount'
+ * @route '/{locale}/settings/affiliate/redeem-discount'
  */
-        redeemDiscountForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        redeemDiscountForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: redeemDiscount.url(args, options),
             method: 'post',
         })
@@ -193,26 +173,24 @@ redeemDiscount.post = (args?: { locale?: string | number } | [locale: string | n
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::copyLink
  * @see app/Http/Controllers/Settings/AffiliateController.php:60
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/copy-link'
+ * @route '/{locale}/settings/affiliate/copy-link'
  */
-export const copyLink = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const copyLink = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: copyLink.url(args, options),
     method: 'post',
 })
 
 copyLink.definition = {
     methods: ["post"],
-    url: '/{locale?}/settings/affiliate/copy-link',
+    url: '/{locale}/settings/affiliate/copy-link',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::copyLink
  * @see app/Http/Controllers/Settings/AffiliateController.php:60
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/copy-link'
+ * @route '/{locale}/settings/affiliate/copy-link'
  */
-copyLink.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+copyLink.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -226,26 +204,21 @@ copyLink.url = (args?: { locale?: string | number } | [locale: string | number ]
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return copyLink.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\AffiliateController::copyLink
  * @see app/Http/Controllers/Settings/AffiliateController.php:60
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/copy-link'
+ * @route '/{locale}/settings/affiliate/copy-link'
  */
-copyLink.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+copyLink.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: copyLink.url(args, options),
     method: 'post',
 })
@@ -253,10 +226,9 @@ copyLink.post = (args?: { locale?: string | number } | [locale: string | number 
     /**
 * @see \App\Http\Controllers\Settings\AffiliateController::copyLink
  * @see app/Http/Controllers/Settings/AffiliateController.php:60
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/copy-link'
+ * @route '/{locale}/settings/affiliate/copy-link'
  */
-    const copyLinkForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const copyLinkForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: copyLink.url(args, options),
         method: 'post',
     })
@@ -264,10 +236,9 @@ copyLink.post = (args?: { locale?: string | number } | [locale: string | number 
             /**
 * @see \App\Http\Controllers\Settings\AffiliateController::copyLink
  * @see app/Http/Controllers/Settings/AffiliateController.php:60
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/affiliate/copy-link'
+ * @route '/{locale}/settings/affiliate/copy-link'
  */
-        copyLinkForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        copyLinkForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: copyLink.url(args, options),
             method: 'post',
         })

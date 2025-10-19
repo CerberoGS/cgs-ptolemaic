@@ -27,17 +27,27 @@ use Laravel\Socialite\Facades\Socialite;
 Route::pattern('locale', 'en|es');
 
 Route::group([
-    'prefix' => '{locale?}',
+    'prefix' => '{locale}',
     'where' => [
         'locale' => implode('|', config('app.supported_locales', ['es', 'en'])),
     ],
-    'defaults' => [
-        'locale' => config('app.locale'),
-    ],
 ], function () {
+
+    // Home route
     Route::get('/', function () {
         return Inertia::render('welcome');
     })->name('home');
+
+    // Página de prueba para diagnosticar idioma
+    Route::get('/test-home', function () {
+        return Inertia::render('test-home', [
+            'currentLocale' => app()->getLocale(),
+            'configLocale' => config('app.locale'),
+            'routeLocale' => request()->route()->parameter('locale'),
+            'cookieLocale' => request()->cookie('locale'),
+            'availableLanguages' => \App\Models\Language::getActiveLanguages(),
+        ]);
+    })->name('test-home');
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', function () {
@@ -223,10 +233,6 @@ Route::group([
     Route::post('/telegram/webhook', [App\Http\Controllers\Admin\TelegramConfigController::class, 'webhook'])->name('telegram.webhook');
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-});
-
 Route::get('/login-google', function () {
     return redirect()->route('login.google', ['locale' => app()->getLocale() ?? config('app.locale')]);
 });
@@ -280,10 +286,18 @@ if (Features::enabled(Features::twoFactorAuthentication())) {
     Route::post('invite/{code}/redeem', [\App\Http\Controllers\InvitationRedemptionController::class, 'redeem'])
         ->middleware('auth')
         ->name('invitation.redeem');
-
-    // Public affiliate referral routes (no locale prefix)
-    Route::get('ref/{code}', [\App\Http\Controllers\AffiliateReferralController::class, 'show'])->name('affiliate.show');
-    Route::post('ref/{code}/process', [\App\Http\Controllers\AffiliateReferralController::class, 'process'])
-        ->middleware('auth')
-        ->name('affiliate.process');
 }
+
+// Root redirect to locale with trailing slash
+Route::get('/', function () {
+    $locale = app()->getLocale() ?? config('app.locale');
+
+    return redirect("/{$locale}/");
+});
+
+// Affiliate referral redirect with trailing slash
+Route::get('ref/{code}', function (string $code) {
+    $locale = app()->getLocale() ?? config('app.locale');
+
+    return redirect("/{$locale}/?ref={$code}");
+})->name('affiliate.legacy');

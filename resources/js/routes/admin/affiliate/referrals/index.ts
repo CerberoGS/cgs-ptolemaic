@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
  * @see app/Http/Controllers/Admin/AffiliateController.php:209
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
+ * @route '/{locale}/admin/affiliate/referrals/{referral}/status'
  */
-export const status = (args: { locale?: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const status = (args: { locale: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: status.url(args, options),
     method: 'put',
 })
 
 status.definition = {
     methods: ["put"],
-    url: '/{locale?}/admin/affiliate/referrals/{referral}/status',
+    url: '/{locale}/admin/affiliate/referrals/{referral}/status',
 } satisfies RouteDefinition<["put"]>
 
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
  * @see app/Http/Controllers/Admin/AffiliateController.php:209
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
+ * @route '/{locale}/admin/affiliate/referrals/{referral}/status'
  */
-status.url = (args: { locale?: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions) => {
+status.url = (args: { locale: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -31,17 +29,13 @@ status.url = (args: { locale?: string | number, referral: string | number } | [l
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 referral: args.referral,
                 }
 
     return status.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{referral}', parsedArgs.referral.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -49,10 +43,9 @@ status.url = (args: { locale?: string | number, referral: string | number } | [l
 /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
  * @see app/Http/Controllers/Admin/AffiliateController.php:209
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
+ * @route '/{locale}/admin/affiliate/referrals/{referral}/status'
  */
-status.put = (args: { locale?: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+status.put = (args: { locale: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: status.url(args, options),
     method: 'put',
 })
@@ -60,10 +53,9 @@ status.put = (args: { locale?: string | number, referral: string | number } | [l
     /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
  * @see app/Http/Controllers/Admin/AffiliateController.php:209
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
+ * @route '/{locale}/admin/affiliate/referrals/{referral}/status'
  */
-    const statusForm = (args: { locale?: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const statusForm = (args: { locale: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: status.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -76,10 +68,9 @@ status.put = (args: { locale?: string | number, referral: string | number } | [l
             /**
 * @see \App\Http\Controllers\Admin\AffiliateController::status
  * @see app/Http/Controllers/Admin/AffiliateController.php:209
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/affiliate/referrals/{referral}/status'
+ * @route '/{locale}/admin/affiliate/referrals/{referral}/status'
  */
-        statusForm.put = (args: { locale?: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        statusForm.put = (args: { locale: string | number, referral: string | number } | [locale: string | number, referral: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: status.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',

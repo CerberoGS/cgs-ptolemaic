@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Settings\TrialCardController::store
  * @see app/Http/Controllers/Settings/TrialCardController.php:15
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/trial/add-card'
+ * @route '/{locale}/settings/trial/add-card'
  */
-export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale?}/settings/trial/add-card',
+    url: '/{locale}/settings/trial/add-card',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Settings\TrialCardController::store
  * @see app/Http/Controllers/Settings/TrialCardController.php:15
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/trial/add-card'
+ * @route '/{locale}/settings/trial/add-card'
  */
-store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,26 +33,21 @@ store.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return store.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Settings\TrialCardController::store
  * @see app/Http/Controllers/Settings/TrialCardController.php:15
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/trial/add-card'
+ * @route '/{locale}/settings/trial/add-card'
  */
-store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -62,10 +55,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\Settings\TrialCardController::store
  * @see app/Http/Controllers/Settings/TrialCardController.php:15
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/trial/add-card'
+ * @route '/{locale}/settings/trial/add-card'
  */
-    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -73,10 +65,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\Settings\TrialCardController::store
  * @see app/Http/Controllers/Settings/TrialCardController.php:15
- * @param locale - Default: 'es'
- * @route '/{locale?}/settings/trial/add-card'
+ * @route '/{locale}/settings/trial/add-card'
  */
-        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })

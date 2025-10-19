@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 import providers from './providers'
 import users from './users'
 import roles from './roles'
@@ -12,26 +12,24 @@ import telegramConfig826c57 from './telegram-config'
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-export const dashboard = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const dashboard = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(args, options),
     method: 'get',
 })
 
 dashboard.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin',
+    url: '/{locale}/admin',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-dashboard.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+dashboard.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -45,36 +43,30 @@ dashboard.url = (args?: { locale?: string | number } | [locale: string | number 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return dashboard.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-dashboard.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+dashboard.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-dashboard.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+dashboard.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: dashboard.url(args, options),
     method: 'head',
 })
@@ -82,10 +74,9 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
     /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-    const dashboardForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const dashboardForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: dashboard.url(args, options),
         method: 'get',
     })
@@ -93,20 +84,18 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
             /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-        dashboardForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        dashboardForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: dashboard.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Admin\AdminDashboardController::__invoke
  * @see app/Http/Controllers/Admin/AdminDashboardController.php:18
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin'
+ * @route '/{locale}/admin'
  */
-        dashboardForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        dashboardForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: dashboard.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -120,26 +109,24 @@ dashboard.head = (args?: { locale?: string | number } | [locale: string | number
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-export const telegramConfig = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const telegramConfig = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: telegramConfig.url(args, options),
     method: 'get',
 })
 
 telegramConfig.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin/telegram-config',
+    url: '/{locale}/admin/telegram-config',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-telegramConfig.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+telegramConfig.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -153,36 +140,30 @@ telegramConfig.url = (args?: { locale?: string | number } | [locale: string | nu
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return telegramConfig.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-telegramConfig.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+telegramConfig.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: telegramConfig.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-telegramConfig.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+telegramConfig.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: telegramConfig.url(args, options),
     method: 'head',
 })
@@ -190,10 +171,9 @@ telegramConfig.head = (args?: { locale?: string | number } | [locale: string | n
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-    const telegramConfigForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const telegramConfigForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: telegramConfig.url(args, options),
         method: 'get',
     })
@@ -201,20 +181,18 @@ telegramConfig.head = (args?: { locale?: string | number } | [locale: string | n
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-        telegramConfigForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        telegramConfigForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: telegramConfig.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::telegramConfig
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-        telegramConfigForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        telegramConfigForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: telegramConfig.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

@@ -46,7 +46,7 @@ return [
     'two_factor_backup_codes' => 'Códigos de Respaldo',
     'two_factor_challenge' => 'Desafío de Dos Factores',
     'two_factor_code' => 'Código de Autenticación',
-    'two_factor_code_placeholder' => 123456,
+    'two_factor_code_placeholder' => '123456',
     'two_factor_disabled' => 'Autenticación de dos factores deshabilitada',
     'two_factor_enabled' => 'Autenticación de dos factores habilitada',
     'two_factor_recovery_code' => 'Código de Recuperación',

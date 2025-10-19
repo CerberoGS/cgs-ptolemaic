@@ -1,30 +1,28 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 import roles from './roles'
 import defaults from './defaults'
 import plan from './plan'
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin/users',
+    url: '/{locale}/admin/users',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -38,36 +36,30 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return index.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -75,10 +67,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -86,20 +77,18 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Admin\AdminUserController::index
  * @see app/Http/Controllers/Admin/AdminUserController.php:17
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/users'
+ * @route '/{locale}/admin/users'
  */
-        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

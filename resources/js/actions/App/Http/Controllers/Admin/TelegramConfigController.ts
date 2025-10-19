@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/admin/telegram-config',
+    url: '/{locale}/admin/telegram-config',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -35,36 +33,30 @@ index.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return index.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -72,10 +64,9 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -83,20 +74,18 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::index
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:27
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -110,26 +99,24 @@ index.head = (args?: { locale?: string | number } | [locale: string | number ] |
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::update
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:39
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-export const update = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const update = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: update.url(args, options),
     method: 'post',
 })
 
 update.definition = {
     methods: ["post"],
-    url: '/{locale?}/admin/telegram-config',
+    url: '/{locale}/admin/telegram-config',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::update
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:39
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-update.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+update.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -143,26 +130,21 @@ update.url = (args?: { locale?: string | number } | [locale: string | number ] |
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return update.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::update
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:39
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-update.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+update.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: update.url(args, options),
     method: 'post',
 })
@@ -170,10 +152,9 @@ update.post = (args?: { locale?: string | number } | [locale: string | number ] 
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::update
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:39
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-    const updateForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, options),
         method: 'post',
     })
@@ -181,10 +162,9 @@ update.post = (args?: { locale?: string | number } | [locale: string | number ] 
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::update
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:39
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config'
+ * @route '/{locale}/admin/telegram-config'
  */
-        updateForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, options),
             method: 'post',
         })
@@ -193,26 +173,24 @@ update.post = (args?: { locale?: string | number } | [locale: string | number ] 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::test
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:99
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config/test'
+ * @route '/{locale}/admin/telegram-config/test'
  */
-export const test = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const test = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: test.url(args, options),
     method: 'post',
 })
 
 test.definition = {
     methods: ["post"],
-    url: '/{locale?}/admin/telegram-config/test',
+    url: '/{locale}/admin/telegram-config/test',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::test
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:99
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config/test'
+ * @route '/{locale}/admin/telegram-config/test'
  */
-test.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+test.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -226,26 +204,21 @@ test.url = (args?: { locale?: string | number } | [locale: string | number ] | s
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return test.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::test
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:99
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config/test'
+ * @route '/{locale}/admin/telegram-config/test'
  */
-test.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+test.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: test.url(args, options),
     method: 'post',
 })
@@ -253,10 +226,9 @@ test.post = (args?: { locale?: string | number } | [locale: string | number ] | 
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::test
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:99
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config/test'
+ * @route '/{locale}/admin/telegram-config/test'
  */
-    const testForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const testForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: test.url(args, options),
         method: 'post',
     })
@@ -264,10 +236,9 @@ test.post = (args?: { locale?: string | number } | [locale: string | number ] | 
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::test
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:99
- * @param locale - Default: 'es'
- * @route '/{locale?}/admin/telegram-config/test'
+ * @route '/{locale}/admin/telegram-config/test'
  */
-        testForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        testForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: test.url(args, options),
             method: 'post',
         })
@@ -276,26 +247,24 @@ test.post = (args?: { locale?: string | number } | [locale: string | number ] | 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @param locale - Default: 'es'
- * @route '/{locale?}/telegram/webhook'
+ * @route '/{locale}/telegram/webhook'
  */
-export const webhook = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const webhook = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: webhook.url(args, options),
     method: 'post',
 })
 
 webhook.definition = {
     methods: ["post"],
-    url: '/{locale?}/telegram/webhook',
+    url: '/{locale}/telegram/webhook',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @param locale - Default: 'es'
- * @route '/{locale?}/telegram/webhook'
+ * @route '/{locale}/telegram/webhook'
  */
-webhook.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+webhook.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -309,26 +278,21 @@ webhook.url = (args?: { locale?: string | number } | [locale: string | number ] 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return webhook.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @param locale - Default: 'es'
- * @route '/{locale?}/telegram/webhook'
+ * @route '/{locale}/telegram/webhook'
  */
-webhook.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+webhook.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: webhook.url(args, options),
     method: 'post',
 })
@@ -336,10 +300,9 @@ webhook.post = (args?: { locale?: string | number } | [locale: string | number ]
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @param locale - Default: 'es'
- * @route '/{locale?}/telegram/webhook'
+ * @route '/{locale}/telegram/webhook'
  */
-    const webhookForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const webhookForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: webhook.url(args, options),
         method: 'post',
     })
@@ -347,10 +310,9 @@ webhook.post = (args?: { locale?: string | number } | [locale: string | number ]
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
  * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @param locale - Default: 'es'
- * @route '/{locale?}/telegram/webhook'
+ * @route '/{locale}/telegram/webhook'
  */
-        webhookForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        webhookForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: webhook.url(args, options),
             method: 'post',
         })

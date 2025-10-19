@@ -1,27 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-export const create = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const create = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 
 create.definition = {
     methods: ["get","head"],
-    url: '/{locale?}/reset-password/{token}',
+    url: '/{locale}/reset-password/{token}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-create.url = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions) => {
+create.url = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -31,17 +29,13 @@ create.url = (args: { locale?: string | number, token: string | number } | [loca
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args.locale ?? 'es',
+                        locale: args.locale,
                                 token: args.token,
                 }
 
     return create.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace('{token}', parsedArgs.token.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -49,20 +43,18 @@ create.url = (args: { locale?: string | number, token: string | number } | [loca
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-create.get = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+create.get = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-create.head = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+create.head = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(args, options),
     method: 'head',
 })
@@ -70,10 +62,9 @@ create.head = (args: { locale?: string | number, token: string | number } | [loc
     /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-    const createForm = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const createForm = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: create.url(args, options),
         method: 'get',
     })
@@ -81,20 +72,18 @@ create.head = (args: { locale?: string | number, token: string | number } | [loc
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-        createForm.get = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.get = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::create
  * @see app/Http/Controllers/Auth/NewPasswordController.php:23
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password/{token}'
+ * @route '/{locale}/reset-password/{token}'
  */
-        createForm.head = (args: { locale?: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.head = (args: { locale: string | number, token: string | number } | [locale: string | number, token: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -108,26 +97,24 @@ create.head = (args: { locale?: string | number, token: string | number } | [loc
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password'
+ * @route '/{locale}/reset-password'
  */
-export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale?}/reset-password',
+    url: '/{locale}/reset-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password'
+ * @route '/{locale}/reset-password'
  */
-store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -141,26 +128,21 @@ store.url = (args?: { locale?: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
-    validateParameters(args, [
-            "locale",
-        ])
-
     const parsedArgs = {
-                        locale: args?.locale ?? 'es',
+                        locale: args.locale,
                 }
 
     return store.definition.url
-            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
+            .replace('{locale}', parsedArgs.locale.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password'
+ * @route '/{locale}/reset-password'
  */
-store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -168,10 +150,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
     /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password'
+ * @route '/{locale}/reset-password'
  */
-    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -179,10 +160,9 @@ store.post = (args?: { locale?: string | number } | [locale: string | number ] |
             /**
 * @see \App\Http\Controllers\Auth\NewPasswordController::store
  * @see app/Http/Controllers/Auth/NewPasswordController.php:36
- * @param locale - Default: 'es'
- * @route '/{locale?}/reset-password'
+ * @route '/{locale}/reset-password'
  */
-        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })

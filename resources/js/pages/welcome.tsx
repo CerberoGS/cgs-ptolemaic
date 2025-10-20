@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import LanguageSelector from '@/components/layout/LanguageSelector';
 import { PtolemaicPath } from '@/components/cgs/ptolemaic-path';
 import { useTrans, useLocale } from '@/hooks/useTrans';
+import { status as waitlistStatusRoute } from '@/routes/settings/waitlist';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -45,7 +46,8 @@ export default function Welcome() {
                 // Load waitlist status from server
                 const loadWaitlistStatus = async () => {
                     try {
-                        const response = await fetch(`/${currentLocale}/settings/waitlist/status`, {
+                        const statusUrl = waitlistStatusRoute.url({ locale: currentLocale });
+                        const response = await fetch(statusUrl, {
                             method: 'GET',
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest',

@@ -26,16 +26,14 @@ export default function LanguageSelector() {
               ];
 
     const changeLanguage = (localeCode: string) => {
-        const { pathname, search, hash } = window.location;
+        const { pathname, hash } = window.location;
         const segments = pathname.split('/').filter(Boolean);
+        const nextSegments = [localeCode, ...segments.slice(1)];
 
-        // Replace locale (first segment)
-        segments[0] = localeCode;
+        let nextPath = `/${nextSegments.join('/')}`;
+        nextPath = nextPath.replace(/\/{2,}/g, '/');
 
-        // Build path
-        const nextPath = `/${segments.join('/')}`;
-
-        router.visit(`${nextPath}${search}${hash}`, {
+        router.visit(`${nextPath}${hash}`, {
             preserveState: true,
             preserveScroll: true,
         });

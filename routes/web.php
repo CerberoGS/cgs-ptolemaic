@@ -35,6 +35,12 @@ Route::group([
 
     // Home route
     Route::get('/', function () {
+        if (request()->getQueryString() !== null) {
+            $canonicalHome = route('home', ['locale' => app()->getLocale()], absolute: false);
+
+            return redirect($canonicalHome);
+        }
+
         return Inertia::render('welcome');
     })->name('home');
 
@@ -292,7 +298,12 @@ if (Features::enabled(Features::twoFactorAuthentication())) {
 Route::get('/', function () {
     $locale = app()->getLocale() ?? config('app.locale');
 
-    return redirect("/{$locale}/");
+    request()->query->replace([]);
+    request()->server->set('QUERY_STRING', '');
+
+    $localizedHome = route('home', ['locale' => $locale], absolute: false);
+
+    return redirect($localizedHome);
 });
 
 // Affiliate referral redirect with trailing slash

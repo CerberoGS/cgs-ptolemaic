@@ -11,7 +11,8 @@
       "Bash(find . -maxdepth 3 -type f ( -name \"*.md\" -o -name \"*.txt\" ) ! -path \"*/node_modules/*\" ! -path \"*/vendor/*\" -exec ls -lh {} ;)",
       "Bash(composer show --installed)",
       "Bash(pg_config --version)",
-      "Bash(composer show)"
+      "Bash(composer show)",
+      "Bash(git add -A)"
     ],
     "deny": [],
     "ask": []

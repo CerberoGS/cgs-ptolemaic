@@ -1,0 +1,57 @@
+Docker:
+Ahora, detén y elimina los contenedores que están corriendo:
+docker-compose down
+
+Crea de nuevo los container
+docker-compose up -d --build
+
+Entrar al container:
+docker exec -it laravel_php84_fpm bash
+
+Tambien o para unir la carpeta del proyecto y entrar a mi container:
+docker run -it --name laravel_php84 `
+    -v "${PWD}:/var/www/html" `
+    -w /var/www/html `
+    laravelsail/php84-composer:latest bash
+	
+	
+	docker run -it --name laravel_php84 \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -p 8000:8000 \
+    laravelsail/php84-composer:latest bash
+
+
+actualizar composer:
+composer install
+
+crear la red del contenedor:
+docker network create laravel-net
+
+Crear el servidor MySQL:
+docker run -d \
+    --name mysql-container \
+    --network laravel-net \
+    -e MYSQL_ROOT_PASSWORD=52393811 \
+    -e MYSQL_DATABASE=ptolemaic \
+    -e MYSQL_USER=tolomeo \
+    -e MYSQL_PASSWORD=52393811 \
+    -v mysql-data:/var/lib/mysql \
+    mysql:8.0
+
+Ver las ip de los container:
+docker network inspect laravel-net
+
+ conécta un container manualmente:
+
+docker network connect laravel-net laravel_php84_fpm
+
+6. Resumen
+Instala la extensión pdo_mysql con docker-php-ext-install pdo_mysql.
+Reinicia el contenedor Laravel con docker restart laravel_php84.
+Verifica que la extensión esté instalada con php -m | grep pdo_mysql.
+Usa php artisan serve para iniciar el servidor Laravel (no necesitas Apache).
+
+
+
+(HTTP code 400) unexpected - failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error mounting "/run/desktop/mnt/host/c/laragon/www/cgs-ptolemaic/nginx.conf" to rootfs at "/etc/nginx/conf.d/default.conf": create mountpoint for /etc/nginx/conf.d/default.conf mount: cannot create subdirectories in "/var/lib/docker/rootfs/overlayfs/9cbe5cdfba5bd8afd65789e6fb3a4457b73fc009598dd763f0f40ac5c46923e0/etc/nginx/conf.d/default.conf": not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type

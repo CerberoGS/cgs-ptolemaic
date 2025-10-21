@@ -13,7 +13,8 @@
       "Bash(pg_config --version)",
       "Bash(composer show)",
       "Bash(git add -A)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nMejoras de localización y configuración de idioma\n\n- Configurado sistema de localización con redirección automática\n- Actualizado LanguageSelector con mejoras de UX\n- Implementado test de redirección de locale\n- Ajustes en welcome page para soporte multiidioma\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nMejoras de localización y configuración de idioma\n\n- Configurado sistema de localización con redirección automática\n- Actualizado LanguageSelector con mejoras de UX\n- Implementado test de redirección de locale\n- Ajustes en welcome page para soporte multiidioma\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(code --list-extensions)"
     ],
     "deny": [],
     "ask": []

@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
 export const google = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ google.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
 google.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -41,7 +41,7 @@ google.url = (args: { locale: string | number } | [locale: string | number ] | s
 }
 
 /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
 google.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -49,7 +49,7 @@ google.get = (args: { locale: string | number } | [locale: string | number ] | s
     method: 'get',
 })
 /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
 google.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -58,7 +58,7 @@ google.head = (args: { locale: string | number } | [locale: string | number ] | 
 })
 
     /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
     const googleForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -67,7 +67,7 @@ google.head = (args: { locale: string | number } | [locale: string | number ] | 
     })
 
             /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
         googleForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -75,7 +75,7 @@ google.head = (args: { locale: string | number } | [locale: string | number ] | 
             method: 'get',
         })
             /**
- * @see routes/web.php:195
+ * @see routes/web.php:201
  * @route '/{locale}/login-google'
  */
         googleForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

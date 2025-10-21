@@ -2,10 +2,10 @@
 alwaysApply: true
 ---
 Plan Ladder: estas son las tareas que iremos desarrollando:
-Free – Bitácora + Foro; sin proveedores ni automatizaciones; CTA constante a “Activa tu prueba”.
-Trial (30 días) – Todo desbloqueado con tus llaves; sirve para que prueben la configuración avanzada.
-Managed (nuevo) – Suscripción mensual administrada; tú provees y rotas las API keys; incluye límites (p.ej. 50 consultas/día, 1 000/mes) + reportes resumidos.
-Pro – Igual que Trial pero permanente y con llaves propias, límites ampliados o sin límite “suave”.
+Free=Observador – Bitácora + Foro; sin proveedores ni automatizaciones; CTA constante a “Activa tu prueba”.
+Trial (30 días) Cosmografo;fase1 – Todo desbloqueado con tus llaves; sirve para que prueben la configuración avanzada.
+Managed (nuevo):mismo cosmografo pero ya despues de 30 dias – Suscripción mensual administrada; tú provees y rotas las API keys; incluye límites (p.ej. 50 consultas/día, 1 000/mes) + reportes resumidos.
+Pro:Astronomo – Igual que cosmografo pero permanente y con llaves propias, límites ampliados o sin límite “suave”.
 Enterprise – Personalizado, SSO, límites altos, pricing bajo contacto.
 Mensajería & Upsell
 Pantalla de planes con tabla de beneficios (checkmarks): destacar “Sin configuración de llaves” para Managed y “Control total / integraciones infinitas” para Pro.

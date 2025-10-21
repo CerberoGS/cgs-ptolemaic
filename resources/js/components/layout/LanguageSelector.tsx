@@ -28,9 +28,20 @@ export default function LanguageSelector() {
     const changeLanguage = (localeCode: string) => {
         const { pathname, hash } = window.location;
         const segments = pathname.split('/').filter(Boolean);
-        const nextSegments = [localeCode, ...segments.slice(1)];
 
-        let nextPath = `/${nextSegments.join('/')}`;
+        // Si estamos en la página de welcome (pathname termina con /), mantenemos el /
+        const isHomePage = pathname.endsWith('/');
+
+        let nextPath: string;
+        if (isHomePage) {
+            // Para página de welcome: cambiar solo el locale y mantener el /
+            nextPath = `/${localeCode}/`;
+        } else {
+            // Para otras páginas: cambiar el locale y mantener el resto de la ruta
+            const nextSegments = [localeCode, ...segments.slice(1)];
+            nextPath = `/${nextSegments.join('/')}`;
+        }
+
         nextPath = nextPath.replace(/\/{2,}/g, '/');
 
         router.visit(`${nextPath}${hash}`, {

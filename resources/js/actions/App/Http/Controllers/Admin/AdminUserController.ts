@@ -101,7 +101,7 @@ index.head = (args: { locale: string | number } | [locale: string | number ] | s
  * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @route '/{locale}/admin/users/{user}/roles'
  */
-export const updateRoles = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const updateRoles = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: updateRoles.url(args, options),
     method: 'put',
 })
@@ -116,7 +116,7 @@ updateRoles.definition = {
  * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @route '/{locale}/admin/users/{user}/roles'
  */
-updateRoles.url = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions) => {
+updateRoles.url = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -144,7 +144,7 @@ updateRoles.url = (args: { locale: string | number, user: number | { id: number 
  * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @route '/{locale}/admin/users/{user}/roles'
  */
-updateRoles.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+updateRoles.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: updateRoles.url(args, options),
     method: 'put',
 })
@@ -154,7 +154,7 @@ updateRoles.put = (args: { locale: string | number, user: number | { id: number 
  * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @route '/{locale}/admin/users/{user}/roles'
  */
-    const updateRolesForm = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateRolesForm = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: updateRoles.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -169,7 +169,7 @@ updateRoles.put = (args: { locale: string | number, user: number | { id: number 
  * @see app/Http/Controllers/Admin/AdminUserController.php:84
  * @route '/{locale}/admin/users/{user}/roles'
  */
-        updateRolesForm.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateRolesForm.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: updateRoles.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -185,7 +185,7 @@ updateRoles.put = (args: { locale: string | number, user: number | { id: number 
  * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @route '/{locale}/admin/users/{user}/defaults'
  */
-export const updateDefaults = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const updateDefaults = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: updateDefaults.url(args, options),
     method: 'put',
 })
@@ -200,7 +200,7 @@ updateDefaults.definition = {
  * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @route '/{locale}/admin/users/{user}/defaults'
  */
-updateDefaults.url = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions) => {
+updateDefaults.url = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -228,7 +228,7 @@ updateDefaults.url = (args: { locale: string | number, user: number | { id: numb
  * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @route '/{locale}/admin/users/{user}/defaults'
  */
-updateDefaults.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+updateDefaults.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: updateDefaults.url(args, options),
     method: 'put',
 })
@@ -238,7 +238,7 @@ updateDefaults.put = (args: { locale: string | number, user: number | { id: numb
  * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @route '/{locale}/admin/users/{user}/defaults'
  */
-    const updateDefaultsForm = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateDefaultsForm = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: updateDefaults.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -253,7 +253,7 @@ updateDefaults.put = (args: { locale: string | number, user: number | { id: numb
  * @see app/Http/Controllers/Admin/AdminUserController.php:94
  * @route '/{locale}/admin/users/{user}/defaults'
  */
-        updateDefaultsForm.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateDefaultsForm.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: updateDefaults.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',

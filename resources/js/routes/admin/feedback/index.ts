@@ -101,7 +101,7 @@ index.head = (args: { locale: string | number } | [locale: string | number ] | s
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-export const show = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -116,7 +116,7 @@ show.definition = {
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-show.url = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions) => {
+show.url = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -144,7 +144,7 @@ show.url = (args: { locale: string | number, feedback: number | { id: number } }
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-show.get = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -153,7 +153,7 @@ show.get = (args: { locale: string | number, feedback: number | { id: number } }
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-show.head = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -163,7 +163,7 @@ show.head = (args: { locale: string | number, feedback: number | { id: number } 
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-    const showForm = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -173,7 +173,7 @@ show.head = (args: { locale: string | number, feedback: number | { id: number } 
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-        showForm.get = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
@@ -182,7 +182,7 @@ show.head = (args: { locale: string | number, feedback: number | { id: number } 
  * @see app/Http/Controllers/Admin/FeedbackController.php:95
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-        showForm.head = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -198,7 +198,7 @@ show.head = (args: { locale: string | number, feedback: number | { id: number } 
  * @see app/Http/Controllers/Admin/FeedbackController.php:136
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-export const update = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -213,7 +213,7 @@ update.definition = {
  * @see app/Http/Controllers/Admin/FeedbackController.php:136
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-update.url = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions) => {
+update.url = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -241,7 +241,7 @@ update.url = (args: { locale: string | number, feedback: number | { id: number }
  * @see app/Http/Controllers/Admin/FeedbackController.php:136
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-update.put = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -251,7 +251,7 @@ update.put = (args: { locale: string | number, feedback: number | { id: number }
  * @see app/Http/Controllers/Admin/FeedbackController.php:136
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-    const updateForm = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -266,7 +266,7 @@ update.put = (args: { locale: string | number, feedback: number | { id: number }
  * @see app/Http/Controllers/Admin/FeedbackController.php:136
  * @route '/{locale}/admin/feedback/{feedback}'
  */
-        updateForm.put = (args: { locale: string | number, feedback: number | { id: number } } | [locale: string | number, feedback: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { locale: string | number, feedback: string | number | { id: string | number } } | [locale: string | number, feedback: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',

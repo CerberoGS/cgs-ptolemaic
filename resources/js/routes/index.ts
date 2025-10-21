@@ -90,7 +90,7 @@ home.head = (args: { locale: string | number } | [locale: string | number ] | st
     
     home.form = homeForm
 /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
 export const testHome = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -104,7 +104,7 @@ testHome.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
 testHome.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -131,7 +131,7 @@ testHome.url = (args: { locale: string | number } | [locale: string | number ] |
 }
 
 /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
 testHome.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -139,7 +139,7 @@ testHome.get = (args: { locale: string | number } | [locale: string | number ] |
     method: 'get',
 })
 /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
 testHome.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -148,7 +148,7 @@ testHome.head = (args: { locale: string | number } | [locale: string | number ] 
 })
 
     /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
     const testHomeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ testHome.head = (args: { locale: string | number } | [locale: string | number ] 
     })
 
             /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
         testHomeForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -165,7 +165,7 @@ testHome.head = (args: { locale: string | number } | [locale: string | number ] 
             method: 'get',
         })
             /**
- * @see routes/web.php:42
+ * @see routes/web.php:48
  * @route '/{locale}/test-home'
  */
         testHomeForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -180,7 +180,7 @@ testHome.head = (args: { locale: string | number } | [locale: string | number ] 
     
     testHome.form = testHomeForm
 /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
 export const dashboard = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -194,7 +194,7 @@ dashboard.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
 dashboard.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -221,7 +221,7 @@ dashboard.url = (args: { locale: string | number } | [locale: string | number ] 
 }
 
 /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
 dashboard.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -229,7 +229,7 @@ dashboard.get = (args: { locale: string | number } | [locale: string | number ] 
     method: 'get',
 })
 /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
 dashboard.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -238,7 +238,7 @@ dashboard.head = (args: { locale: string | number } | [locale: string | number ]
 })
 
     /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
     const dashboardForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -247,7 +247,7 @@ dashboard.head = (args: { locale: string | number } | [locale: string | number ]
     })
 
             /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
         dashboardForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -255,7 +255,7 @@ dashboard.head = (args: { locale: string | number } | [locale: string | number ]
             method: 'get',
         })
             /**
- * @see routes/web.php:53
+ * @see routes/web.php:59
  * @route '/{locale}/dashboard'
  */
         dashboardForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

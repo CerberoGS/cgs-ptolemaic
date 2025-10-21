@@ -4,7 +4,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-export const edit = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -19,7 +19,7 @@ edit.definition = {
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-edit.url = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions) => {
+edit.url = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -47,7 +47,7 @@ edit.url = (args: { locale: string | number, user: number | { id: number } } | [
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-edit.get = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -56,7 +56,7 @@ edit.get = (args: { locale: string | number, user: number | { id: number } } | [
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-edit.head = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -66,7 +66,7 @@ edit.head = (args: { locale: string | number, user: number | { id: number } } | 
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-    const editForm = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const editForm = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: edit.url(args, options),
         method: 'get',
     })
@@ -76,7 +76,7 @@ edit.head = (args: { locale: string | number, user: number | { id: number } } | 
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-        editForm.get = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.get = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, options),
             method: 'get',
         })
@@ -85,7 +85,7 @@ edit.head = (args: { locale: string | number, user: number | { id: number } } | 
  * @see app/Http/Controllers/Admin/UserPlanController.php:19
  * @route '/{locale}/admin/users/{user}/plan'
  */
-        editForm.head = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.head = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -101,7 +101,7 @@ edit.head = (args: { locale: string | number, user: number | { id: number } } | 
  * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @route '/{locale}/admin/users/{user}/plan'
  */
-export const update = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -116,7 +116,7 @@ update.definition = {
  * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @route '/{locale}/admin/users/{user}/plan'
  */
-update.url = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions) => {
+update.url = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -144,7 +144,7 @@ update.url = (args: { locale: string | number, user: number | { id: number } } |
  * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @route '/{locale}/admin/users/{user}/plan'
  */
-update.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -154,7 +154,7 @@ update.put = (args: { locale: string | number, user: number | { id: number } } |
  * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @route '/{locale}/admin/users/{user}/plan'
  */
-    const updateForm = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -169,7 +169,7 @@ update.put = (args: { locale: string | number, user: number | { id: number } } |
  * @see app/Http/Controllers/Admin/UserPlanController.php:59
  * @route '/{locale}/admin/users/{user}/plan'
  */
-        updateForm.put = (args: { locale: string | number, user: number | { id: number } } | [locale: string | number, user: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { locale: string | number, user: string | number | { id: string | number } } | [locale: string | number, user: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',

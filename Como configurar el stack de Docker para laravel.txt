@@ -1,12 +1,25 @@
-Docker:
-Ahora, detén y elimina los contenedores que están corriendo:
-docker-compose down
+Usar Docker:
+En la carpeta de cada proyectos van los archivos de docker que hacer que se configuren los container necesarios preconfigurados.
+-docker-compose.yml (aqui se config el serve DB:es un container aparte y la Network )
+-php.dockerfile (Container PHP:Laravel)
+-nginx.conf (Servidor web)
 
-Crea de nuevo los container
+Para construirlo:
+Crea de nuevo los container(Toma la configuracion de cada archivo y levanta los container)
 docker-compose up -d --build
+
+Para detenerlo y elimina los contenedores que están corriendo:(si cambias de configuracion los container)
+docker-compose down -v
+
+Eliminar la red manualmente
+docker network rm cgs-ptolemaic_laravel-net
 
 Entrar al container:
 docker exec -it laravel_php84_fpm bash
+
+# Limpia caché de Laravel (dentro del contenedor PHP) Estando fuera del container
+docker-compose exec php php artisan config:clear
+
 
 Tambien o para unir la carpeta del proyecto y entrar a mi container:
 docker run -it --name laravel_php84 `

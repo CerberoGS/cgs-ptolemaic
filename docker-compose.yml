@@ -1,57 +1,48 @@
-version: '3.8'
+# version: '3.8' # Puedes borrar esta línea
 
 services:
-  #--- Servicio Nginx (Web Server) ---
+  # --- Servicio Nginx ---
   nginx:
     image: nginx:alpine
     container_name: nginx-container
     ports:
       - "80:80"
     volumes:
-      # 1. Monta tu código de Laravel
       - /c/laragon/www/cgs-ptolemaic:/var/www/html
-
-      # 💡 ¡AQUÍ ESTÁ LA CONEXIÓN!
-      # Le dice a Docker:
-      # "Toma el archivo 'nginx.conf' de mi PC (en la raíz del proyecto)
-      # y cópialo DENTRO del contenedor en la ruta '/etc/nginx/conf.d/default.conf'"
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      
     networks:
       - laravel-net
     depends_on:
       - php
 
-  #--- Servicio PHP-FPM (Laravel) ---
+  # --- Servicio PHP-FPM ---
   php:
     container_name: laravel_php84_fpm
     build:
       context: .
-      dockerfile: php.dockerfile  # <-- ESTO LE DICE QUE RECONSTRUYA
+      dockerfile: php.dockerfile
     volumes:
       - /c/laragon/www/cgs-ptolemaic:/var/www/html
     networks:
       - laravel-net
-    # Nota: No hay 'command'. PHP-FPM se inicia solo.
 
-  #--- Servicio MySQL (Base de Datos) ---
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-container
+  # --- Servicio PostgreSQL --- 🐘
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-container
     restart: unless-stopped
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_DATABASE: ptolemaic
-      MYSQL_USER: ptolomeo
-      MYSQL_PASSWORD: 52393811
-      MYSQL_ROOT_PASSWORD: 52393811
+      POSTGRES_DB: ptolemaic
+      POSTGRES_USER: ptolomeo
+      POSTGRES_PASSWORD: 52393811
     volumes:
-      - ./mysql-data:/var/lib/mysql # Guarda los datos de tu BD
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - laravel-net
 
-#--- Definición de la Red ---
+# --- Definición de la Red --- (Solo UNA vez)
 networks:
   laravel-net:
     driver: bridge

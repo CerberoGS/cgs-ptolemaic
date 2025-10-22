@@ -16,7 +16,7 @@
 - ✅ Inertia v2 + React 19
 - ✅ Tailwind CSS v4
 - ❌ PostgreSQL no instalado localmente
-- ❌ Sin Docker
+- ✅ Docker
 - ❌ Sin Octane
 - ❌ Sin Filament
 - ❌ Sin Prism AI
@@ -374,9 +374,11 @@ php artisan serve
 
 ---
 
-### FASE 3: Instalación y Configuración de Prism AI (1 día)
+### FASE 3: Instalación de Prism + Neuron AI (2-3 días) ⭐ ACTUALIZADO
 
-#### 3.1 Instalar Prism
+#### DÍA 1: Prism (Gateway LLM con Failover)
+
+**3.1 Instalar Prism**
 ```bash
 # Instalar Prism PHP
 composer require echolabsdev/prism
@@ -385,13 +387,13 @@ composer require echolabsdev/prism
 php artisan vendor:publish --tag=prism-config
 ```
 
-#### 3.2 Configurar Prism en .env
+**3.2 Configurar Providers en .env**
 ```env
-# FinGPT (VPS Local - Producción)
-FINGPT_API_URL=http://localhost:8001/v1
+# FinGPT (VPS Local - Primary)
+FINGPT_API_URL=http://fingpt:8001/v1
 FINGPT_API_KEY=tu_fingpt_key
 
-# Backups para picos de demanda
+# Backups para picos de demanda y redundancia
 OPENAI_API_KEY=sk-xxxxxx
 ANTHROPIC_API_KEY=sk-ant-xxxxxx
 
@@ -399,7 +401,7 @@ ANTHROPIC_API_KEY=sk-ant-xxxxxx
 PRISM_DEFAULT_PROVIDER=fingpt
 ```
 
-#### 3.3 Configurar Providers en config/prism.php
+**3.3 Configurar Providers con Failover en config/prism.php**
 ```php
 <?php
 
@@ -407,50 +409,56 @@ return [
     'default' => env('PRISM_DEFAULT_PROVIDER', 'fingpt'),
 
     'providers' => [
-        // FinGPT (Local VPS) - Primary
+        // 1️⃣ FinGPT (Local VPS) - PRIMARY
         'fingpt' => [
             'driver' => 'openai', // Compatible con OpenAI API
             'url' => env('FINGPT_API_URL'),
             'api_key' => env('FINGPT_API_KEY'),
             'model' => 'fingpt-forecaster',
             'timeout' => 60,
+            'priority' => 1, // Más alta prioridad
         ],
 
-        // OpenAI (Backup)
+        // 2️⃣ OpenAI (Backup para picos/fallos)
         'openai' => [
             'driver' => 'openai',
             'api_key' => env('OPENAI_API_KEY'),
             'organization' => env('OPENAI_ORGANIZATION'),
             'model' => 'gpt-4o',
             'timeout' => 30,
+            'priority' => 2,
         ],
 
-        // Anthropic Claude (Backup)
+        // 3️⃣ Anthropic Claude (Backup crítico)
         'anthropic' => [
             'driver' => 'anthropic',
             'api_key' => env('ANTHROPIC_API_KEY'),
             'model' => 'claude-sonnet-4-20250514',
             'timeout' => 30,
+            'priority' => 3,
         ],
     ],
 
-    // Estrategia de failover
+    // Estrategia de failover automático
     'failover' => [
         'enabled' => true,
         'providers' => ['fingpt', 'openai', 'anthropic'],
+        'max_retries' => 3,
         'retry_after' => 300, // 5 minutos
+        'backoff' => [100, 500, 1000], // Exponential backoff en ms
     ],
 
-    // Queue para gestionar picos
+    // Queue para gestionar picos de demanda
     'queue' => [
         'enabled' => true,
         'connection' => 'redis',
         'queue' => 'ai-requests',
+        'retry_after' => 90, // 90 segundos
     ],
 ];
 ```
 
-#### 3.4 Crear Servicio de Copiloto Ptolomeo
+**3.4 Crear Servicio de Failover con Prism**
 ```bash
 # Crear servicio principal
 php artisan make:class Services/PtolemeoAI

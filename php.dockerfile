@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
 	libzip-dev\
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
+	libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip pdo_pgsql
 
 # Instalamos Composer globalmente
 RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php

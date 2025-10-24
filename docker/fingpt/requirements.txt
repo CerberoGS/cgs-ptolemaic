@@ -1,8 +1,8 @@
 fastapi
 uvicorn[standard]
 torch 
-transformers==4.34.0 
+transformers==4.53.0 
 accelerate
 bitsandbytes
 sentencepiece==0.1.99 
-protobuf==3.20.3
+protobuf==4.25.8

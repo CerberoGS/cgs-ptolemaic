@@ -1,25 +1,27 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-const VerifyEmailController = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+const VerifyEmailController = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: VerifyEmailController.url(args, options),
     method: 'get',
 })
 
 VerifyEmailController.definition = {
     methods: ["get","head"],
-    url: '/{locale}/verify-email/{id}/{hash}',
+    url: '/{locale?}/verify-email/{id}/{hash}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-VerifyEmailController.url = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions) => {
+VerifyEmailController.url = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     locale: args[0],
@@ -30,14 +32,18 @@ VerifyEmailController.url = (args: { locale: string | number, id: string | numbe
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args.locale ?? '$locale',
                                 id: args.id,
                                 hash: args.hash,
                 }
 
     return VerifyEmailController.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace('{id}', parsedArgs.id.toString())
             .replace('{hash}', parsedArgs.hash.toString())
             .replace(/\/+$/, '') + queryParams(options)
@@ -46,18 +52,20 @@ VerifyEmailController.url = (args: { locale: string | number, id: string | numbe
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-VerifyEmailController.get = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+VerifyEmailController.get = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: VerifyEmailController.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-VerifyEmailController.head = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+VerifyEmailController.head = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: VerifyEmailController.url(args, options),
     method: 'head',
 })
@@ -65,9 +73,10 @@ VerifyEmailController.head = (args: { locale: string | number, id: string | numb
     /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-    const VerifyEmailControllerForm = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const VerifyEmailControllerForm = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: VerifyEmailController.url(args, options),
         method: 'get',
     })
@@ -75,18 +84,20 @@ VerifyEmailController.head = (args: { locale: string | number, id: string | numb
             /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-        VerifyEmailControllerForm.get = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        VerifyEmailControllerForm.get = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: VerifyEmailController.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '/{locale}/verify-email/{id}/{hash}'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/verify-email/{id}/{hash}'
  */
-        VerifyEmailControllerForm.head = (args: { locale: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        VerifyEmailControllerForm.head = (args: { locale?: string | number, id: string | number, hash: string | number } | [locale: string | number, id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: VerifyEmailController.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

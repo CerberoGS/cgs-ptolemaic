@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\PlanType;
+use App\Models\Concerns\HasPlanFeatures;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasPlanFeatures, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'google_id',
         'plan',
+        'pricing_plan_id',
         'plan_started_at',
         'plan_expires_at',
         'trial_ends_at',
@@ -70,13 +71,34 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'phone_verified_at' => 'datetime',
             'password' => 'hashed',
-            'plan' => PlanType::class,
             'plan_started_at' => 'datetime',
             'plan_expires_at' => 'datetime',
             'trial_ends_at' => 'datetime',
             'card_added_at' => 'datetime',
             'plan_metadata' => 'array',
         ];
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            // Auto-assign free plan if no plan is set
+            if (empty($user->pricing_plan_id)) {
+                // Cache the free plan ID to avoid repeated queries
+                $freePlanId = cache()->remember('pricing_plan_free_id', 3600, function () {
+                    return PricingPlan::query()->where('slug', 'free')->value('id');
+                });
+
+                if ($freePlanId) {
+                    $user->pricing_plan_id = $freePlanId;
+                    $user->plan = 'free'; // Keep legacy column in sync
+                    $user->plan_started_at = now();
+                }
+            }
+        });
     }
 
     /**
@@ -91,6 +113,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function defaultProviderSetting(): HasOne
     {
         return $this->hasOne(UserDefaultProviderSetting::class);
+    }
+
+    public function pricingPlan(): BelongsTo
+    {
+        return $this->belongsTo(PricingPlan::class);
     }
 
     public function aiProviderKeys(): HasMany
@@ -166,9 +193,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(AffiliateReward::class)
             ->where('status', 'active')
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->whereNull('expires_at')
-                      ->orWhere('expires_at', '>', now());
+                    ->orWhere('expires_at', '>', now());
             });
     }
 
@@ -183,14 +210,14 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('status', 'active');
     }
 
-    public function hasPlan(PlanType $plan): bool
+    public function hasPlan(string $plan): bool
     {
         return $this->plan === $plan;
     }
 
-    public function planOrDefault(): PlanType
+    public function planOrDefault(): string
     {
-        return $this->plan ?? PlanType::default();
+        return $this->plan ?? 'free';
     }
 
     public function isOnTrial(): bool
@@ -201,7 +228,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         // Only Managed and Pro plans can be on trial
-        if (! in_array($this->plan, [PlanType::Managed, PlanType::Pro], true)) {
+        if (! in_array($this->plan, ['managed', 'pro'], true)) {
             return false;
         }
 
@@ -210,27 +237,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function canAccessProviderIntegrations(): bool
     {
-        return $this->planOrDefault()->canAccessIntegrations();
+        return $this->hasFeature('access_integrations');
     }
 
     public function canManageProviderKeys(): bool
     {
-        return $this->planOrDefault()->canManageProviderKeys();
+        return $this->hasFeature('manage_own_api_keys');
     }
 
     public function usesManagedProviderKeys(): bool
     {
-        return $this->planOrDefault()->usesManagedKeys();
+        return $this->hasFeature('use_managed_keys');
     }
 
     public function managedDailyLimit(): ?int
     {
-        return $this->planOrDefault()->dailyUsageLimit();
+        return $this->getFeatureLimit('daily_analysis_limit');
     }
 
     public function managedMonthlyLimit(): ?int
     {
-        return $this->planOrDefault()->monthlyUsageLimit();
+        return $this->getFeatureLimit('monthly_analysis_limit');
     }
 
     /**
@@ -238,24 +265,21 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function planFeatures(): array
     {
-        return $this->planOrDefault()->availableFeatures();
-    }
+        $plan = $this->currentPlan();
 
-    public function canUseFeature(string $feature): bool
-    {
-        return $this->planOrDefault()->allowsFeature($feature);
+        return $plan?->features?->pluck('key')->toArray() ?? [];
     }
 
     /**
      * Start trial for a specific plan (Managed or Pro)
      */
-    public function startTrial(PlanType $plan): bool
+    public function startTrial(string $plan): bool
     {
-        if (! $this->hasPlan(PlanType::Free)) {
+        if (! $this->hasPlan('free')) {
             return false;
         }
 
-        if (! in_array($plan, [PlanType::Managed, PlanType::Pro], true)) {
+        if (! in_array($plan, ['managed', 'pro'], true)) {
             return false;
         }
 
@@ -270,7 +294,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function canStartTrial(): bool
     {
-        return $this->hasPlan(PlanType::Free) && $this->trial_ends_at === null;
+        return $this->hasPlan('free') && $this->trial_ends_at === null;
     }
 
     /**
@@ -278,7 +302,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function addCardAndExtendTrial(): bool
     {
-        if ($this->plan !== PlanType::Pro || ! $this->isOnTrial()) {
+        if ($this->plan !== 'pro' || ! $this->isOnTrial()) {
             return false;
         }
 
@@ -299,7 +323,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function canAddCardToExtendTrial(): bool
     {
-        return $this->plan === PlanType::Pro
+        return $this->plan === 'pro'
             && $this->isOnTrial()
             && $this->card_added_at === null;
     }
@@ -337,7 +361,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function downgradeToFree(): void
     {
         $this->update([
-            'plan' => PlanType::Free,
+            'plan' => 'free',
             'plan_started_at' => now(),
         ]);
     }
@@ -435,20 +459,20 @@ class User extends Authenticatable implements MustVerifyEmail
             return $this->affiliate_code;
         }
 
-        $code = strtoupper(substr($this->name, 0, 3) . substr($this->id, -3));
-        
+        $code = strtoupper(substr($this->name, 0, 3).substr($this->id, -3));
+
         // Ensure uniqueness
         $counter = 1;
         $originalCode = $code;
         while (User::where('affiliate_code', $code)->exists()) {
-            $code = $originalCode . $counter;
+            $code = $originalCode.$counter;
             $counter++;
         }
 
         $this->update(['affiliate_code' => $code]);
 
         // Create AffiliateCode record only if it doesn't exist
-        if (!$this->affiliateCode) {
+        if (! $this->affiliateCode) {
             AffiliateCode::create([
                 'user_id' => $this->id,
                 'code' => $code,
@@ -461,6 +485,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getAffiliateLink(): string
     {
         $code = $this->affiliate_code ?? $this->generateAffiliateCode();
+
         return url("/ref/{$code}");
     }
 
@@ -470,7 +495,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $rewardBonus = $this->activeAffiliateRewards()
             ->where('reward_type', 'analysis_bonus')
             ->sum('analysis_bonus');
-        
+
         return $referralBonus + $rewardBonus + $this->monthly_analysis_bonus;
     }
 
@@ -479,19 +504,19 @@ class User extends Authenticatable implements MustVerifyEmail
         $rewardDiscount = $this->activeAffiliateRewards()
             ->where('reward_type', 'discount_percentage')
             ->max('discount_percentage') ?? 0;
-        
+
         return max($rewardDiscount, $this->affiliate_discount_percentage);
     }
 
     public function canRedeemDiscount(): bool
     {
-        return $this->activeReferrals()->count() >= 10 && 
+        return $this->activeReferrals()->count() >= 10 &&
                $this->getTotalDiscountPercentage() === 0;
     }
 
     public function redeemDiscount(): bool
     {
-        if (!$this->canRedeemDiscount()) {
+        if (! $this->canRedeemDiscount()) {
             return false;
         }
 

@@ -38,25 +38,27 @@ class HandleInertiaRequests extends Middleware
         $planSummary = null;
 
         if ($user !== null) {
-            $plan = $user->planOrDefault();
+            $planSlug = $user->planOrDefault();
+            $planModel = $user->currentPlan();
+
             $planSummary = [
-                'type' => $plan->value,
-                'label' => $plan->label(),
+                'type' => $planSlug,
+                'label' => $planModel?->name() ?? ucfirst($planSlug),
                 'isTrial' => $user->isOnTrial(),
-                'isPaid' => $plan->isPaid(),
+                'isPaid' => $planModel && $planModel->price_monthly > 0,
                 'trialEndsAt' => $user->trial_ends_at?->toIso8601String(),
-                'canAccessIntegrations' => $user->canAccessProviderIntegrations(),
-                'canManageProviderKeys' => $user->canManageProviderKeys(),
-                'usesManagedKeys' => $user->usesManagedProviderKeys(),
-                'isInternal' => $plan->isInternal(),
-                'managedLimits' => [
-                    'daily' => $user->managedDailyLimit(),
-                    'monthly' => $user->managedMonthlyLimit(),
-                ],
-                'features' => $plan->availableFeatures(),
-                'emoji' => $plan->emoji(),
-                'accentColor' => $plan->accentColor(),
-                'tagline' => $plan->tagline(),
+                'isInternal' => in_array($planSlug, ['internal', 'staff']),
+                'emoji' => $planModel?->emoji ?? '👤',
+                'accentColor' => $planModel?->accent_color ?? 'gray',
+                'tagline' => $planModel?->tagline() ?? '',
+                'features' => $planModel?->features?->map(function ($feature) {
+                    return [
+                        'key' => $feature->key,
+                        'name' => $feature->name(),
+                        'enabled' => $feature->pivot->is_enabled,
+                        'limit' => $feature->pivot->limit_value,
+                    ];
+                })->toArray() ?? [],
             ];
         }
 

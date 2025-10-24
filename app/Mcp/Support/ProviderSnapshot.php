@@ -77,7 +77,7 @@ class ProviderSnapshot
     {
         $modelClass = $providerType->modelClass();
 
-        return $modelClass::query()->with('category:id,name,display_name');
+        return $modelClass::query();
     }
 
     /**

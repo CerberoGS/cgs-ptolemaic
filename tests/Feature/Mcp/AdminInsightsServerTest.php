@@ -4,7 +4,6 @@ use App\Mcp\Resources\AppStatusResource;
 use App\Mcp\Resources\ProvidersResource;
 use App\Mcp\Resources\UsersResource;
 use App\Models\AiProvider;
-use App\Models\ProviderCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Mcp\Request;
@@ -40,16 +39,7 @@ it('returns a filtered list of users', function () {
 });
 
 it('summarises providers across types', function () {
-    $category = ProviderCategory::query()->firstOrCreate(
-        ['name' => 'ai'],
-        [
-            'display_name' => 'Inteligencia Artificial',
-            'description' => 'Modelos de IA.',
-        ],
-    );
-
     AiProvider::query()->create([
-        'provider_category_id' => $category->id,
         'slug' => 'openai',
         'display_name' => 'OpenAI',
         'status' => 'active',
@@ -68,16 +58,7 @@ it('summarises providers across types', function () {
 });
 
 it('returns an application status snapshot', function () {
-    $category = ProviderCategory::query()->firstOrCreate(
-        ['name' => 'ai'],
-        [
-            'display_name' => 'Inteligencia Artificial',
-            'description' => 'Modelos de IA.',
-        ],
-    );
-
     AiProvider::query()->create([
-        'provider_category_id' => $category->id,
         'slug' => 'anthropic',
         'display_name' => 'Anthropic',
         'status' => 'active',

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Enums\PlanType;
 use App\Models\User;
 use App\Services\AffiliateService;
 use Illuminate\Support\Facades\Session;
@@ -40,15 +39,15 @@ class UserObserver
     protected function assignPlanByRole(User $user): void
     {
         // Admin gets Internal plan automatically
-        if ($user->hasRole('Admin') && $user->plan !== PlanType::Internal) {
-            $user->updateQuietly(['plan' => PlanType::Internal]);
+        if ($user->hasRole('Admin') && $user->plan !== 'internal') {
+            $user->updateQuietly(['plan' => 'internal']);
 
             return;
         }
 
         // Manager gets Staff plan automatically
-        if ($user->hasRole('Manager') && ! $user->plan->isInternal()) {
-            $user->updateQuietly(['plan' => PlanType::Staff]);
+        if ($user->hasRole('Manager') && ! in_array($user->plan, ['internal', 'staff'])) {
+            $user->updateQuietly(['plan' => 'staff']);
 
             return;
         }
@@ -60,10 +59,10 @@ class UserObserver
     protected function processAffiliateReferral(User $user): void
     {
         $affiliateCode = Session::get('affiliate_code');
-        
+
         if ($affiliateCode) {
             $this->affiliateService->processReferral($user, $affiliateCode);
-            
+
             // Clear the session after processing
             Session::forget('affiliate_code');
         }
@@ -75,7 +74,7 @@ class UserObserver
     protected function generateAffiliateCode(User $user): void
     {
         // Only generate for non-internal users
-        if (!$user->plan->isInternal()) {
+        if (! in_array($user->plan, ['internal', 'staff'])) {
             $user->generateAffiliateCode();
         }
     }
@@ -86,7 +85,7 @@ class UserObserver
     protected function processPlanUpgrade(User $user): void
     {
         if ($user->wasChanged('plan')) {
-            $this->affiliateService->updateReferralPlan($user, $user->plan->value);
+            $this->affiliateService->updateReferralPlan($user, $user->plan);
         }
     }
 }

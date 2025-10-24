@@ -10,7 +10,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import adminRoutes from '@/routes/admin';
 import { dashboard, home } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -76,70 +75,8 @@ export function AppSidebar() {
         },
     ];
 
-    // Feedback access for managers and admins
-    if (permissions.includes('feedback.manage')) {
-        mainNavItems.push({
-            title: t('components.feedback'),
-            href: `/${locale}/admin/feedback`,
-            icon: MessageSquare,
-        });
-    }
-
-    // Invitations access for admins
-    if (permissions.includes('invitations.manage')) {
-        mainNavItems.push({
-            title: t('components.invitations'),
-            href: `/${locale}/admin/invitations`,
-            icon: Ticket,
-        });
-    }
-
-    // Pricing access for admins
-    if (permissions.includes('pricing.manage')) {
-        mainNavItems.push({
-            title: t('pricing.title'),
-            href: `/${locale}/admin/pricing`,
-            icon: DollarSign,
-        });
-    }
-
-    // Languages access for admins
-    if (permissions.includes('languages.manage')) {
-        mainNavItems.push({
-            title: t('admin.languages'),
-            href: `/${locale}/admin/languages`,
-            icon: Globe,
-        });
-    }
-
-    // Waitlist access for admins
-    if (permissions.includes('admin.dashboard')) {
-        mainNavItems.push({
-            title: t('Waitlist Management'),
-            href: `/${locale}/admin/waitlist`,
-            icon: Users,
-        });
-    }
-
-    // Affiliate management access for admins
-    if (permissions.includes('affiliate.manage')) {
-        mainNavItems.push({
-            title: t('Affiliate Management'),
-            href: `/${locale}/admin/affiliate`,
-            icon: Users,
-        });
-    }
-
-    // Telegram configuration access for admins
-    if (permissions.includes('admin.manage')) {
-        mainNavItems.push({
-            title: t('admin.telegram_config.title'),
-            href: adminRoutes.telegramConfig({ locale }),
-            icon: Bot,
-        });
-    }
-
-    // Administration access (only for users with admin dashboard permission)
+    // Administration access (only for users with admin permissions)
+    // All admin functionality now in Filament at /admin
     const canAccessAdmin =
         permissions.includes('admin.dashboard') ||
         permissions.includes('providers.view') ||
@@ -147,12 +84,18 @@ export function AppSidebar() {
         permissions.includes('users.view') ||
         permissions.includes('users.manage') ||
         permissions.includes('roles.view') ||
-        permissions.includes('roles.manage');
+        permissions.includes('roles.manage') ||
+        permissions.includes('feedback.manage') ||
+        permissions.includes('invitations.manage') ||
+        permissions.includes('pricing.manage') ||
+        permissions.includes('languages.manage') ||
+        permissions.includes('affiliate.manage') ||
+        permissions.includes('admin.manage');
 
     if (canAccessAdmin) {
         mainNavItems.push({
             title: t('components.administration'),
-            href: adminRoutes.dashboard({ locale }),
+            href: '/admin',
             icon: ShieldCheck,
         });
     }

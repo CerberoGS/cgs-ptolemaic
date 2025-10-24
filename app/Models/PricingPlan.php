@@ -2,175 +2,212 @@
 
 namespace App\Models;
 
-use App\Enums\PlanType;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Role;
 
 class PricingPlan extends Model
 {
     protected $fillable = [
-        'plan_type',
-        'price_monthly',
-        'price_yearly',
-        'offer_price_monthly',
-        'offer_price_yearly',
-        'offer_active',
-        'offer_name',
-        'offer_description',
-        'offer_starts_at',
-        'offer_ends_at',
-        'scarcity_active',
-        'scarcity_message',
-        'scarcity_limit',
-        'scarcity_sold',
+        'slug',
+        'name_key',
+        'tagline_key',
+        'description_key',
+        'emoji',
+        'accent_color',
+        'icon_url',
+        'offer_description_key',
+        'scarcity_message_key',
         'is_active',
+        'is_public',
+        'is_featured',
+        'display_order',
+        'role_id',
     ];
 
     protected $casts = [
-        'offer_starts_at' => 'datetime',
-        'offer_ends_at' => 'datetime',
-        'offer_active' => 'boolean',
-        'scarcity_active' => 'boolean',
         'is_active' => 'boolean',
-        'price_monthly' => 'decimal:2',
-        'price_yearly' => 'decimal:2',
-        'offer_price_monthly' => 'decimal:2',
-        'offer_price_yearly' => 'decimal:2',
+        'is_public' => 'boolean',
+        'is_featured' => 'boolean',
+        'display_order' => 'integer',
     ];
 
+    // ==================== RELACIONES ====================
+
     /**
-     * Check if offer is currently active
+     * Spatie role for permissions
      */
-    public function isOfferActive(): bool
+    public function role(): BelongsTo
     {
-        if (! $this->offer_active) {
-            return false;
-        }
-
-        $now = now();
-
-        // Check if offer has started
-        if ($this->offer_starts_at && $now->isBefore($this->offer_starts_at)) {
-            return false;
-        }
-
-        // Check if offer has ended
-        if ($this->offer_ends_at && $now->isAfter($this->offer_ends_at)) {
-            return false;
-        }
-
-        return true;
+        return $this->belongsTo(Role::class);
     }
 
     /**
-     * Get current price for a specific period
+     * Features que tiene este plan
      */
-    public function getCurrentPrice(string $period): float
+    public function features(): BelongsToMany
     {
-        if ($this->isOfferActive()) {
-            return $period === 'yearly'
-                ? (float) $this->offer_price_yearly
-                : (float) $this->offer_price_monthly;
-        }
-
-        return $period === 'yearly'
-            ? (float) $this->price_yearly
-            : (float) $this->price_monthly;
+        return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
+            ->withPivot('is_enabled', 'limit_value', 'string_value', 'json_value', 'config')
+            ->withTimestamps();
     }
 
     /**
-     * Calculate discount percentage
+     * Billing options for this plan
      */
-    public function getDiscountPercentage(): int
+    public function billingOptions(): HasMany
     {
-        if (! $this->isOfferActive()) {
-            return 0;
-        }
-
-        $originalPrice = (float) $this->price_monthly;
-        $offerPrice = (float) $this->offer_price_monthly;
-
-        if ($originalPrice <= 0) {
-            return 0;
-        }
-
-        return (int) round((($originalPrice - $offerPrice) / $originalPrice) * 100);
+        return $this->hasMany(PlanBillingOption::class, 'plan_id');
     }
 
     /**
-     * Get time remaining for offer
+     * Active billing options ordered by display order
      */
-    public function getTimeRemaining(): ?Carbon
+    public function activeBillingOptions(): HasMany
     {
-        if (! $this->isOfferActive() || ! $this->offer_ends_at) {
-            return null;
-        }
-
-        return $this->offer_ends_at;
+        return $this->billingOptions()
+            ->where('is_active', true)
+            ->orderBy('display_order');
     }
 
     /**
-     * Get scarcity message
+     * Get the default billing option for this plan
      */
-    public function getScarcityMessage(): ?string
+    public function defaultBillingOption(): ?PlanBillingOption
     {
-        if (! $this->scarcity_active || ! $this->scarcity_message) {
-            return null;
-        }
+        return $this->billingOptions()
+            ->where('is_active', true)
+            ->where('is_default', true)
+            ->first();
+    }
 
-        return $this->scarcity_message;
+    // ==================== TRADUCCIÓN ====================
+
+    /**
+     * Get translated plan name
+     */
+    public function name(): string
+    {
+        return __($this->name_key);
     }
 
     /**
-     * Check if scarcity should be shown
+     * Get translated tagline
      */
-    public function canShowScarcity(): bool
+    public function tagline(): string
     {
-        if (! $this->scarcity_active) {
-            return false;
-        }
-
-        if (! $this->scarcity_limit || ! $this->scarcity_message) {
-            return false;
-        }
-
-        return $this->scarcity_sold < $this->scarcity_limit;
+        return __($this->tagline_key);
     }
 
     /**
-     * Get scarcity percentage
+     * Get translated description
      */
-    public function getScarcityPercentage(): int
+    public function description(): string
     {
-        if (! $this->scarcity_active || ! $this->scarcity_limit) {
-            return 0;
-        }
+        return __($this->description_key);
+    }
 
-        return (int) round(($this->scarcity_sold / $this->scarcity_limit) * 100);
+    // ==================== FEATURES (con caché) ====================
+
+    /**
+     * Check if plan has a specific feature enabled
+     */
+    public function hasFeature(string $featureKey): bool
+    {
+        return Cache::remember(
+            "plan.{$this->id}.feature.{$featureKey}",
+            now()->addHours(6),
+            fn () => $this->features()
+                ->where('key', $featureKey)
+                ->wherePivot('is_enabled', true)
+                ->exists()
+        );
     }
 
     /**
-     * Get remaining scarcity slots
+     * Get feature limit value (for integer features)
      */
-    public function getRemainingSlots(): int
+    public function getFeatureLimit(string $featureKey): ?int
     {
-        if (! $this->scarcity_active || ! $this->scarcity_limit) {
-            return 0;
-        }
+        return Cache::remember(
+            "plan.{$this->id}.limit.{$featureKey}",
+            now()->addHours(6),
+            function () use ($featureKey) {
+                $feature = $this->features()
+                    ->where('key', $featureKey)
+                    ->wherePivot('is_enabled', true)
+                    ->first();
 
-        return max(0, $this->scarcity_limit - $this->scarcity_sold);
+                return $feature?->pivot->limit_value;
+            }
+        );
     }
 
     /**
-     * Get plan type enum
+     * Get feature value (generic)
      */
-    public function getPlanTypeEnum(): PlanType
+    public function getFeatureValue(string $featureKey, string $type = 'limit')
     {
-        return PlanType::from($this->plan_type);
+        return Cache::remember(
+            "plan.{$this->id}.value.{$featureKey}.{$type}",
+            now()->addHours(6),
+            function () use ($featureKey, $type) {
+                $feature = $this->features()
+                    ->where('key', $featureKey)
+                    ->wherePivot('is_enabled', true)
+                    ->first();
+
+                if (! $feature) {
+                    return null;
+                }
+
+                return match ($type) {
+                    'limit' => $feature->pivot->limit_value,
+                    'string' => $feature->pivot->string_value,
+                    'json' => $feature->pivot->json_value,
+                    'config' => $feature->pivot->config,
+                    default => null,
+                };
+            }
+        );
     }
 
+    // ==================== PERMISOS (delegado a Spatie) ====================
+
     /**
-     * Scope for active plans
+     * Get all permissions from Spatie role
+     */
+    public function permissions(): array
+    {
+        return Cache::remember(
+            "plan.{$this->id}.permissions",
+            now()->addHours(6),
+            fn () => $this->role?->permissions->pluck('name')->toArray() ?? []
+        );
+    }
+
+    // ==================== HELPERS (delegated to billing options) ====================
+
+    /**
+     * Get default monthly billing option
+     *
+     * @deprecated Use billingOptions relationship directly
+     */
+    public function getDefaultMonthlyOption(): ?PlanBillingOption
+    {
+        return $this->billingOptions()
+            ->where('billing_cycle_slug', 'monthly')
+            ->where('is_active', true)
+            ->first() ?? $this->defaultBillingOption();
+    }
+
+    // ==================== SCOPES ====================
+
+    /**
+     * Scope: active plans
      */
     public function scopeActive($query)
     {
@@ -178,27 +215,43 @@ class PricingPlan extends Model
     }
 
     /**
-     * Scope for plans with active offers
+     * Scope: public plans
      */
-    public function scopeWithActiveOffers($query)
+    public function scopePublic($query)
     {
-        return $query->where('offer_active', true)
-            ->where(function ($q) {
-                $q->whereNull('offer_starts_at')
-                    ->orWhere('offer_starts_at', '<=', now());
-            })
-            ->where(function ($q) {
-                $q->whereNull('offer_ends_at')
-                    ->orWhere('offer_ends_at', '>', now());
-            });
+        return $query->where('is_public', true);
     }
 
     /**
-     * Scope for plans with scarcity
+     * Scope: ordered by display_order
      */
-    public function scopeWithScarcity($query)
+    public function scopeOrdered($query)
     {
-        return $query->where('scarcity_active', true)
-            ->whereRaw('scarcity_sold < scarcity_limit');
+        return $query->orderBy('display_order')->orderBy('id');
+    }
+
+    /**
+     * Clear all cache for this plan
+     */
+    public function clearCache(): void
+    {
+        $keys = [
+            "plan.{$this->id}.permissions",
+        ];
+
+        // Clear feature caches (pattern matching)
+        $features = $this->features()->pluck('key');
+        foreach ($features as $featureKey) {
+            $keys[] = "plan.{$this->id}.feature.{$featureKey}";
+            $keys[] = "plan.{$this->id}.limit.{$featureKey}";
+            $keys[] = "plan.{$this->id}.value.{$featureKey}.limit";
+            $keys[] = "plan.{$this->id}.value.{$featureKey}.string";
+            $keys[] = "plan.{$this->id}.value.{$featureKey}.json";
+            $keys[] = "plan.{$this->id}.value.{$featureKey}.config";
+        }
+
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
     }
 }

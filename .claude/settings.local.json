@@ -1,20 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl:*)",
-      "Bash(php:*)",
-      "Bash(npm run build)",
-      "Bash(cat config/plans.php)",
-      "Bash(vendor/bin/pint --dirty)",
-      "Bash(cat config/laravellocalization.php)",
-      "Bash(find . -maxdepth 1 -type f ( -name \"*.md\" -o -name \"*.txt\" ))",
-      "Bash(find . -maxdepth 3 -type f ( -name \"*.md\" -o -name \"*.txt\" ) ! -path \"*/node_modules/*\" ! -path \"*/vendor/*\" -exec ls -lh {} ;)",
-      "Bash(composer show --installed)",
-      "Bash(pg_config --version)",
-      "Bash(composer show)",
-      "Bash(git add -A)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nMejoras de localización y configuración de idioma\n\n- Configurado sistema de localización con redirección automática\n- Actualizado LanguageSelector con mejoras de UX\n- Implementado test de redirección de locale\n- Ajustes en welcome page para soporte multiidioma\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(code --list-extensions)"
+      "Bash(docker logs:*)",
+      "Bash(docker inspect:*)"
     ],
     "deny": [],
     "ask": []

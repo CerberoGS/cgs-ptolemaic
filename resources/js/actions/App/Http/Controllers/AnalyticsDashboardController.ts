@@ -1,25 +1,27 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale}/analytics',
+    url: '/{locale?}/analytics',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,30 +35,36 @@ index.url = (args: { locale: string | number } | [locale: string | number ] | st
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return index.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
@@ -64,9 +72,10 @@ index.head = (args: { locale: string | number } | [locale: string | number ] | s
     /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
@@ -74,18 +83,20 @@ index.head = (args: { locale: string | number } | [locale: string | number ] | s
             /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\AnalyticsDashboardController::index
  * @see app/Http/Controllers/AnalyticsDashboardController.php:17
- * @route '/{locale}/analytics'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/analytics'
  */
-        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

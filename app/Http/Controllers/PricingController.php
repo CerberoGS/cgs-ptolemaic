@@ -12,29 +12,49 @@ class PricingController extends Controller
     public function index()
     {
         $pricingPlans = PricingPlan::active()
-            ->orderBy('plan_type')
+            ->public()
+            ->with('billingOptions')
+            ->orderBy('display_order')
             ->get()
             ->map(function ($plan) {
+                $monthlyOption = $plan->activeBillingOptions->firstWhere('billing_cycle_slug', 'monthly');
+
                 return [
-                    'plan_type' => $plan->plan_type,
-                    'plan_name' => $plan->getPlanTypeEnum()->label(),
-                    'price_monthly' => $plan->price_monthly,
-                    'price_yearly' => $plan->price_yearly,
-                    'offer_active' => $plan->isOfferActive(),
-                    'offer_name' => $plan->offer_name,
-                    'offer_description' => $plan->offer_description,
-                    'offer_price_monthly' => $plan->offer_price_monthly,
-                    'offer_price_yearly' => $plan->offer_price_yearly,
-                    'offer_starts_at' => $plan->offer_starts_at?->toISOString(),
-                    'offer_ends_at' => $plan->offer_ends_at?->toISOString(),
-                    'discount_percentage' => $plan->getDiscountPercentage(),
-                    'time_remaining' => $plan->getTimeRemaining()?->toISOString(),
-                    'scarcity_active' => $plan->canShowScarcity(),
-                    'scarcity_message' => $plan->getScarcityMessage(),
-                    'scarcity_percentage' => $plan->getScarcityPercentage(),
-                    'remaining_slots' => $plan->getRemainingSlots(),
-                    'current_price_monthly' => $plan->getCurrentPrice('monthly'),
-                    'current_price_yearly' => $plan->getCurrentPrice('yearly'),
+                    'slug' => $plan->slug,
+                    'name' => $plan->name(),
+                    'tagline' => $plan->tagline(),
+                    'description' => $plan->description(),
+                    'emoji' => $plan->emoji,
+                    'accent_color' => $plan->accent_color,
+                    'is_featured' => $plan->is_featured,
+                    'billing_options' => $plan->activeBillingOptions->map(function ($option) use ($monthlyOption) {
+                        return [
+                            'id' => $option->id,
+                            'billing_cycle_slug' => $option->billing_cycle_slug,
+                            'billing_cycle_name' => $option->name(),
+                            'billing_months' => $option->billing_months,
+                            'base_price' => (float) $option->base_price,
+                            'currency' => $option->currency,
+                            'has_autopay_discount' => $option->has_autopay_discount,
+                            'autopay_discount_type' => $option->autopay_discount_type,
+                            'autopay_discount_value' => $option->autopay_discount_value ? (float) $option->autopay_discount_value : null,
+                            'upfront_discount_percentage' => $option->upfront_discount_percentage,
+                            'setup_fee' => (float) $option->setup_fee,
+                            'trial_days' => $option->trial_days,
+                            'is_default' => $option->is_default,
+                            'is_popular' => $option->is_popular,
+                            'description' => $option->description(),
+                            'highlight_text' => $option->highlightText(),
+                            'final_price' => $option->calculateFinalPrice(false),
+                            'final_price_with_autopay' => $option->calculateFinalPrice(true),
+                            'monthly_equivalent' => $option->monthlyEquivalent(false),
+                            'monthly_equivalent_with_autopay' => $option->monthlyEquivalent(true),
+                            'savings_vs_monthly' => $monthlyOption ? $option->savingsVsMonthly((float) $monthlyOption->base_price, false) : 0,
+                            'savings_percentage' => $monthlyOption ? $option->savingsPercentage((float) $monthlyOption->base_price, false) : 0,
+                            'total_discount_percentage' => $option->totalDiscountPercentage(false),
+                            'total_discount_percentage_with_autopay' => $option->totalDiscountPercentage(true),
+                        ];
+                    })->values(),
                 ];
             });
 
@@ -46,33 +66,53 @@ class PricingController extends Controller
     /**
      * Display a specific pricing plan
      */
-    public function show(string $planType)
+    public function show(string $slug)
     {
         $pricingPlan = PricingPlan::active()
-            ->where('plan_type', $planType)
+            ->public()
+            ->with('billingOptions')
+            ->where('slug', $slug)
             ->firstOrFail();
+
+        $monthlyOption = $pricingPlan->activeBillingOptions->firstWhere('billing_cycle_slug', 'monthly');
 
         return response()->json([
             'pricing_plan' => [
-                'plan_type' => $pricingPlan->plan_type,
-                'plan_name' => $pricingPlan->getPlanTypeEnum()->label(),
-                'price_monthly' => $pricingPlan->price_monthly,
-                'price_yearly' => $pricingPlan->price_yearly,
-                'offer_active' => $pricingPlan->isOfferActive(),
-                'offer_name' => $pricingPlan->offer_name,
-                'offer_description' => $pricingPlan->offer_description,
-                'offer_price_monthly' => $pricingPlan->offer_price_monthly,
-                'offer_price_yearly' => $pricingPlan->offer_price_yearly,
-                'offer_starts_at' => $pricingPlan->offer_starts_at?->toISOString(),
-                'offer_ends_at' => $pricingPlan->offer_ends_at?->toISOString(),
-                'discount_percentage' => $pricingPlan->getDiscountPercentage(),
-                'time_remaining' => $pricingPlan->getTimeRemaining()?->toISOString(),
-                'scarcity_active' => $pricingPlan->canShowScarcity(),
-                'scarcity_message' => $pricingPlan->getScarcityMessage(),
-                'scarcity_percentage' => $pricingPlan->getScarcityPercentage(),
-                'remaining_slots' => $pricingPlan->getRemainingSlots(),
-                'current_price_monthly' => $pricingPlan->getCurrentPrice('monthly'),
-                'current_price_yearly' => $pricingPlan->getCurrentPrice('yearly'),
+                'slug' => $pricingPlan->slug,
+                'name' => $pricingPlan->name(),
+                'tagline' => $pricingPlan->tagline(),
+                'description' => $pricingPlan->description(),
+                'emoji' => $pricingPlan->emoji,
+                'accent_color' => $pricingPlan->accent_color,
+                'is_featured' => $pricingPlan->is_featured,
+                'billing_options' => $pricingPlan->activeBillingOptions->map(function ($option) use ($monthlyOption) {
+                    return [
+                        'id' => $option->id,
+                        'billing_cycle_slug' => $option->billing_cycle_slug,
+                        'billing_cycle_name' => $option->name(),
+                        'billing_months' => $option->billing_months,
+                        'base_price' => (float) $option->base_price,
+                        'currency' => $option->currency,
+                        'has_autopay_discount' => $option->has_autopay_discount,
+                        'autopay_discount_type' => $option->autopay_discount_type,
+                        'autopay_discount_value' => $option->autopay_discount_value ? (float) $option->autopay_discount_value : null,
+                        'upfront_discount_percentage' => $option->upfront_discount_percentage,
+                        'setup_fee' => (float) $option->setup_fee,
+                        'trial_days' => $option->trial_days,
+                        'is_default' => $option->is_default,
+                        'is_popular' => $option->is_popular,
+                        'description' => $option->description(),
+                        'highlight_text' => $option->highlightText(),
+                        'final_price' => $option->calculateFinalPrice(false),
+                        'final_price_with_autopay' => $option->calculateFinalPrice(true),
+                        'monthly_equivalent' => $option->monthlyEquivalent(false),
+                        'monthly_equivalent_with_autopay' => $option->monthlyEquivalent(true),
+                        'savings_vs_monthly' => $monthlyOption ? $option->savingsVsMonthly((float) $monthlyOption->base_price, false) : 0,
+                        'savings_percentage' => $monthlyOption ? $option->savingsPercentage((float) $monthlyOption->base_price, false) : 0,
+                        'total_discount_percentage' => $option->totalDiscountPercentage(false),
+                        'total_discount_percentage_with_autopay' => $option->totalDiscountPercentage(true),
+                    ];
+                })->values(),
             ],
         ]);
     }

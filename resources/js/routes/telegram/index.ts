@@ -1,25 +1,27 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
- * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @route '/{locale}/telegram/webhook'
+ * @see [unknown]:0
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/telegram/webhook'
  */
-export const webhook = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const webhook = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: webhook.url(args, options),
     method: 'post',
 })
 
 webhook.definition = {
     methods: ["post"],
-    url: '/{locale}/telegram/webhook',
+    url: '/{locale?}/telegram/webhook',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
- * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @route '/{locale}/telegram/webhook'
+ * @see [unknown]:0
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/telegram/webhook'
  */
-webhook.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+webhook.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,41 +35,48 @@ webhook.url = (args: { locale: string | number } | [locale: string | number ] | 
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return webhook.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
- * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @route '/{locale}/telegram/webhook'
+ * @see [unknown]:0
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/telegram/webhook'
  */
-webhook.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+webhook.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: webhook.url(args, options),
     method: 'post',
 })
 
     /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
- * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @route '/{locale}/telegram/webhook'
+ * @see [unknown]:0
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/telegram/webhook'
  */
-    const webhookForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const webhookForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: webhook.url(args, options),
         method: 'post',
     })
 
             /**
 * @see \App\Http\Controllers\Admin\TelegramConfigController::webhook
- * @see app/Http/Controllers/Admin/TelegramConfigController.php:142
- * @route '/{locale}/telegram/webhook'
+ * @see [unknown]:0
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/telegram/webhook'
  */
-        webhookForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        webhookForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: webhook.url(args, options),
             method: 'post',
         })

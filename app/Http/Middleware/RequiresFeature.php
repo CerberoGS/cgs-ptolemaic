@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class RequiresFeature
@@ -14,99 +13,137 @@ class RequiresFeature
      *
      * Verifica que el usuario tenga acceso a una feature específica basada en su plan.
      *
-     * @param  string  $gate  El nombre del Gate a verificar
+     * @param  string  $featureKey  La clave de la feature a verificar (ej: 'ai_analytics')
+     * @param  int|null  $requiredLimit  Límite opcional requerido para features tipo integer
      */
-    public function handle(Request $request, Closure $next, string $gate): Response
+    public function handle(Request $request, Closure $next, string $featureKey, ?int $requiredLimit = null): Response
     {
-        // Si no hay usuario autenticado, redirigir a login
-        if (! $request->user()) {
-            if (\Illuminate\Support\Facades\Route::has('login')) {
-                return redirect()->route('login', ['locale' => app()->getLocale()])
-                    ->with('error', __('Debes iniciar sesión para acceder a esta función.'));
-            }
+        $user = $request->user();
 
-            abort(401, __('Debes iniciar sesión para acceder a esta función.'));
+        // User must be authenticated
+        if (! $user) {
+            return $this->handleUnauthenticated($request);
         }
 
-        // Verificar si el usuario tiene acceso a la feature
-        if (! Gate::allows($gate)) {
-            // Para peticiones JSON (API)
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'message' => __('Tu plan actual no incluye esta funcionalidad.'),
-                    'upgrade_required' => true,
-                    'current_plan' => $request->user()->plan->value,
-                    'gate_required' => $gate,
-                    'suggested_plan' => $this->getSuggestedPlan($gate),
-                ], 403);
-            }
+        // Check if user has the feature
+        if (! $user->hasFeature($featureKey)) {
+            return $this->handleUnauthorized($request, $featureKey, 'feature_not_available');
+        }
 
-            // Para peticiones web
-            $locale = app()->getLocale();
+        // Check limit if specified (for integer features)
+        if ($requiredLimit !== null) {
+            $limit = $user->getFeatureLimit($featureKey);
 
-            // Verificar si la ruta de plan existe
-            if (! \Illuminate\Support\Facades\Route::has('settings.plan.show')) {
-                abort(403, __('Esta función requiere un plan superior.'));
-            }
-
-            return redirect()
-                ->route('settings.plan.show', ['locale' => $locale])
-                ->with('upgrade_prompt', [
-                    'message' => $this->getFeatureMessage($gate),
-                    'feature' => $this->getFeatureName($gate),
-                    'required_gate' => $gate,
-                    'current_plan' => $request->user()->plan->value,
-                    'suggested_plan' => $this->getSuggestedPlan($gate),
+            // If limit is set and required exceeds it, deny
+            if ($limit !== null && $requiredLimit > $limit) {
+                return $this->handleUnauthorized($request, $featureKey, 'limit_exceeded', [
+                    'limit' => $limit,
+                    'required' => $requiredLimit,
                 ]);
+            }
         }
 
         return $next($request);
     }
 
     /**
-     * Get a user-friendly feature name
+     * Handle unauthenticated access
      */
-    private function getFeatureName(string $gate): string
+    protected function handleUnauthenticated(Request $request): Response
     {
-        return match ($gate) {
-            'access-integrations' => __('Integraciones de Proveedores'),
-            'manage-own-api-keys' => __('Gestión de API Keys'),
-            'use-managed-keys' => __('Keys Gestionadas'),
-            'use-ai-analysis' => __('Análisis con IA'),
-            'use-advanced-automation' => __('Automatización Avanzada'),
-            'use-advanced-analytics' => __('Analíticas Avanzadas'),
-            'is-paid-plan' => __('Funciones Premium'),
-            default => __('Esta función'),
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Debes iniciar sesión para acceder a esta función.',
+            ], 401);
+        }
+
+        return redirect()->route('login', ['locale' => app()->getLocale()])
+            ->with('error', 'Debes iniciar sesión para acceder a esta función.');
+    }
+
+    /**
+     * Handle unauthorized access
+     */
+    protected function handleUnauthorized(Request $request, string $featureKey, string $reason, array $context = []): Response
+    {
+        $locale = app()->getLocale();
+
+        // For API requests, return JSON
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => $this->getMessage($featureKey, $reason, $context),
+                'feature' => $featureKey,
+                'reason' => $reason,
+                'context' => $context,
+                'current_plan' => $request->user()->plan,
+                'suggested_plan' => $this->getSuggestedPlan($featureKey),
+                'upgrade_url' => route('pricing.index', ['locale' => $locale]),
+            ], 403);
+        }
+
+        // For web requests, redirect to pricing or settings
+        $route = \Route::has('settings.plan.show')
+            ? route('settings.plan.show', ['locale' => $locale])
+            : route('pricing.index', ['locale' => $locale]);
+
+        return redirect($route)
+            ->with('error', $this->getMessage($featureKey, $reason, $context))
+            ->with('feature_required', $featureKey)
+            ->with('suggested_plan', $this->getSuggestedPlan($featureKey));
+    }
+
+    /**
+     * Get user-friendly message for feature requirement
+     */
+    protected function getMessage(string $featureKey, string $reason, array $context = []): string
+    {
+        if ($reason === 'limit_exceeded') {
+            return sprintf(
+                'Has alcanzado el límite de tu plan (%d/%d). Actualiza para continuar.',
+                $context['required'] ?? 0,
+                $context['limit'] ?? 0
+            );
+        }
+
+        $featureName = $this->getFeatureName($featureKey);
+
+        return "Tu plan actual no incluye {$featureName}. Actualiza para desbloquear esta funcionalidad.";
+    }
+
+    /**
+     * Get user-friendly feature name
+     */
+    protected function getFeatureName(string $featureKey): string
+    {
+        return match ($featureKey) {
+            'ai_analytics' => 'Análisis con IA',
+            'advanced_analytics' => 'Analíticas Avanzadas',
+            'own_api_keys' => 'API Keys Propias (BYOK)',
+            'managed_api_keys' => 'API Keys Gestionadas',
+            'custom_integrations' => 'Integraciones Personalizadas',
+            'priority_support' => 'Soporte Prioritario',
+            'community_support' => 'Soporte de Comunidad',
+            'export_journal' => 'Exportación de Journal',
+            'advanced_journal' => 'Journal Avanzado',
+            'automation' => 'Automatización',
+            'team_members' => 'Gestión de Equipo',
+            'admin_panel_access' => 'Panel de Administración',
+            'daily_analysis_limit' => 'Límite de Análisis Diario',
+            'monthly_analysis_limit' => 'Límite de Análisis Mensual',
+            default => 'esta funcionalidad',
         };
     }
 
     /**
-     * Get a marketing message for the feature
+     * Get suggested plan for a feature
      */
-    private function getFeatureMessage(string $gate): string
+    protected function getSuggestedPlan(string $featureKey): string
     {
-        return match ($gate) {
-            'access-integrations' => __('Conecta tus proveedores favoritos y lleva tu trading al siguiente nivel.'),
-            'manage-own-api-keys' => __('Usa tus propias API keys para un control total sin límites de uso.'),
-            'use-managed-keys' => __('Deja que nosotros gestionemos tus API keys mientras te enfocas en tradear.'),
-            'use-ai-analysis' => __('Obtén insights potenciados por IA para mejorar tu estrategia.'),
-            'use-advanced-automation' => __('Exporta tus datos en PDF y CSV para análisis profundos.'),
-            'use-advanced-analytics' => __('Descubre patrones ocultos con nuestras analíticas avanzadas.'),
-            'is-paid-plan' => __('Desbloquea todas las funcionalidades premium para maximizar tu potencial.'),
-            default => __('Actualiza tu plan para acceder a esta funcionalidad.'),
-        };
-    }
-
-    /**
-     * Get suggested plan for a gate
-     */
-    private function getSuggestedPlan(string $gate): string
-    {
-        return match ($gate) {
-            'access-integrations', 'use-ai-analysis' => 'managed',
-            'manage-own-api-keys', 'use-advanced-automation', 'use-advanced-analytics' => 'pro',
-            'use-managed-keys' => 'managed',
-            'is-paid-plan' => 'managed',
+        return match ($featureKey) {
+            'ai_analytics', 'managed_api_keys', 'community_support' => 'managed',
+            'own_api_keys', 'advanced_analytics', 'priority_support', 'automation' => 'pro',
+            'custom_integrations', 'team_members' => 'enterprise',
+            'admin_panel_access' => 'staff',
             default => 'pro',
         };
     }

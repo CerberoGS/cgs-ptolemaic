@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Enums\PlanType;
 use App\Http\Controllers\Controller;
+use App\Models\PricingPlan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,58 +16,84 @@ class PlanController extends Controller
     public function __invoke(Request $request): Response
     {
         $user = $request->user();
-        $currentPlan = $user?->planOrDefault() ?? PlanType::default();
+        $currentPlanSlug = $user?->planOrDefault() ?? 'free';
+        $currentPlanModel = $user?->currentPlan();
         $isAdmin = $user?->hasRole('Admin') ?? false;
 
         // Get upgrade prompt from flash session (set by RequiresFeature middleware)
         $upgradePrompt = session('upgrade_prompt');
 
-        $plans = collect(PlanType::cases())
-            // Filter: Only show internal plans to Admins
-            ->filter(fn (PlanType $plan) => ! $plan->isInternal() || $isAdmin)
-            ->map(
-                function (PlanType $plan) use ($currentPlan): array {
-                    $dailyLimit = $plan->dailyUsageLimit();
-                    $monthlyLimit = $plan->monthlyUsageLimit();
+        // Get all active public plans (or include internal if admin)
+        $plans = PricingPlan::query()
+            ->active()
+            ->with(['features', 'billingOptions'])
+            ->when(! $isAdmin, function ($query) {
+                // Non-admins only see public plans
+                $query->public();
+            })
+            ->orderBy('display_order')
+            ->get()
+            ->map(function (PricingPlan $plan) use ($currentPlanSlug): array {
+                $dailyLimit = $plan->features
+                    ->where('key', 'daily_analysis_limit')
+                    ->first()?->pivot?->limit_value;
 
-                    $features = collect($plan->features())
-                        ->map(function (string $feature) use ($dailyLimit, $monthlyLimit): string {
-                            return __($feature, [
-                                'daily' => $dailyLimit !== null ? number_format($dailyLimit) : '',
-                                'monthly' => $monthlyLimit !== null ? number_format($monthlyLimit) : '',
-                            ]);
-                        })
-                        ->values();
+                $monthlyLimit = $plan->features
+                    ->where('key', 'monthly_analysis_limit')
+                    ->first()?->pivot?->limit_value;
 
-                    return [
-                        'type' => $plan->value,
-                        'label' => $plan->label(),
-                        'price' => $plan->price(),
-                        'summary' => $plan->summary(),
-                        'features' => $features,
-                        'description' => $plan->description(),
-                        'canAccessIntegrations' => $plan->canAccessIntegrations(),
-                        'canManageProviderKeys' => $plan->canManageProviderKeys(),
-                        'usesManagedKeys' => $plan->usesManagedKeys(),
-                        'hasUsageLimits' => $plan->hasUsageLimits(),
-                        'usageLimits' => [
-                            'daily' => $dailyLimit,
-                            'monthly' => $monthlyLimit,
-                        ],
-                        'isCurrent' => $plan === $currentPlan,
-                        'isInternal' => $plan->isInternal(),
-                        'emoji' => $plan->emoji(),
-                        'accentColor' => $plan->accentColor(),
-                        'tagline' => $plan->tagline(),
-                    ];
-                }
-            )->values();
+                $features = $plan->features
+                    ->filter(fn ($feature) => $feature->pivot->is_enabled)
+                    ->map(function ($feature): string {
+                        $description = $feature->description();
+
+                        // If feature has a limit, append it to the description
+                        if ($feature->pivot->limit_value !== null) {
+                            $description .= ' ('.number_format($feature->pivot->limit_value).')';
+                        }
+
+                        return $description;
+                    })
+                    ->values();
+
+                // Get default billing option price (monthly or first available)
+                $defaultBillingOption = $plan->billingOptions
+                    ->where('is_default', true)
+                    ->first() ?? $plan->billingOptions->first();
+
+                $price = $defaultBillingOption
+                    ? $defaultBillingOption->calculateFinalPrice(false)
+                    : 0;
+
+                return [
+                    'type' => $plan->slug,
+                    'label' => $plan->name(),
+                    'price' => $price,
+                    'summary' => $plan->tagline(),
+                    'features' => $features,
+                    'description' => $plan->description(),
+                    'canAccessIntegrations' => $plan->features->where('key', 'access_integrations')->first()?->pivot?->is_enabled ?? false,
+                    'canManageProviderKeys' => $plan->features->where('key', 'manage_own_api_keys')->first()?->pivot?->is_enabled ?? false,
+                    'usesManagedKeys' => $plan->features->where('key', 'use_managed_keys')->first()?->pivot?->is_enabled ?? false,
+                    'hasUsageLimits' => $dailyLimit !== null || $monthlyLimit !== null,
+                    'usageLimits' => [
+                        'daily' => $dailyLimit,
+                        'monthly' => $monthlyLimit,
+                    ],
+                    'isCurrent' => $plan->slug === $currentPlanSlug,
+                    'isInternal' => in_array($plan->slug, ['internal', 'staff']),
+                    'emoji' => $plan->emoji,
+                    'accentColor' => $plan->accent_color,
+                    'tagline' => $plan->tagline(),
+                ];
+            })
+            ->values();
 
         return Inertia::render('settings/plan', [
             'currentPlan' => [
-                'type' => $currentPlan->value,
-                'label' => $currentPlan->label(),
-                'description' => $currentPlan->description(),
+                'type' => $currentPlanSlug,
+                'label' => $currentPlanModel?->name() ?? ucfirst($currentPlanSlug),
+                'description' => $currentPlanModel?->description() ?? '',
                 'isTrial' => $user?->isOnTrial() ?? false,
                 'trialEndsAt' => $user?->trial_ends_at?->toIso8601String(),
                 'canManageProviderKeys' => $user?->canManageProviderKeys() ?? false,
@@ -76,10 +102,10 @@ class PlanController extends Controller
                     'daily' => $user?->managedDailyLimit(),
                     'monthly' => $user?->managedMonthlyLimit(),
                 ],
-                'isInternal' => $currentPlan->isInternal(),
-                'emoji' => $currentPlan->emoji(),
-                'accentColor' => $currentPlan->accentColor(),
-                'tagline' => $currentPlan->tagline(),
+                'isInternal' => in_array($currentPlanSlug, ['internal', 'staff']),
+                'emoji' => $currentPlanModel?->emoji ?? '👤',
+                'accentColor' => $currentPlanModel?->accent_color ?? 'gray',
+                'tagline' => $currentPlanModel?->tagline() ?? '',
             ],
             'plans' => $plans,
             'upgradeOrder' => config('plans.upgrade_order'),

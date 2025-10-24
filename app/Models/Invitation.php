@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\InvitationStatus;
-use App\Enums\PlanType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,7 +39,6 @@ class Invitation extends Model
             'usage_count' => 'integer',
             'expires_at' => 'datetime',
             'status' => InvitationStatus::class,
-            'target_plan' => PlanType::class,
         ];
     }
 
@@ -52,6 +50,14 @@ class Invitation extends Model
     public function redemptions(): HasMany
     {
         return $this->hasMany(InvitationRedemption::class);
+    }
+
+    /**
+     * Get the pricing plan model for this invitation
+     */
+    public function plan(): ?PricingPlan
+    {
+        return PricingPlan::where('slug', $this->target_plan)->first();
     }
 
     /**

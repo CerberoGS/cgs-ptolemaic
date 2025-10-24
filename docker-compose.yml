@@ -1,32 +1,38 @@
-# version: '3.8' # Puedes borrar esta línea
+version: '3.8'
 
 services:
-  # --- Servicio Nginx ---
+  # --- Servicio Nginx --- (Tu configuración original)
   nginx:
     image: nginx:alpine
     container_name: nginx-container
     ports:
       - "80:80"
     volumes:
-      - /c/laragon/www/cgs-ptolemaic:/var/www/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      # Asegúrate que esta ruta a tu proyecto sea correcta para TU PC
+      - /c/laragon/www/cgs-ptolemaic:/var/www/html 
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf # <- Ruta actualizada
+      #- ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - laravel-net
     depends_on:
       - php
 
-  # --- Servicio PHP-FPM ---
+  # --- Servicio PHP-FPM --- (Tu configuración original)
   php:
     container_name: laravel_php84_fpm
     build:
-      context: .
-      dockerfile: php.dockerfile
+      context: ./docker/php
+      # Usará el php.dockerfile que ya tienes (¡recuerda corregir lo de Composer!)
+      dockerfile: php.dockerfile 
     volumes:
-      - /c/laragon/www/cgs-ptolemaic:/var/www/html
+      # Asegúrate que esta ruta a tu proyecto sea correcta para TU PC
+      - /c/laragon/www/cgs-ptolemaic:/var/www/html 
     networks:
       - laravel-net
+    depends_on:
+      - postgres # Es bueno que PHP espere a que la BD esté lista
 
-  # --- Servicio PostgreSQL --- 🐘
+  # --- Servicio PostgreSQL --- (Tu configuración original)
   postgres:
     image: postgres:15-alpine
     container_name: postgres-container
@@ -36,13 +42,54 @@ services:
       POSTGRES_USER: ptolomeo
       POSTGRES_PASSWORD: 52393811
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      # Usamos un volumen definido abajo para guardar los datos
+      - postgres-data:/var/lib/postgresql/data 
     ports:
-      - "5432:5432"
+      - "5432:5432" # Expone el puerto de Postgres a tu PC
     networks:
       - laravel-net
 
-# --- Definición de la Red --- (Solo UNA vez)
+  # --- (NUEVO) Servicio de IA FinGPT ---
+  fingpt:
+    container_name: fingpt-service
+    build:
+      # Le decimos que construya usando los archivos dentro de la carpeta ./docker/fingpt
+      context: ./docker/fingpt 
+      dockerfile: fingpt.dockerfile
+    volumes:
+      # Guardamos los modelos descargados aquí para no volver a bajarlos
+      - models-cache:/models
+    ports:
+      # Expone el puerto 8000 de la IA a tu PC (localhost:8000)
+      - "8000:8000"
+    environment:
+      # Variables necesarias para el script Python de la IA
+      - CACHE_DIR=/models
+      - HF_HOME=/models
+      
+    # --- Configuración GPU ---
+    # Para AMD/ROCm, la clave es usar la imagen correcta en el Dockerfile y tener los drivers del host.
+    # El bloque 'deploy' es más para NVIDIA. Lo dejamos comentado.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1 # o 'all' si tienes varias y quieres usarlas todas
+    #           capabilities: [gpu]
+              
+    restart: unless-stopped
+    networks:
+      # Lo conectamos a la misma red que los otros servicios
+      - laravel-net 
+
+# --- (MODIFICADO) Definición de Volúmenes ---
+# Estos nombres permiten a Docker manejar dónde se guardan los datos persistentes
+volumes:
+  postgres-data: # Para la base de datos
+  models-cache:  # Para los modelos de IA
+
+# --- Definición de la Red --- (Tu configuración original)
 networks:
   laravel-net:
     driver: bridge

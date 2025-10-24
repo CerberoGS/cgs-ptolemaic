@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AiProvider extends Model
@@ -15,7 +14,6 @@ class AiProvider extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'provider_category_id',
         'slug',
         'display_name',
         'description',
@@ -38,11 +36,6 @@ class AiProvider extends Model
             'test_json' => 'array',
             'ops_json' => 'array',
         ];
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(ProviderCategory::class, 'provider_category_id');
     }
 
     public function models(): HasMany

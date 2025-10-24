@@ -14,10 +14,34 @@ import { PtolemaicPath } from '@/components/cgs/ptolemaic-path';
 import { useTrans, useLocale } from '@/hooks/useTrans';
 import { status as waitlistStatusRoute } from '@/routes/settings/waitlist';
 
+interface WelcomeProps {
+    pricingPlans: {
+        [key: string]: {
+            name: string;
+            price: number;
+            currency: string;
+            billing_cycle: string;
+        };
+    };
+}
+
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, pricingPlans } = usePage<SharedData & WelcomeProps>().props;
     const t = useTrans();
     const currentLocale = useLocale();
+
+    // Helper to format price
+    const formatPrice = (planSlug: string) => {
+        const plan = pricingPlans?.[planSlug];
+        if (!plan) return t("Custom");
+        if (plan.price === 0) return t("Free");
+
+        const currencySymbol = plan.currency === 'USD' ? '$' : plan.currency === 'EUR' ? '€' : plan.currency;
+        const cycleText = plan.billing_cycle === 'monthly' ? '/mes' :
+                         plan.billing_cycle === 'yearly' ? '/año' : '';
+
+        return `${currencySymbol}${plan.price}${cycleText}`;
+    };
     const [waitlistStatus, setWaitlistStatus] = useState<{
         is_on_waitlist: boolean;
         current_plan: string | null;
@@ -443,7 +467,7 @@ export default function Welcome() {
                       {[
                         {
                           name: t("Observer"),
-                          price: t("Free"),
+                          price: formatPrice('free'),
                           description: t("Learn and connect with the community"),
                           features: [
                             t("Complete trading journal"),
@@ -457,7 +481,7 @@ export default function Welcome() {
                         },
                         {
                           name: t("Cosmographer"),
-                          price: "$49/mes",
+                          price: formatPrice('managed'),
                           description: t("AI analysis, ready to explore"),
                           features: [
                             t("Everything in Observer"),
@@ -477,7 +501,7 @@ export default function Welcome() {
                         },
                         {
                           name: t("Astronomer"),
-                          price: "$99/mes",
+                          price: formatPrice('pro'),
                           description: t("Total control with advanced AI"),
                           features: [
                             t("Everything in Cosmographer"),
@@ -496,7 +520,7 @@ export default function Welcome() {
                         },
                         {
                           name: t("Heliopolis"),
-                          price: t("Custom"),
+                          price: formatPrice('enterprise'),
                           description: t("Exclusive and personalized"),
                           features: [
                             t("Everything in Astronomer"),

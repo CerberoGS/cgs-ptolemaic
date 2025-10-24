@@ -1,25 +1,27 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '/{locale}/email/verification-notification'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/email/verification-notification'
  */
-export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale}/email/verification-notification',
+    url: '/{locale?}/email/verification-notification',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '/{locale}/email/verification-notification'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/email/verification-notification'
  */
-store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,21 +35,26 @@ store.url = (args: { locale: string | number } | [locale: string | number ] | st
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return store.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '/{locale}/email/verification-notification'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/email/verification-notification'
  */
-store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -55,9 +62,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '/{locale}/email/verification-notification'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/email/verification-notification'
  */
-    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -65,9 +73,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '/{locale}/email/verification-notification'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/email/verification-notification'
  */
-        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })

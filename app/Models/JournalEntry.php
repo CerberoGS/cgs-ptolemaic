@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProcessAIAnalysis;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class JournalEntry extends Model
 {
     use HasFactory;
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (JournalEntry $entry) {
+            // Dispatch AI analysis job when a new entry is created
+            if (config('prism.queue.enabled', true)) {
+                ProcessAIAnalysis::dispatch($entry);
+            }
+        });
+    }
 
     protected $fillable = [
         'user_id',
@@ -37,6 +51,13 @@ class JournalEntry extends Model
         'followed_plan',
         'mistakes',
         'lessons_learned',
+        // AI Analysis fields
+        'ai_analysis',
+        'analyzed_at',
+        'analyzed_by_provider',
+        'analysis_tokens_used',
+        'analysis_failed_at',
+        'analysis_error',
     ];
 
     protected function casts(): array
@@ -60,6 +81,9 @@ class JournalEntry extends Model
             'exit_time' => 'datetime',
             'hold_time_minutes' => 'integer',
             'followed_plan' => 'boolean',
+            // AI Analysis timestamps
+            'analyzed_at' => 'datetime',
+            'analysis_failed_at' => 'datetime',
         ];
     }
 

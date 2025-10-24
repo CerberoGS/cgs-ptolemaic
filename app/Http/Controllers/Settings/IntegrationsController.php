@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Enums\PlanType;
 use App\Enums\ProviderType;
 use App\Http\Controllers\Controller;
 use App\Mcp\Support\ProviderSnapshot;
@@ -16,7 +15,8 @@ class IntegrationsController extends Controller
     public function index(Request $request, ProviderSnapshot $providerSnapshot): Response
     {
         $user = $request->user();
-        $plan = $user?->planOrDefault() ?? PlanType::default();
+        $planSlug = $user?->planOrDefault() ?? 'free';
+        $planModel = $user?->currentPlan();
 
         $providers = collect(ProviderType::cases())->map(
             fn (ProviderType $type): array => [
@@ -45,18 +45,21 @@ class IntegrationsController extends Controller
             'trading' => $user?->trading_provider_keys_count ?? 0,
         ];
 
+        $dailyLimit = $user?->managedDailyLimit();
+        $monthlyLimit = $user?->managedMonthlyLimit();
+
         return Inertia::render('settings/integrations', [
             'plan' => [
-                'type' => $plan->value,
-                'label' => $plan->label(),
-                'summary' => $plan->summary(),
-                'description' => $plan->description(),
+                'type' => $planSlug,
+                'label' => $planModel?->name() ?? ucfirst($planSlug),
+                'summary' => $planModel?->tagline() ?? '',
+                'description' => $planModel?->description() ?? '',
                 'canManageProviderKeys' => $user?->canManageProviderKeys() ?? false,
                 'usesManagedKeys' => $user?->usesManagedProviderKeys() ?? false,
-                'hasUsageLimits' => $plan->hasUsageLimits(),
+                'hasUsageLimits' => $dailyLimit !== null || $monthlyLimit !== null,
                 'limits' => [
-                    'daily' => $plan->dailyUsageLimit(),
-                    'monthly' => $plan->monthlyUsageLimit(),
+                    'daily' => $dailyLimit,
+                    'monthly' => $monthlyLimit,
                 ],
             ],
             'providers' => $providers,

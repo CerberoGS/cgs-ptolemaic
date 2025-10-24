@@ -22,11 +22,6 @@ enum ProviderType: string
         };
     }
 
-    public function categoryName(): string
-    {
-        return $this->value;
-    }
-
     public function table(): string
     {
         return match ($this) {
@@ -44,7 +39,6 @@ enum ProviderType: string
     {
         return match ($this) {
             self::Ai => [
-                'provider_category_id',
                 'slug',
                 'display_name',
                 'description',
@@ -57,7 +51,6 @@ enum ProviderType: string
                 'status',
             ],
             self::MarketData => [
-                'provider_category_id',
                 'slug',
                 'display_name',
                 'description',
@@ -72,7 +65,6 @@ enum ProviderType: string
                 'status',
             ],
             self::News => [
-                'provider_category_id',
                 'slug',
                 'display_name',
                 'description',
@@ -87,7 +79,6 @@ enum ProviderType: string
                 'status',
             ],
             self::Trading => [
-                'provider_category_id',
                 'slug',
                 'display_name',
                 'description',

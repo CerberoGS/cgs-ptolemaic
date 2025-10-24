@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Enums\PlanType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class TrialController extends Controller
                 ->with('error', __('You cannot start a trial at this time.'));
         }
 
-        $user->startTrial(PlanType::Managed);
+        $user->startTrial('managed');
 
         return redirect()
             ->route('dashboard', ['locale' => app()->getLocale()])
@@ -42,7 +41,7 @@ class TrialController extends Controller
                 ->with('error', __('You cannot start a trial at this time.'));
         }
 
-        $user->startTrial(PlanType::Pro);
+        $user->startTrial('pro');
 
         return redirect()
             ->route('dashboard', ['locale' => app()->getLocale()])

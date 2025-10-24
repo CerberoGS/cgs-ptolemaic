@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
 export const legacy = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ legacy.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
 legacy.url = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -41,7 +41,7 @@ legacy.url = (args: { code: string | number } | [code: string | number ] | strin
 }
 
 /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
 legacy.get = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -49,7 +49,7 @@ legacy.get = (args: { code: string | number } | [code: string | number ] | strin
     method: 'get',
 })
 /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
 legacy.head = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -58,7 +58,7 @@ legacy.head = (args: { code: string | number } | [code: string | number ] | stri
 })
 
     /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
     const legacyForm = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -67,7 +67,7 @@ legacy.head = (args: { code: string | number } | [code: string | number ] | stri
     })
 
             /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
         legacyForm.get = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -75,7 +75,7 @@ legacy.head = (args: { code: string | number } | [code: string | number ] | stri
             method: 'get',
         })
             /**
- * @see routes/web.php:310
+ * @see routes/web.php:247
  * @route '/ref/{code}'
  */
         legacyForm.head = (args: { code: string | number } | [code: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

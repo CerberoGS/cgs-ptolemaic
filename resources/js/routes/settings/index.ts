@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 import plan from './plan'
 import trial from './trial'
 import integrations from './integrations'
@@ -6,23 +6,25 @@ import affiliate from './affiliate'
 import waitlist from './waitlist'
 /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-export const index = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/{locale}/settings',
+    url: '/{locale?}/settings',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-index.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -36,54 +38,63 @@ index.url = (args: { locale: string | number } | [locale: string | number ] | st
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return index.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-index.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-index.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
 
     /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-    const indexForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
 
             /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-        indexForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
  * @see routes/settings.php:16
- * @route '/{locale}/settings'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/settings'
  */
-        indexForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',

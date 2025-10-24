@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PlanType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,8 +23,6 @@ class PlanChange extends Model
     protected function casts(): array
     {
         return [
-            'old_plan' => PlanType::class,
-            'new_plan' => PlanType::class,
             'old_trial_ends_at' => 'datetime',
             'new_trial_ends_at' => 'datetime',
         ];
@@ -39,5 +36,25 @@ class PlanChange extends Model
     public function changedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'changed_by_user_id');
+    }
+
+    /**
+     * Get the old plan label
+     */
+    public function oldPlanLabel(): string
+    {
+        $plan = PricingPlan::where('slug', $this->old_plan)->first();
+
+        return $plan?->name() ?? ucfirst($this->old_plan);
+    }
+
+    /**
+     * Get the new plan label
+     */
+    public function newPlanLabel(): string
+    {
+        $plan = PricingPlan::where('slug', $this->new_plan)->first();
+
+        return $plan?->name() ?? ucfirst($this->new_plan);
     }
 }

@@ -1,23 +1,25 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-export const google = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const google = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: google.url(args, options),
     method: 'get',
 })
 
 google.definition = {
     methods: ["get","head"],
-    url: '/{locale}/login-google',
+    url: '/{locale?}/login-google',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-google.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+google.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -31,54 +33,63 @@ google.url = (args: { locale: string | number } | [locale: string | number ] | s
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return google.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-google.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+google.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: google.url(args, options),
     method: 'get',
 })
 /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-google.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+google.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: google.url(args, options),
     method: 'head',
 })
 
     /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-    const googleForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const googleForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: google.url(args, options),
         method: 'get',
     })
 
             /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-        googleForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        googleForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: google.url(args, options),
             method: 'get',
         })
             /**
- * @see routes/web.php:201
- * @route '/{locale}/login-google'
+ * @see routes/web.php:138
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login-google'
  */
-        googleForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        googleForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: google.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -92,24 +103,26 @@ google.head = (args: { locale: string | number } | [locale: string | number ] | 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '/{locale}/login'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login'
  */
-export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale}/login',
+    url: '/{locale?}/login',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '/{locale}/login'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login'
  */
-store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -123,21 +136,26 @@ store.url = (args: { locale: string | number } | [locale: string | number ] | st
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return store.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '/{locale}/login'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login'
  */
-store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -145,9 +163,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
     /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '/{locale}/login'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login'
  */
-    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -155,9 +174,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
             /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '/{locale}/login'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/login'
  */
-        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })

@@ -1,25 +1,27 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-export const create = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const create = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 
 create.definition = {
     methods: ["get","head"],
-    url: '/{locale}/register',
+    url: '/{locale?}/register',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-create.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+create.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -33,30 +35,36 @@ create.url = (args: { locale: string | number } | [locale: string | number ] | s
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return create.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-create.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+create.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-create.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+create.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(args, options),
     method: 'head',
 })
@@ -64,9 +72,10 @@ create.head = (args: { locale: string | number } | [locale: string | number ] | 
     /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-    const createForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const createForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: create.url(args, options),
         method: 'get',
     })
@@ -74,18 +83,20 @@ create.head = (args: { locale: string | number } | [locale: string | number ] | 
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-        createForm.get = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.get = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::create
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:21
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-        createForm.head = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        createForm.head = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -99,24 +110,26 @@ create.head = (args: { locale: string | number } | [locale: string | number ] | 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:31
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-export const store = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const store = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
 
 store.definition = {
     methods: ["post"],
-    url: '/{locale}/register',
+    url: '/{locale?}/register',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:31
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-store.url = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
+store.url = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { locale: args }
     }
@@ -130,21 +143,26 @@ store.url = (args: { locale: string | number } | [locale: string | number ] | st
 
     args = applyUrlDefaults(args)
 
+    validateParameters(args, [
+            "locale",
+        ])
+
     const parsedArgs = {
-                        locale: args.locale,
+                        locale: args?.locale ?? '$locale',
                 }
 
     return store.definition.url
-            .replace('{locale}', parsedArgs.locale.toString())
+            .replace('{locale?}', parsedArgs.locale?.toString() ?? '')
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:31
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-store.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+store.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
     method: 'post',
 })
@@ -152,9 +170,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
     /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:31
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-    const storeForm = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const storeForm = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
         method: 'post',
     })
@@ -162,9 +181,10 @@ store.post = (args: { locale: string | number } | [locale: string | number ] | s
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:31
- * @route '/{locale}/register'
+ * @param locale - Default: '$locale'
+ * @route '/{locale?}/register'
  */
-        storeForm.post = (args: { locale: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        storeForm.post = (args?: { locale?: string | number } | [locale: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
             method: 'post',
         })
